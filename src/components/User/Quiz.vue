@@ -80,7 +80,9 @@
 
   <v-card class="cardShowuser mt-0">
 
-  <v-simple-table>
+  <v-simple-table
+  fixed-header
+    height="350px">
     <template v-slot:default>
       <thead>
         <tr>
@@ -100,9 +102,9 @@
       <tbody>
         <tr v-for="lesson in alllesson" v-bind:key="lesson.lesson_id" class="lessonmore">
           <!-- <td>{{lesson.lesson_id}}</td> -->
-          <td>{{lesson.lesson_unit}}</td>
-          <td>{{lesson.lesson_name}}</td>
-          <td>
+          <td class="text-left">{{lesson.lesson_id}}</td>
+          <td class="text-left">{{lesson.lesson_name}}</td>
+          <td class="text-left">
             <!-- <a href="Quizlesson" text color="#FAD234"> -->
               <!-- <router-link to="/test/">test</router-link> -->
               <router-link v-bind:to="'/quiz/posttest/'+ lesson.lesson_id">

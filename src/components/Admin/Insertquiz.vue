@@ -18,7 +18,7 @@
           <br />
 
           <h1 class="mt-0 mb-7" align="center">
-            <span class="teal--text"> บทที่ {{ item.lesson_unit }}</span>
+            <span class="teal--text"> บทที่ {{ item.lesson_id }}</span>
             {{ item.lesson_name }}
           </h1>
 
@@ -368,7 +368,6 @@ export default {
     selected: '',
     item: [],
     lesson_id: '',
-    lesson_unit: '',
     lesson_name: '',
     lesson_description: '',
     answer: [

@@ -34,6 +34,7 @@
       </v-card-title>
       <!-- <v-card-title>friend</v-card-title> -->
       <v-data-table
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
         :items="alllesson"
         :headers="headers"
         :items-per-page="5"
@@ -45,7 +46,7 @@
         no-results-text="ไม่พบข้อมูลที่ค้นหา"
       >
         <template slot="data">
-          <td>{{ lesson_unit }}</td>
+          <td>{{ lesson_id }}</td>
           <td>{{ lesson_name }}</td>
         </template>
         <template v-slot:item.edit="{ item }">
@@ -75,7 +76,7 @@
                     <v-text-field
                       label="บทที่"
                       required
-                      v-model="lesson_unit"
+                      v-model="lesson_id"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
@@ -84,6 +85,9 @@
                       required
                       v-model="lesson_name"
                     ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-file-input v-model="lesson_unitimg" required label="รูปภาพหน้าปกบทเรียน" variant="underlined"></v-file-input>
                   </v-col>
                   <!-- <v-col cols="12">
                             <v-text-field
@@ -139,7 +143,7 @@
                     <v-text-field
                       label="บทที่"
                       required
-                      v-model="lesson_unit"
+                      v-model="lesson_id"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
@@ -271,11 +275,9 @@ export default {
       dialog1: false,
       alllesson: [],
       lesson_id: '',
-      lesson_unit: '',
       lesson_name: '',
       lesson_description: '',
       lesson: {
-        lesson_unit: '',
         lesson_name: '',
         lesson_description: ''
       },
@@ -286,7 +288,7 @@ export default {
         {
           text: 'บทที่',
           align: 'start',
-          value: 'lesson_unit'
+          value: 'lesson_id'
         },
         { text: 'บทเรียนเรื่อง', value: 'lesson_name' },
         // { text: 'เนื้อหาบทเรียน', value: 'lesson_description' },
@@ -345,7 +347,7 @@ export default {
           {
             // post_id: this.post_id,
             // lesson_id: this.lesson_id,
-            lesson_unit: this.lesson_unit,
+            lesson_id: this.lesson_id,
             lesson_name: this.lesson_name,
             lesson_description: this.lesson_description
           }
@@ -373,7 +375,6 @@ export default {
     // async saveInsert () {
     //   var bodyValue = {
     //     lesson_id: this.lesson_id,
-    //     lesson_unit: this.lesson_unit,
     //     lesson_name: this.lesson_name,
     //     lesson_description: this.lesson_description
     //   }
@@ -402,7 +403,6 @@ export default {
       // console.log('item:', data)คือฟังก์ชันedit(data)ข้างบนdataที่ส่งมา
       this.dialog = true
       this.lesson_id = data.lesson_id
-      this.lesson_unit = data.lesson_unit
       this.lesson_name = data.lesson_name
       this.lesson_description = data.lesson_description
       this.create_at = data.create_at
@@ -412,7 +412,6 @@ export default {
     async saveUpdate () {
       var bodyValue = {
         lesson_id: this.lesson_id,
-        lesson_unit: this.lesson_unit,
         lesson_name: this.lesson_name,
         lesson_description: this.lesson_description,
         create_at: this.create_at

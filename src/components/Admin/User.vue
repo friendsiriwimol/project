@@ -43,6 +43,7 @@
       </v-card-title>
       <!-- <v-card-title>friend</v-card-title> -->
       <v-data-table
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"
@@ -101,7 +102,7 @@
         </template>
       </v-data-table>
       <div v-if="!alluser.length && type === 'all'">
-        <h1>ไม่พบข้อมูล 1111</h1>
+        <p class="text-center ma-10 pa-10">ไม่พบข้อมูลผู้ใช้งาน</p>
       </div>
 
       <v-card-title v-show="type === 'student'">
@@ -128,6 +129,7 @@
         ></v-text-field>
         </v-card-title>
       <v-data-table
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"
@@ -176,7 +178,7 @@
         </template>
       </v-data-table>
             <div v-if="!alluser.length && type === 'student'">
-        <h1>ไม่พบข้อมูล 2222</h1>
+              <p class="text-center ma-10 pa-10">ไม่พบข้อมูลนักศึกษา</p>
       </div>
 
       <v-card-title  v-show="type === 'farmer'">
@@ -203,6 +205,7 @@
         ></v-text-field>
         </v-card-title>
       <v-data-table
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"
@@ -251,7 +254,8 @@
         </template>
       </v-data-table>
             <div v-if="!alluser.length && type === 'farmer'">
-        <h1>ไม่พบข้อมูล 3333</h1>
+              <p class="text-center ma-10 pa-10">ไม่พบข้อมูลเกษตรกร</p>
+
       </div>
       <v-card-title  v-show="type === 'admin'">
         <!-- <v-tabs-items v-model="tab">
@@ -279,6 +283,7 @@
         ></v-text-field>
         </v-card-title>
       <v-data-table
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"
@@ -327,10 +332,11 @@
         </template>
       </v-data-table>
             <div v-if="!alluser.length && type === 'admin'">
-        <h1>ไม่พบข้อมูล 4444</h1>
+              <p class="text-center ma-10 pa-10">ไม่พบข้อมูลแอดมิน</p>
       </div>
       <!--  -->
       <v-dialog v-model="dialog" max-width="600px">
+        <v-form v-model="valid" ref="form" >
         <v-card>
           <v-card-title> แก้ไขผู้ใช้ </v-card-title>
           <v-card-text>
@@ -359,24 +365,6 @@
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field
-                    :type="show3 ? 'text' : 'password'"
-                    label="รหัสผ่าน"
-                    v-model="user_password"
-                    required
-                    :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :rules="[rules.required, rules.min]"
-                    @click:append="show3 = !show3"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="เบอร์โทร"
-                    v-model="user_tel"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
                   <v-select
                     v-model="user_type"
                     :items="['นักศึกษา', 'เกษตรกร', 'แอดมิน']"
@@ -393,10 +381,35 @@
                     </template>
                   </v-select>
                 </v-col>
+                <v-col
+          cols="12"
+        >
+              <v-menu
+                v-model="menuUpdate"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="user_birthday"
+                    label="วันเดือนปีเกิด"
+                    prepend-inner-icon="mdi-calendar-range"
+                    required
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker v-model="user_birthday" @input="menuUpdate = false"></v-date-picker>
+              </v-menu>
+            </v-col>
                 <v-col cols="12">
                   <v-text-field
                     label="อายุ"
                     v-model="user_age"
+                    disabled
                     required
                   ></v-text-field>
                 </v-col>
@@ -411,6 +424,7 @@
             <v-btn color="blue darken-1" text @click="save(type)"> บันทึก </v-btn>
           </v-card-actions>
         </v-card>
+      </v-form>
       </v-dialog>
     </v-card>
 
@@ -422,7 +436,6 @@
       <v-card>
         <v-form v-model="validAdmin" ref="formAdmin" >
         <v-card-title>
-          {{ admin }}
           เพิ่มแอดมิน
         </v-card-title>
         <v-card-text>
@@ -432,12 +445,14 @@
                 <v-text-field
                   label="ชื่อ"
                   v-model="admin.user_firstname"
+                  :rules="firstnameRules"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   label="นามสกุล"
+                  :rules="lastnameRules"
                   v-model="admin.user_lastname"
                   required
                 ></v-text-field>
@@ -445,6 +460,7 @@
               <v-col cols="12">
                 <v-text-field
                   label="อีเมล"
+                  :rules="emailRules"
                   v-model="admin.user_email"
                   type="email"
                   required
@@ -454,24 +470,50 @@
               <v-text-field
                   label="รหัสผ่าน"
                   v-model="admin.user_password"
-                  type="password"
+                  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                  :rules="[passwordRules.required, passwordRules.min]"
+                  :type="show ? 'text' : 'password'"
+                  name="input-10-2"
+                  @click:append="show = !show"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field
-                  label="เบอร์โทร"
-                  v-model="admin.user_tel"
+              <v-text-field
+                  label="ยืนยันรหัสผ่าน"
+                  v-model="admin.user_confirmPassword"
+                  :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
+                  :append-icon="showConfirm ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="showConfirm ? 'text' : 'password'"
+                  @click:append="showConfirm = !showConfirm"
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="อายุ"
-                  v-model="admin.user_age"
-                  required
-                ></v-text-field>
-              </v-col>
+              <v-col
+          cols="12"
+        >
+      <v-menu
+        v-model="menu"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="admin.user_birthday"
+            label="วันเดือนปีเกิด"
+            :rules="birthdayRules"
+            prepend-inner-icon="mdi-calendar-range"
+            required
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker v-model="admin.user_birthday" @input="menu = false"></v-date-picker>
+      </v-menu>
+     </v-col>
               <v-col cols="12">
                 <v-text-field
                   label="ประเภทผู้ใช้งาน"
@@ -484,12 +526,14 @@
                 <v-text-field
                   label="อำเภอ"
                   v-model="admin.user_district"
+                  :rules="districtRules"
                   required
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
                   label="จังหวัด"
+                  :rules="provinceRules"
                   v-model="admin.user_province"
                   required
                 ></v-text-field>
@@ -533,6 +577,10 @@ export default {
   },
   data () {
     return {
+      show: false,
+      showConfirm: false,
+      menu: false,
+      menuUpdate: false,
       show3: false,
       password: 'Password',
       rules: {
@@ -542,12 +590,12 @@ export default {
       },
       dialoginsertAdmin: false,
       validAdmin: false,
+      valid: false,
       dialog: false,
       alluser: [{
         user_firstname: '',
         user_lastname: '',
         user_email: '',
-        user_tel: '',
         user_type: '',
         user_age: ''
       }
@@ -560,26 +608,26 @@ export default {
       user_lastname: '',
       user_email: '',
       user_password: '',
-      user_tel: '',
       user_type: '',
       user_age: '',
+      user_birthday: '',
       admin: {
         user_firstname: '',
         user_lastname: '',
         user_email: '',
         user_password: '',
-        user_tel: '',
+        user_confirmPassword: '',
         user_type: 'แอดมิน',
-        user_age: ''
+        user_age: '',
+        user_birthday: ''
       },
       user: {
         user_firstname: '',
         user_lastname: '',
         user_email: '',
-        user_password: '',
-        user_tel: '',
         user_type: '',
-        user_age: ''
+        user_age: '',
+        user_birthday: ''
       },
       search: '',
       headers: [
@@ -592,8 +640,8 @@ export default {
         { text: 'นามสกุล', value: 'user_lastname' },
         { text: 'อีเมล', value: 'user_email' },
         // { text: 'รหัสผ่าน', value: 'user_password' },
-        { text: 'เบอร์โทร', value: 'user_tel' },
         { text: 'ประเภทผู้ใช้', value: 'user_type' },
+        { text: 'วันเดือนปีเกิด', value: 'user_birthday' },
         { text: 'อายุ', value: 'user_age' },
         // { text: 'แก้ไข', value: 'แก้ไข' },
         // { text: 'ลบ', value: 'ลบ' },
@@ -623,7 +671,46 @@ export default {
       tab: null,
       items: ['ทั้งหมด', 'นักศึกษา', 'เกษตรกร', 'แอดมิน'],
       selected: '',
-      type: 'all'
+      type: 'all',
+      firstnameRules: [
+        v => !!v || 'กรุณากรอกชื่อ'
+      ],
+      lastnameRules: [
+        v => !!v || 'กรุณากรอกนามสกุล'
+      ],
+      emailRules: [
+        v => !!v || 'กรุณากรอกอีเมล',
+        v => /.+@.+\..+/.test(v) || 'กรุณาใส่กรอกอีเมลให้ถูกต้อง'
+      ],
+      // passwordRules: [v => !!v || 'Password is required'],
+      confirmPasswordRules: [v => !!v || 'กรุณากรอกยืนยันรหัสผ่าน'],
+      passwordRules: {
+        required: value => !!value || 'กรุณากรอกรหัสผ่าน',
+        min: v => v.length >= 8 || 'กรุณากรอกรหัสผ่านอย่างน้อย 8 ตัวอักษร',
+        emailMatch: () => ('The email and password you entered don\'t match')
+      },
+      telRules: [
+        v => !!v || 'กรุณากรอกเบอร์โทร'
+      ],
+      ageRules: [
+        v => !!v || 'กรุณากรอกอายุ'
+      ],
+      birthdayRules: [
+        v => !!v || 'กรุณากรอกวันเดือนปีเกิด'
+      ],
+      districtRules: [
+        v => !!v || 'กรุณากรอกอำเภอ'
+      ],
+      provinceRules: [
+        v => !!v || 'กรุณากรอกจังหวัด'
+      ]
+
+    }
+  },
+  computed: {
+    passwordConfirmationRule () {
+      return () =>
+        this.admin.user_password === this.admin.user_confirmPassword || 'กรุณากรอกรหัสผ่านให้ตรงกัน'
     }
   },
   created () {
@@ -699,9 +786,8 @@ export default {
       this.user_firstname = data.user_firstname
       this.user_lastname = data.user_lastname
       this.user_email = data.user_email
-      this.user_password = data.user_password
-      this.user_tel = data.user_tel
       this.user_type = data.user_type
+      this.user_birthday = data.user_birthday
       this.user_age = data.user_age
       this.create_at = data.create_at
 
@@ -714,9 +800,8 @@ export default {
         user_firstname: this.user_firstname,
         user_lastname: this.user_lastname,
         user_email: this.user_email,
-        user_password: this.user_password,
-        user_tel: this.user_tel,
         user_type: this.user_type,
+        user_birthday: this.user_birthday,
         user_age: this.user_age,
         create_at: this.create_at
       }
@@ -726,7 +811,6 @@ export default {
       )
       console.log(update, 'data here!')
       if (update === 'success') {
-        this.dialog = false
         Swal.fire({
           icon: 'success',
           title: 'แก้ไขสำเร็จ',
@@ -742,6 +826,8 @@ export default {
           this.getReload(this.type)
         }, 1500)
       }
+      this.dialog = false
+      this.getReload(this.type)
     },
     // closedialog () {
     //   this.dialog = false
@@ -786,7 +872,7 @@ export default {
       }
     },
     onExportall () {
-      const Heading = [['รหัสผู้ใช้งาน', 'ชื่อ', 'นามสกุล', 'อีเมล', 'เบอร์โทร', 'ประเภทผู้ใช้งาน', 'อายุ', 'อำเภอ', 'จังหวัด', 'วันที่สร้างบัญชี', 'วันที่แก้ไขบัญชี']]
+      const Heading = [['รหัสผู้ใช้งาน', 'ชื่อ', 'นามสกุล', 'อีเมล', 'ประเภทผู้ใช้งาน', 'วันเดือนปีเกิด', 'อายุ', 'อำเภอ', 'จังหวัด', 'วันที่สร้างบัญชี', 'วันที่แก้ไขบัญชี']]
       const dataWS = XLSX.utils.json_to_sheet(
         this.alluser)
       const wb = XLSX.utils.book_new()
@@ -795,7 +881,7 @@ export default {
       XLSX.writeFile(wb, 'รายชื่อผู้ใช้งาน.xlsx')
     },
     onExportstudent () {
-      const Heading = [['รหัสผู้ใช้งาน', 'ชื่อ', 'นามสกุล', 'อีเมล', 'รหัสผ่าน', 'เบอร์โทร', 'ประเภทผู้ใช้งาน', 'อายุ', 'อำเภอ', 'จังหวัด', 'วันที่สร้างบัญชี', 'วันที่แก้ไขบัญชี']]
+      const Heading = [['รหัสผู้ใช้งาน', 'ชื่อ', 'นามสกุล', 'อีเมล', 'ประเภทผู้ใช้งาน', 'วันเดือนปีเกิด', 'อายุ', 'อำเภอ', 'จังหวัด', 'วันที่สร้างบัญชี', 'วันที่แก้ไขบัญชี']]
       console.log('student', this.allstudent)
       const dataWS = XLSX.utils.json_to_sheet(this.allstudent)
       const wb = XLSX.utils.book_new()
@@ -805,7 +891,7 @@ export default {
     },
     onExportfarmer () {
       // console.log('log')
-      const Heading = [['รหัสผู้ใช้งาน', 'ชื่อ', 'นามสกุล', 'อีเมล', 'รหัสผ่าน', 'เบอร์โทร', 'ประเภทผู้ใช้งาน', 'อายุ', 'อำเภอ', 'จังหวัด', 'วันที่สร้างบัญชี', 'วันที่แก้ไขบัญชี']]
+      const Heading = [['รหัสผู้ใช้งาน', 'ชื่อ', 'นามสกุล', 'อีเมล', 'ประเภทผู้ใช้งาน', 'วันเดือนปีเกิด', 'อายุ', 'อำเภอ', 'จังหวัด', 'วันที่สร้างบัญชี', 'วันที่แก้ไขบัญชี']]
       const dataWS = XLSX.utils.json_to_sheet(this.allfarmer)
       const wb = XLSX.utils.book_new()
       XLSX.utils.sheet_add_aoa(dataWS, Heading)
@@ -814,7 +900,7 @@ export default {
     },
     onExportadmin () {
       // console.log('log')
-      const Heading = [['รหัสผู้ใช้งาน', 'ชื่อ', 'นามสกุล', 'อีเมล', 'รหัสผ่าน', 'เบอร์โทร', 'ประเภทผู้ใช้งาน', 'อายุ', 'อำเภอ', 'จังหวัด', 'วันที่สร้างบัญชี', 'วันที่แก้ไขบัญชี']]
+      const Heading = [['รหัสผู้ใช้งาน', 'ชื่อ', 'นามสกุล', 'อีเมล', 'ประเภทผู้ใช้งาน', 'วันเดือนปีเกิด', 'อายุ', 'อำเภอ', 'จังหวัด', 'วันที่สร้างบัญชี', 'วันที่แก้ไขบัญชี']]
       const dataWS = XLSX.utils.json_to_sheet(this.alladmin)
       const wb = XLSX.utils.book_new()
       XLSX.utils.sheet_add_aoa(dataWS, Heading)
@@ -828,14 +914,14 @@ export default {
       if (this.$refs.formAdmin.validate()) {
         console.log('mmmm')
         axios
-          .post('http://localhost/vue-backend/insertAdmin.php', {
+          .post('http://localhost/vue-backend/register.php', {
             user_firstname: this.admin.user_firstname,
             user_lastname: this.admin.user_lastname,
             user_email: this.admin.user_email,
             user_password: this.admin.user_password,
             user_tel: this.admin.user_tel,
             user_type: this.admin.user_type,
-            user_age: this.admin.user_age,
+            user_birthday: this.admin.user_birthday,
             user_district: this.admin.user_district,
             user_province: this.admin.user_province
           })

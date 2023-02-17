@@ -17,10 +17,11 @@
       sm="9"
       md="6"
       lg="7"
+      class="mt-15"
     >
     <center> <v-title class="header" style="padding:20px">E-learning for Hens</v-title></center>
             <v-form ref="form" v-model="valid" lazy-validation action="register" class="sign-in-form">
-              <h3 style="margin-bottom:25px">เข้าสู่ระบบ</h3>
+              <h3 style="margin-bottom:25px"> <span class="linkLogin" style="color:#fcad74; font-size:25px;" onclick="window.location.href='/'">เข้าสู่ระบบ</span> <span class="border ml-3 mr-3"></span> <span class="linkRegister" style="color:#aaa;" onclick="window.location.href='Register'">ลงทะเบียน</span></h3>
               <v-text-field
                 v-model="user.user_email"
                 :error-messages="emailErrors"
@@ -47,12 +48,16 @@
                 dense
                 class="input1"
               ></v-text-field>
+              <v-row >
               <input type="button" class="button button1 btn solid" value="เข้าสู่ระบบ" @click="Login"/>
+              <!-- <input type="button"  class="button button3 btn1 solid ml-5" value="ลงทะเบียน" onclick="window.location.href='Register'"/> -->
+            </v-row>
+            <v-row>
+              <div>
+              <span class="text-red-lighten-1" onclick="window.location.href='forgetpassword'">ลืมรหัสผ่าน</span>
+            </div>
+              </v-row>
             </v-form>
-           <center><h3 style="margin-top:-50px">สมัครสมาชิก ?</h3>
-              <p>ทำการสมัครสมาชิก โดยการกรอกข้อมูลของท่านให้ครบ</p>
-              <input type="button"  class="button button3 btn1 solid" value="ลงทะเบียน" onclick="window.location.href='Register'"/>
-            </center>
     </v-col>
   </v-row>
 </div>
@@ -319,6 +324,15 @@ form.sign-in-form {
 .btn1:hover {
   background-color: #D1551B;
 }
+.linkLogin:hover{
+  color: #D1551B !important;
+}
+
+.linkRegister:hover{
+  font-size: 25px;
+  color: gray !important;
+}
+
 .image {
   width: 100%;
 }
@@ -388,5 +402,9 @@ form.sign-in-form {
   100% {
     background-position: 100% 50%;
   }
+}
+.border{
+  border-left: 2px solid #aaa;
+
 }
 </style>

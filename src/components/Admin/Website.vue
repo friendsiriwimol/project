@@ -41,6 +41,7 @@
     </v-card-title>
     <!-- <v-card-title>friend</v-card-title> -->
        <v-data-table
+       :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
        :items="allwebsite"
        :headers="headers"
        :items-per-page="5"
@@ -48,7 +49,7 @@
        no-data-text="ไม่พบข้อมูล"
         no-results-text="ไม่พบข้อมูลที่ค้นหา">
        <template slot="data">
-        <td>{{website_id}}</td>
+        <td>{{lesson_id}}</td>
         <!-- <td>{{website_id}}</td> -->
         <td>{{website_name}}</td>
         <td>{{website_link}}</td>
@@ -83,7 +84,7 @@
                   <v-text-field
                     label="บทที่"
                     required
-                    v-model="website_id"
+                    v-model="lesson_id"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -123,7 +124,7 @@
                   <v-text-field
                     label="บทที่"
                     required
-                    v-model="website_id"
+                    v-model="lesson_id"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -183,7 +184,7 @@ export default {
         {
           text: 'บทที่',
           align: 'start',
-          value: 'website_id'
+          value: 'lesson_id'
         },
         { text: 'ชื่อเว็บไซต์', value: 'website_name' },
         { text: 'ลิงก์เว็บไซต์', value: 'website_link' },
@@ -228,7 +229,7 @@ export default {
       if (this.$refs.form1.validate()) { // กรอกครบมั้ย
         var { data } = await axios.post('http://localhost/vue-backend/insertWebsite.php', {
           // post_id: this.post_id,
-          website_id: this.website_id,
+          lesson_id: this.lesson_id,
           website_name: this.website_name,
           website_link: this.website_link
         })
@@ -279,7 +280,7 @@ export default {
       // console.log('item:', this.items)มันไม่มีค่า มันเอามาจากตัวแปรitems:{}ข้างบน มันว่าง
       // console.log('item:', data)คือฟังก์ชันedit(data)ข้างบนdataที่ส่งมา
       this.dialog = true
-      this.website_id = data.website_id
+      this.lesson_id = data.lesson_id
       this.website_name = data.website_name
       this.website_link = data.website_link
       this.create_at = data.create_at
@@ -289,7 +290,7 @@ export default {
     },
     async saveUpdate () {
       var bodyValue = {
-        website_id: this.website_id,
+        lesson_id: this.lesson_id,
         website_name: this.website_name,
         website_link: this.website_link,
         create_at: this.create_at

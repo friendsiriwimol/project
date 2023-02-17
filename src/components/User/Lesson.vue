@@ -25,7 +25,7 @@
       class="black--text align-end"
       height="200px"
       :src="lesson.lesson_unitimg">
-      <v-card-title>บทที่ {{lesson.lesson_unit}}</v-card-title>
+      <v-card-title>บทที่ {{lesson.lesson_id}}</v-card-title>
     </v-img>
 
     <!-- <v-card-subtitle class="pb-0">
@@ -37,7 +37,7 @@
     </v-card-text>
 
     <v-card-actions>
-      <router-link v-bind:to="'/lessondetail/'+ lesson.lesson_unit">
+      <router-link v-bind:to="'/lessondetail/'+ lesson.lesson_id">
       <v-btn
         color="#fcad74"
         outlined

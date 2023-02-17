@@ -14,7 +14,7 @@
           </div>
         </div>
           <br />
-          <h2>บทที่ {{ item.lesson_unit }} {{ item.lesson_name }}</h2>
+          <h2>บทที่ {{ item.lesson_id }} {{ item.lesson_name }}</h2>
         </div>
       </div>
     </div>

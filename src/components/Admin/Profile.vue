@@ -37,89 +37,80 @@
             </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          แก้ไขบัญชีผู้ใช้
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  label="ชื่อ"
-                  v-model="user.user_firstname"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="นามสกุล"
-                  v-model="user.user_lastname"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="อีเมล"
-                  v-model="user.user_email"
-                  type="email"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="เบอร์โทร"
-                  v-model="user.user_tel"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="อายุ"
-                  v-model="user.user_age"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="อำเภอ"
-                  v-model="user.user_district"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="จังหวัด"
-                  v-model="user.user_province"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="จังหวัด"
-                  v-model="user.user_type"
-                  disabled
-                  required
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            ปิด
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog = false"
-          >
-            บันทึก
-          </v-btn>
+        <v-card-title> แก้ไขบัญชีผู้ใช้ </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="ชื่อ"
+                        v-model="user.user_firstname"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="นามสกุล"
+                        v-model="user.user_lastname"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="อีเมล"
+                        v-model="user.user_email"
+                        type="email"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="วันเดือนปีเกิด"
+                        v-model="user.user_birthday"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="อายุ"
+                        v-model="user.user_age"
+                        required
+                        disabled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="อำเภอ"
+                        v-model="user.user_district"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="จังหวัด"
+                        v-model="user.user_province"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field
+                        label="จังหวัด"
+                        v-model="user.user_type"
+                        disabled
+                        required
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                  ปิด
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                  บันทึก
+                </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -143,6 +134,7 @@
     <v-row >นามสกุล : {{user.user_latname}}</v-row>
     <v-row >อีเมล : {{user.user_email}}</v-row>
     <v-row >เบอร์โทร : {{user.user_tel}}</v-row>
+    <v-row>วันเดือนปีเกิด : {{ user.user_birthday }}</v-row>
     <v-row >อายุ : {{user.user_age}}</v-row>
         <v-row >อำเภอ : {{user.user_district}}</v-row>
         <v-row >จังหวัด : {{user.user_province}}</v-row>
@@ -206,6 +198,7 @@ export default {
       user_email: 'friend.siriwimol@kkumail.com',
       user_tel: '0943706163',
       user_age: '22',
+      user_birthday: '2000-06-09',
       user_district: 'บ้านไผ่',
       user_province: 'ขอนแก่น',
       user_type: 'นักศึกษา'

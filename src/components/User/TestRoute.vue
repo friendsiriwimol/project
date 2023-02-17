@@ -1,18 +1,14 @@
 <template>
-  <div>
-    <NavbarUser/>
+  <div class="child">
+    <NavbarUser />
     <div>
     <v-breadcrumbs
       :items="breadcrumbs"
       large
     ></v-breadcrumbs>
   </div>
-
-    <!-- <div>{{item.lesson_unit}}</div>
-    <div>{{item.lesson_name}}</div>
-    <div>{{item}}</div> -->
     <v-card class="mt-7 mb-7 pa-5">
-      <h1 class="text-center ma-5">บทที่ {{ item.lesson_id}} <span class="teal--text">{{lesson_name}}</span></h1>
+      <h1 class="text-center ma-5">บทที่  {{ item.lesson_unit }} {{item.lesson_unit}} <span class="teal--text">{{item.lesson_name}}</span></h1>
     <div class="output ql-snow">
       <div class="ql-editor" v-html="item.lesson_description"></div>
     </div>
@@ -31,21 +27,52 @@
 
     </v-card>
 </v-card>
+    <h4>Detail</h4>
+    {{ user }}
+    <div class="row">
+      <div class="col-md-6">
+
+        <table class="table table-bordered" border="1">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>NAME</th>
+              <th>USER NAME</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.username }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <router-link class="btn btn-secondary" :to="{ name: 'route' }">Back</router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import NavbarUser from '@/components/NavbarUser'
-// import { all } from 'q'
+
 export default {
   components: {
     NavbarUser
+  },
+  props: {
+    id: {
+      type: Number,
+      required: true
+    }
   },
   name: 'quill-example-custom-toolbar',
   title: 'Custom toolbar',
   data () {
     return {
+      user: {},
       alllesson: [],
       allwebsite: [],
       website: {
@@ -82,29 +109,24 @@ export default {
       ]
     }
   },
-  created () {
-    this.lesson_id = this.$route.params.id
-    this.getLesson()
-    this.getWebsite()
-  },
-  inject: [
-    'getLesson'
-  ],
-  computed: {
-    lessonChilren () {
-      return this.getLesson
-    }
-  },
   methods: {
+    getUser () {
+      axios
+        .get('https://jsonplaceholder.typicode.com/users/' + this.id)
+        .then(response => (this.user = response.data))
+        .catch(error => console.log(error))
+    },
     async getLesson () {
-      axios.get('http://localhost/vue-backend/lesson.php?id=this.lesson_id').then((res) => {
-        console.log('บทเรียน:', res.data)
-        if (res.data) {
-          // this.item = res.data[this.lesson_id - 2]
-          this.item = res.data[this.lesson_id - 2]
-          // console.log('item', this.item)
-        }
-      })
+      axios.get('http://localhost/vue-backend/lesson.php?id=this.lesson_unit')
+        // .then(response => (this.user = response.data))
+        // .catch(error => console.log(error))
+        .then((res) => {
+          console.log('บทเรียน:', res.data)
+          if (res.data) {
+            this.item = res.data[this.lesson_id]
+            console.log('item', this.item)
+          }
+        })
     },
     async getWebsite () {
       axios.get('http://localhost/vue-backend/website.php').then((res) => {
@@ -115,13 +137,20 @@ export default {
         }
       })
     }
+  },
+  created () {
+    this.lesson_unit = this.$route.params.id
+    this.getUser()
+    this.getLesson()
+    this.getWebsite()
+  },
+  inject: [
+    'getLesson'
+  ],
+  computed: {
+    lessonChilren () {
+      return this.getLesson
+    }
   }
 }
 </script>
-
-<style scoped>
-
-.v-breadcrumbs >>> a {
-    color: #fcad74 !important;
-}
-</style>

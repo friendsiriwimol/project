@@ -65,6 +65,7 @@
       ></v-text-field>
     </v-card-title>
               <v-data-table
+              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
         :items="allstudent"
         :headers="headers"
         :items-per-page="5"
@@ -147,6 +148,7 @@
       ></v-text-field>
     </v-card-title>
               <v-data-table
+              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
         :items="allfarmer"
         :headers="headers"
         :items-per-page="5"
@@ -229,6 +231,7 @@
       ></v-text-field>
     </v-card-title>
               <v-data-table
+              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
         :items="alladmin"
         :headers="headers"
         :items-per-page="5"
@@ -311,6 +314,7 @@
       ></v-text-field>
     </v-card-title>
               <v-data-table
+              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"

@@ -26,9 +26,10 @@
       <v-spacer></v-spacer>
     </v-card-title>
     <!-- <v-card-title>friend</v-card-title> -->
-       <v-data-table :items="alllesson" :headers="headers" :items-per-page="5" :search="search">
+       <v-data-table :items="alllesson" :headers="headers" :items-per-page="5" :search="search"
+       :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}">
        <template slot="data">
-        <td>{{lesson_unit}}</td>
+        <td>{{lesson_id}}</td>
         <td>{{lesson_name}}</td>
       </template>
           <template v-slot:item.time="{ item }">
@@ -156,7 +157,7 @@ export default {
         {
           text: 'บทที่',
           align: 'start',
-          value: 'lesson_unit'
+          value: 'lesson_id'
         },
         { text: 'บทเรียนเรื่อง', value: 'lesson_name' },
         // { text: 'เนื้อหาบทเรียน', value: 'lesson_description' },

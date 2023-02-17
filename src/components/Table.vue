@@ -40,7 +40,7 @@
                     </v-col>
                     </v-row>
                   </v-card-title>
-                  <v-card-title class="pt-0">
+                  <!-- <v-card-title class="pt-0">
                     <v-tabs
                       v-model="model"
                       centered
@@ -54,7 +54,7 @@
                         posttest
                       </v-tab>
                     </v-tabs>
-                  </v-card-title>
+                  </v-card-title> -->
                   <v-card-title class="pt-0">
                     <v-text-field
                       v-model="search"
@@ -65,6 +65,7 @@
                     ></v-text-field>
                   </v-card-title>
                   <v-data-table
+                  :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
                     :headers="headers"
                     :items="alluser"
                     :search="search"
@@ -76,10 +77,10 @@
         <td>{{user_lastname}}</td>
       </template>
 
-      <template v-slot:item.pretest="{ item }">
+      <template v-slot:item.posttest="{ item }">
       <v-icon
         small
-        @click="preTest(item)"
+        @click="postTest(item)"
         color="#56a062"
       >
         10
@@ -146,7 +147,7 @@ export default {
       // { text: 'เนื้อหาบทเรียน', value: 'lesson_description' },
       // { text: 'เวลาที่สอบ', value: 'time', sortable: false },
       // { text: 'วันที่ทำข้อสอบ', value: 'date', sortable: false },
-      { text: 'pretest', value: 'pretest', sortable: false }
+      { text: 'posttest', value: 'posttest', sortable: false }
       // { text: 'posttest', value: 'posttest', sortable: false }
 
     ],
@@ -248,8 +249,7 @@ export default {
         }
       })
     },
-    async getUser (value) {
-      this.type = value
+    async getUser () {
       axios.get('http://localhost/vue-backend/editUser.php').then((res) => {
         console.log('data:', res.data)
         if (res.data) {

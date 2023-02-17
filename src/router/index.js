@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import post from '../components/User/Post.vue'
-import register from '../components/Registerr.vue'
+import register from '../components/Register.vue'
 import login from '../components/Login.vue'
 import edituser from '../components/Admin/Edituser.vue'
 import editLesson from '../components/Admin/Editlesson.vue'
@@ -38,6 +38,9 @@ import forgetpassword from '../components/User/ForgetPassword.vue'
 import posttest from '../components/User/Posttest.vue'
 import home from '../components/User/Home.vue'
 import testQuiz from '../components/Admin/TestQuiz.vue'
+import testRoute from '../components/User/TestRoute.vue'
+import route from '../components/User/Route.vue'
+import adminscore from '../components/Admin/Score.vue'
 
 Vue.use(VueRouter)
 
@@ -237,6 +240,22 @@ const routes = [
     path: '/testQuiz',
     name: 'testQuiz',
     component: testQuiz
+  },
+  {
+    path: '/route',
+    name: 'route',
+    component: route
+  },
+  {
+    path: '/adminscore',
+    name: 'adminscore',
+    component: adminscore
+  },
+  {
+    path: '/testRoute/:id',
+    name: 'testRoute',
+    component: testRoute,
+    props: true
   }
 ]
 

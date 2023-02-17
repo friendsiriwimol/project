@@ -24,7 +24,7 @@
         large
       ></v-breadcrumbs>
     </div>
-            <v-card elevation="0" style="border-color:#099fae; border-width: 2px;" rounded outlined height="70vh"  class="d-flex align-center justify-center">
+            <v-card elevation="0" style="border-color:#099fae; border-width: 2px;" rounded outlined height="80vh"  class="d-flex align-center justify-center">
             <v-row  align="center" justify="center">
               <v-col cols="12" class="ma-auto " style="max-width: 240px">
                 <v-card-title>กรุณากรอกเลข OTP</v-card-title>

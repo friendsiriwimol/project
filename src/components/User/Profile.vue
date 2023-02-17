@@ -52,8 +52,8 @@
                     </v-col>
                     <v-col cols="12">
                       <v-text-field
-                        label="เบอร์โทร"
-                        v-model="user.user_tel"
+                        label="วันเดือนปีเกิด"
+                        v-model="user.user_birthday"
                         required
                       ></v-text-field>
                     </v-col>
@@ -62,6 +62,7 @@
                         label="อายุ"
                         v-model="user.user_age"
                         required
+                        disabled
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12">
@@ -119,6 +120,7 @@
           <v-row>นามสกุล : {{ user.user_lastname }}</v-row>
           <v-row>อีเมล : {{ user.user_email }}</v-row>
           <v-row>เบอร์โทร : {{ user.user_tel }}</v-row>
+          <v-row>วันเดือนปีเกิด : {{ user.user_birthday }}</v-row>
           <v-row>อายุ : {{ user.user_age }}</v-row>
           <v-row>อำเภอ : {{ user.user_district }}</v-row>
           <v-row>จังหวัด : {{ user.user_province }}</v-row>
@@ -182,6 +184,7 @@ export default {
       user_email: 'friend.siriwimol@kkumail.com',
       user_tel: '0943706163',
       user_age: '22',
+      user_birthday: '2000-06-09',
       user_district: 'บ้านไผ่',
       user_province: 'ขอนแก่น',
       user_type: 'นักศึกษา'

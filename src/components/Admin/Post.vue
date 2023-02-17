@@ -30,6 +30,7 @@
     </v-card-title>
     <!-- <v-card-title>friend</v-card-title> -->
        <v-data-table
+       :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
        :items="allpost"
        :headers="headers"
        :items-per-page="5"
@@ -78,6 +79,7 @@
     </v-card-title>
     <!-- <v-card-title>friend</v-card-title> -->
     <v-data-table
+    :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
        :items="allpost"
        :headers="headers"
        :items-per-page="5"
@@ -125,6 +127,7 @@
     </v-card-title>
     <!-- <v-card-title>friend</v-card-title> -->
     <v-data-table
+    :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
        :items="allpost"
        :headers="headers"
        :items-per-page="5"
@@ -178,10 +181,18 @@
                     v-model="post_detail"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12">
-                  <v-checkbox
+                <v-col cols="12" class="ma-0 pt-0 pb-0" v-if="status === 'waiting'">
+                    <v-checkbox
                     v-model="post_status"
                     label="อนุมัติโพสต์"
+                    value="approve"
+                  ></v-checkbox>
+                </v-col>
+                <v-col cols="12" class="ma-0 pt-0 pb-0" v-if="status === 'approve'">
+                    <v-checkbox
+                    v-model="post_status"
+                    label="อนุมัติโพสต์"
+                    disabled
                     value="approve"
                   ></v-checkbox>
                 </v-col>

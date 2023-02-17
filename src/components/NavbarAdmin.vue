@@ -55,6 +55,7 @@ export default {
         { title: 'จัดการโพสต์', icon: 'mdi-post', route: '/adminpost' },
         { title: 'จัดการบทเรียน', icon: 'mdi-book-open-variant', route: '/adminlesson' },
         { title: 'จัดการแบบทดสอบ', icon: 'mdi-notebook-edit', route: '/adminquiz' },
+        { title: 'คะเเนนนักศึกษา', icon: 'mdi-format-list-numbered', route: '/adminscore' },
         { title: 'จัดการวิดีโอ', icon: 'mdi-video', route: '/adminvideo' },
         { title: 'จัดการเว็บไซต์ที่เกี่ยวข้อง', icon: 'mdi-link', route: 'adminwebsite' },
         { title: 'จัดการผู้ใช้', icon: 'mdi-account-group', route: '/adminuser' },
