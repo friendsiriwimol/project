@@ -41,6 +41,7 @@ import testQuiz from '../components/Admin/TestQuiz.vue'
 import testRoute from '../components/User/TestRoute.vue'
 import route from '../components/User/Route.vue'
 import adminscore from '../components/Admin/Score.vue'
+import resetPass from '../components/Resetpass.vue'
 
 Vue.use(VueRouter)
 
@@ -256,6 +257,11 @@ const routes = [
     name: 'testRoute',
     component: testRoute,
     props: true
+  },
+  {
+    path: '/resetPass',
+    name: 'resetPass',
+    component: resetPass
   }
 ]
 

@@ -26,8 +26,8 @@
     </div>
             <v-card elevation="0" style="border-color:#099fae; border-width: 2px;" rounded outlined height="80vh"  class="d-flex align-center justify-center">
             <v-row  align="center" justify="center">
-              <v-col cols="12" class="ma-auto " style="max-width: 240px">
-                <v-card-title>กรุณากรอกเลข OTP</v-card-title>
+              <v-col cols="12" class="ma-auto d-flex align-center justify-center">
+                <v-card-title>กรุณากรอกเลขยืนยัน</v-card-title>
               </v-col>
               <v-col cols="12" class="ma-auto pa-0">
                         <div class="ma-auto " style="max-width: 240px">
@@ -41,10 +41,10 @@
                     </div>
               </v-col>
               <v-col cols="12" class="d-flex align-center justify-center pa-0">
-                <v-card-subtitle><a href="#" class="text-decoration-none grey--text"> ส่งรหัสใหม่อีกครั้ง</a></v-card-subtitle>
+                <v-card-subtitle><a href="#" class="text-decoration-none grey--text">ส่งรหัสใหม่อีกครั้ง</a></v-card-subtitle>
               </v-col>
               <v-col cols="12" class="ma-auto pa-0" style="max-width: 240px">
-                <v-btn block :disabled="!isActive" class="white--text" color="#099fae">ยืนยัน OTP</v-btn>
+                <v-btn block :disabled="!isActive" class="white--text" color="#099fae">ยืนยัน</v-btn>
               </v-col>
             </v-row>
           </v-card>
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+
 export default {
   data: () => ({
     otp: '',
@@ -64,7 +65,7 @@ export default {
         href: '/'
       },
       {
-        text: 'หน้ายืนยันรหัส OTP',
+        text: 'หน้ายืนยันรหัส',
         disabled: true,
         href: 'history'
       }

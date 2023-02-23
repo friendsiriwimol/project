@@ -27,7 +27,9 @@
       </div>
     </div>
     <div>
-      <v-btn @click="OpenDialog()" class="ma-5 ml-0" color="#fcad74" dark >เพิ่มคำถาม</v-btn>
+      <v-btn @click="OpenDialog()" class="ma-5 ml-0" color="#fcad74" dark
+        >เพิ่มคำถาม</v-btn
+      >
       <!-- <v-btn @click="insertQuestion()">บันทึก</v-btn> -->
     </div>
     <v-card
@@ -35,30 +37,36 @@
       v-for="question in allquestion"
       :key="question.question_id"
     >
-      <v-card-title>{{ question.question_detail }} <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text  @click="editItem(question)">
-            แก้ไข
-          </v-btn></v-card-title>
+      <v-card-title
+        >{{ question.question_detail }} <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="editItem(question)">
+          แก้ไข
+        </v-btn></v-card-title
+      >
       <v-card-subtitle>
-        <div v-for="answer in allanswer" v-bind:key="answer.answer_id" >
+        <div v-for="answer in allanswer" v-bind:key="answer.answer_id">
           <div v-if="answer.question_id === question.question_id">
-            <v-card-title v-if="question.question_type === 'เลือกได้หลายคำตอบ'" class="pa-0"
-              ><v-checkbox :label="answer.answer_detail"
-              v-model="answer.answer_status"
-                      true-value="Y"
-                      false-value="N" ></v-checkbox>
+            <v-card-title
+              v-if="question.question_type === 'เลือกได้หลายคำตอบ'"
+              class="pa-0"
+              ><v-checkbox
+                :label="answer.answer_detail"
+                v-model="answer.answer_status"
+                true-value="Y"
+                false-value="N"
+              ></v-checkbox>
             </v-card-title>
             <v-card-title
-              v-if="question.question_type === 'เลือกได้คำตอบเดียว'" class="pa-0"
+              v-if="question.question_type === 'เลือกได้คำตอบเดียว'"
+              class="pa-0"
             >
-              <v-radio-group row
->
+              <v-radio-group row>
                 <v-radio
                   color="orange"
                   v-model="answer.answer_status"
                   :label="answer.answer_detail"
                   true-value="Y"
-                      false-value="N"
+                  false-value="N"
                 ></v-radio>
               </v-radio-group>
             </v-card-title>
@@ -124,87 +132,78 @@
                 </v-col>
               </v-row>
               <v-card-title v-if="question_type === 'เลือกได้หลายคำตอบ'">
-              <!-- {{ allanswer }} -->
-              <div v-for="(answer, idx) in answerdetail" :key="idx">
                 <!-- {{ allanswer }} -->
+                <div v-for="(answer, idx) in answerdetail" :key="idx">
+                  <!-- {{ allanswer }} -->
+                  <v-row>
+                    <v-col cols="1">
+                      <v-checkbox
+                        v-model="answer.answer_status"
+                        true-value="Y"
+                        false-value="N"
+                        color="#fcad74"
+                      ></v-checkbox>
+                    </v-col>
+                    <v-col cols="8">
+                      <v-text-field
+                        label="คำตอบ"
+                        color="#fcad74"
+                        v-model="answer.answer_detail"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                      <!-- {{ items }} -->
+                      <v-text-field
+                        v-model="answer.answer_score"
+                        type="number"
+                        label="คะเเนน"
+                        min="1"
+                        dense
+                        solo
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-card-title>
+              <v-card-title v-if="question_type === 'เลือกได้คำตอบเดียว'">
                 <v-row>
-                  <v-col cols="1">
-                    <v-checkbox
-                      v-model="answer.answer_status"
-                      true-value="Y"
-                      false-value="N"
-                      color="#fcad74"
-                    ></v-checkbox>
-                  </v-col>
-                  <v-col cols="8">
-                    <v-text-field
-                      label="คำตอบ"
-                      color="#fcad74"
-                      v-model="answer.answer_detail"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="3">
-                  <!-- {{ items }} -->
-                  <v-text-field v-model="answer.answer_score" type="number" label="คะเเนน" min="1" dense solo></v-text-field>
-                </v-col>
                 </v-row>
-              </div>
-            </v-card-title>
-            <v-card-title v-if="question_type === 'เลือกได้คำตอบเดียว'">
-              <!-- {{ allanswer }} -->
-              <div v-for="(answer, idx) in answerdetail" :key="idx">
                 <!-- {{ allanswer }} -->
-                <v-row>
-                  <v-col cols="1">
-                    <v-radio-group row
->
-                <v-radio
-                  color="orange"
-                  v-model="answer.answer_status"
-                  :label="answer.answer_detail"
-                  true-value="Y"
-                      false-value="N"
-                ></v-radio>
-              </v-radio-group>
-                  </v-col>
-                  <v-col cols="8">
+                <div v-for="(answer, idx) in answerdetail" :key="idx">
+                  <!-- {{ allanswer }} -->
+                  <v-row>
+                    <v-col cols="1">
+                      <v-radio-group row>
+                        <v-radio
+                          color="orange"
+                          v-model="answer.answer_status"
+                          :label="answer.answer_detail"
+                          true-value="Y"
+                          false-value="N"
+                        ></v-radio>
+                      </v-radio-group>
+                    </v-col>
+                    <v-col cols="8">
+                      <v-text-field
+                        label="คำตอบ"
+                        color="#fcad74"
+                        v-model="answer.answer_detail"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="3">
+                    <!-- {{ items }} -->
                     <v-text-field
-                      label="คำตอบ"
-                      color="#fcad74"
-                      v-model="answer.answer_detail"
+                      v-model="answer.answer_score"
+                      type="number"
+                      label="คะเเนน"
+                      min="1"
+                      dense
+                      solo
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="3">
-                  <!-- {{ items }} -->
-                  <v-text-field v-model="answer.answer_score" type="number" label="คะเเนน" min="1" dense solo></v-text-field>
-                </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="1">
-                    <v-radio-group row>
-                <v-radio
-                  color="orange"
-                  v-model="answer.answer_status"
-                  :label="answer.answer_detail"
-                  true-value="Y"
-                      false-value="N"
-                ></v-radio>
-              </v-radio-group>
-                  </v-col>
-                  <v-col cols="8">
-                    <v-text-field
-                      label="คำตอบ"
-                      color="#fcad74"
-                      v-model="answer.answer_detail"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="3">
-                  <!-- {{ items }} -->
-                  <v-text-field v-model="answer.answer_score" type="number" label="คะเเนน" min="1" dense solo></v-text-field>
-                </v-col>
-                </v-row>
-              </div>
-            </v-card-title>
+                  </v-row>
+                </div>
+              </v-card-title>
               <v-row>
                 <v-col cols="6">
                   <v-btn block color="primary" dark @click="addAnswer()">
@@ -316,9 +315,16 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="3">
-                  <!-- {{ items }} -->
-                  <v-text-field v-model="answer.answer_score" type="number" label="คะเเนน" min="1" dense solo></v-text-field>
-                </v-col>
+                    <!-- {{ items }} -->
+                    <v-text-field
+                      v-model="answer.answer_score"
+                      type="number"
+                      label="คะเเนน"
+                      min="1"
+                      dense
+                      solo
+                    ></v-text-field>
+                  </v-col>
                 </v-row>
               </div>
               <v-row>
