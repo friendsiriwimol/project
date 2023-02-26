@@ -4,6 +4,14 @@
         <div>
             <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
         </div>
+        <div id="years">{{ years }}</div>
+        <div>{{ years }}</div>
+        <div v-for="(year, y) in yearsList" :key="y" :value="year" >่อ้าว{{year}}</div>
+        <v-select v-model="selectedYear"  placeholder="234234">
+        <option v-for="(year, y) in yearsList" :key="y" :value="year" >
+          {{year}}
+        </option>
+      </v-select>
         <v-card class="cardShowuser mt-0">
             <v-card-title>
                 <v-icon class="mr-2" color="#fcad74">mdi-format-list-numbered</v-icon>
@@ -20,14 +28,41 @@
                 single-line
                     hide-details></v-text-field>
             </v-card-title>
+
             <v-card-title>
+              <v-dialog
+        ref="dialog"
+        v-model="modal"
+        :return-value.sync="date"
+        persistent
+        width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="date"
+            label="Picker in dialog"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker v-model="date" type="month" scrollable color="red" locale="th">
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
+          <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+        </v-date-picker>
+      </v-dialog>
                 <v-select
                     required
                     :items="['2560', '2561', '2562', '2563', '2564', '2565']"
                     label="ปีการศึกษา"
                     color="#fcad74"
                     outlined
-                  ></v-select>
+                  >
+                  <option v-for="(year, y) in yearsList" :key="y" :value="year">
+          {{year}}
+        </option>
+                  </v-select>
             </v-card-title>
             <!-- <v-card-title>friend</v-card-title> -->
             <v-data-table
@@ -55,7 +90,6 @@
         10
       </v-icon>
     </template>
-
         </v-card>
     </div>
 </template>
@@ -70,6 +104,14 @@ export default {
   },
   data () {
     return {
+      // yearFoundedOptions: utils.generateArrayOfYears(),
+      // year: generateArrayOfYears().toString(),
+      date: new Date().toISOString().substr(0, 7),
+      // year: new Date().getFullYear(),
+      yearsList: {},
+      selectedYear: null,
+      menu: false,
+      modal: false,
       dialog: false,
       dialog1: false,
       valid: false,
@@ -111,7 +153,34 @@ export default {
   created () {
     this.getUser()
   },
+  watch: {
+    menu (val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = 'YEAR'))
+    }
+  },
+  mounted () {
+    this.getYearsList()
+    this.year()
+  },
   methods: {
+    generateArrayOfYears () {
+      var max = new Date().getFullYear()
+      var min = max - 9
+      var years = []
+
+      for (var i = max; i >= min; i--) {
+        years.push(i)
+      }
+      return years
+    },
+    getYearsList () {
+      const startYear = 1990
+      const endYear = new Date().getFullYear()
+      for (let i = endYear; i >= startYear; i--) {
+        this.yearsList.value = [this.yearsList.value, i]
+        console.log(this.yearsList.value, 'year')
+      }
+    },
     async getUser (value) {
       this.type = value
       axios.get('http://localhost/vue-backend/editStudent.php').then((res) => {

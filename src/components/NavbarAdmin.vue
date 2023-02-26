@@ -18,16 +18,17 @@
         <div class="nav-menu">
           <v-list-item class="px-2">
             <v-list-item-avatar>
-              <v-img
-                src="https://scontent.fkkc3-1.fna.fbcdn.net/v/t1.6435-9/187955402_1805265456321792_5790365418668920358_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeFjnZw5Nq60vr2i-vtQx02zt_TST1ymdpi39NJPXKZ2mKc6wPDghlYK-NI2b8K70uFEBMDorIYT4x8wUiD4sod4&_nc_ohc=gc5K5a-etUIAX8jo5gB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AT8CgTmO1G_DIKzQ4qaflnFdc9pY9PfdWifv95tmk0pp3g&oe=637B29A9"></v-img>
+              <v-avatar color="#ffeee2" size="30">
+          <span class="text-uppercase" style="color:#fcad74;">{{ user.user_firstname[0] }}{{ user.user_lastname[0] }}</span>
+        </v-avatar>
             </v-list-item-avatar>
 
-            <v-list-item-title class="text">Friend</v-list-item-title>
+            <v-list-item-title class="text">{{ user.user_firstname }}</v-list-item-title>
 
           </v-list-item>
           <v-divider></v-divider>
 
-          <v-list dense @click="r()">
+          <v-list dense nav @click="r()">
             <v-list-item v-for="item in items" :key="item.title" link router :to="item.route" class="icon">
               <v-list-item-icon class="icon">
                 <v-icon class="icon">{{ item.icon }}</v-icon>
@@ -39,15 +40,35 @@
             </v-list-item>
           </v-list>
         </div>
-
+        <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block color="#fff" class="teal--text" @click="logout()">
+            ออกจากระบบ
+          </v-btn>
+        </div>
+      </template>
       </v-navigation-drawer>
     </nav>
   </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
   data () {
     return {
+      user: {
+        user_id: localStorage.getItem('id'),
+        user_firstname: localStorage.getItem('user_firstname'),
+        user_lastname: localStorage.getItem('user_lastname'),
+        user_email: localStorage.getItem('user_email'),
+        user_age: localStorage.getItem('user_age'),
+        user_birthday: localStorage.getItem('user_birthday'),
+        user_district: localStorage.getItem('user_district'),
+        user_province: localStorage.getItem('user_province'),
+        user_type: localStorage.getItem('type'),
+        create_at: localStorage.getItem('create_at')
+      },
       drawer: false,
       items: [
         { title: 'Dashboard', icon: 'mdi-view-dashboard', route: '/admindashboard' },
@@ -59,9 +80,25 @@ export default {
         { title: 'จัดการวิดีโอ', icon: 'mdi-video', route: '/adminvideo' },
         { title: 'จัดการเว็บไซต์ที่เกี่ยวข้อง', icon: 'mdi-link', route: 'adminwebsite' },
         { title: 'จัดการผู้ใช้', icon: 'mdi-account-group', route: '/adminuser' },
-        { title: 'บัญชีผู้ใช้', icon: 'mdi-account', route: '/adminprofile' },
-        { title: 'ออกจากระบบ', icon: 'mdi-logout', route: '/' }
+        { title: 'บัญชีผู้ใช้', icon: 'mdi-account', route: '/adminprofile' }
       ]
+    }
+  },
+  methods: {
+    logout () {
+      axios.post('http://localhost/vue-backend/logout.php').then(response => {
+        localStorage.removeItem('id')
+        localStorage.removeItem('user_firstname')
+        localStorage.removeItem('user_lastname')
+        localStorage.removeItem('user_email')
+        localStorage.removeItem('user_age')
+        localStorage.removeItem('user_birthday')
+        localStorage.removeItem('user_district')
+        localStorage.removeItem('user_province')
+        localStorage.removeItem('type')
+        localStorage.removeItem('create_at')
+      })
+      this.$router.push('/')
     }
   }
 }

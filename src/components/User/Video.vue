@@ -38,6 +38,7 @@
         <template slot="data">
           <td>{{ lesson_id }}</td>
           <td>{{ lesson_name }}</td>
+
         </template>
         <template v-slot:item.edit="{ item }">
           <v-icon small @click="openVideo(item)" color="#56a062">
@@ -59,7 +60,8 @@
 
                       <!-- <iframe width="100%" src="https://www.youtube.com/embed/GTcM3qCeup0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
 
-                      <div class="mt-2 mb-2">{{video.video_subunit}} {{video.video_name}}</div>
+                      <div class="mt-2 mb-2">{{video.video_subunit}}
+                        <router-link v-bind:to="'/videodetail/'">{{video.video_name}}</router-link></div>
                     </div>
                     </v-card>
                   </v-col>
@@ -108,7 +110,7 @@ export default {
       },
       { text: 'บทเรียนเรื่อง', value: 'lesson_name' },
       // { text: 'เนื้อหาบทเรียน', value: 'lesson_description' },
-      { text: 'แก้ไข', value: 'edit', sortable: false }
+      { text: 'ดูวิดีโอ', value: 'edit', sortable: false }
     ],
     breadcrumbs: [
       {

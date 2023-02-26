@@ -42,6 +42,8 @@ import testRoute from '../components/User/TestRoute.vue'
 import route from '../components/User/Route.vue'
 import adminscore from '../components/Admin/Score.vue'
 import resetPass from '../components/Resetpass.vue'
+import myPost from '../components/User/Mypost.vue'
+import videoDetail from '../components/User/Videodetail.vue'
 
 Vue.use(VueRouter)
 
@@ -262,6 +264,16 @@ const routes = [
     path: '/resetPass',
     name: 'resetPass',
     component: resetPass
+  },
+  {
+    path: '/myPost',
+    name: 'myPost',
+    component: myPost
+  },
+  {
+    path: '/videoDetail',
+    name: 'videoDetail',
+    component: videoDetail
   }
 ]
 

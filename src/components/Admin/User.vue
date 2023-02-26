@@ -402,7 +402,7 @@
                     v-on="on"
                   ></v-text-field>
                 </template>
-                <v-date-picker v-model="user_birthday" @input="menuUpdate = false"></v-date-picker>
+                <v-date-picker v-model="user_birthday" locale="th" @input="menuUpdate = false"></v-date-picker>
               </v-menu>
             </v-col>
                 <v-col cols="12">
@@ -511,7 +511,7 @@
             v-on="on"
           ></v-text-field>
         </template>
-        <v-date-picker v-model="admin.user_birthday" @input="menu = false"></v-date-picker>
+        <v-date-picker v-model="admin.user_birthday" locale="th" @input="menu = false"></v-date-picker>
       </v-menu>
      </v-col>
               <v-col cols="12">

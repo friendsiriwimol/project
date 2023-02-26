@@ -45,6 +45,8 @@
                       <v-text-field
                         label="ชื่อ"
                         v-model="user.user_firstname"
+                        :rules="firstnameRules"
+                        :error-messages="nameErrors"
                         required
                       ></v-text-field>
                     </v-col>
@@ -52,6 +54,8 @@
                       <v-text-field
                         label="นามสกุล"
                         v-model="user.user_lastname"
+                        :rules="lastnameRules"
+                        :error-messages="lastnameErrors"
                         required
                       ></v-text-field>
                     </v-col>
@@ -59,17 +63,37 @@
                       <v-text-field
                         label="อีเมล"
                         v-model="user.user_email"
+                        :rules="emailRules"
+                        :error-messages="emailErrors"
                         type="email"
                         required
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12">
-                      <v-text-field
-                        label="วันเดือนปีเกิด"
-                        v-model="user.user_birthday"
-                        required
-                      ></v-text-field>
-                    </v-col>
+                    <v-col
+          cols="12"
+                  >
+      <v-menu
+        v-model="menu"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="user.user_birthday"
+            label="วันเดือนปีเกิด"
+            :rules="birthdayRules"
+            prepend-inner-icon="mdi-calendar-range"
+            required
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker v-model="user.user_birthday" locale="th" @input="menu = false"></v-date-picker>
+      </v-menu>
+     </v-col>
                     <v-col cols="12">
                       <v-text-field
                         label="อายุ"
@@ -82,6 +106,8 @@
                       <v-text-field
                         label="อำเภอ"
                         v-model="user.user_district"
+                        :rules="districtRules"
+                        :error-messages="districtErrors"
                         required
                       ></v-text-field>
                     </v-col>
@@ -89,6 +115,8 @@
                       <v-text-field
                         label="จังหวัด"
                         v-model="user.user_province"
+                        :rules="provinceRules"
+                        :error-messages="provinceErrors"
                         required
                       ></v-text-field>
                     </v-col>
@@ -108,9 +136,7 @@
                 <v-btn color="blue darken-1" text @click="dialog = false">
                   ปิด
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="dialog = false">
-                  บันทึก
-                </v-btn>
+                <v-btn color="blue darken-1" text @click="saveUpdate()"> บันทึก </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -123,22 +149,21 @@
 
     <v-divider></v-divider>
     <v-row justify="center" class="ma-5">
-    <v-avatar color="primary">
-      <span class="white--text text-h5">SP</span>
-    </v-avatar>
+      <v-avatar color="#ffeee2">
+          <span class="text-uppercase" style="font-size: 25px; color:#fcad74;">{{ user.user_firstname[0] }}{{ user.user_lastname[0] }}</span>
+        </v-avatar>
     </v-row>
         <v-card-text>
 
     <div class="ma-10">
-    <v-row >ชื่อ : {{user.user_firstname}}</v-row>
-    <v-row >นามสกุล : {{user.user_latname}}</v-row>
-    <v-row >อีเมล : {{user.user_email}}</v-row>
-    <v-row >เบอร์โทร : {{user.user_tel}}</v-row>
-    <v-row>วันเดือนปีเกิด : {{ user.user_birthday }}</v-row>
-    <v-row >อายุ : {{user.user_age}}</v-row>
-        <v-row >อำเภอ : {{user.user_district}}</v-row>
-        <v-row >จังหวัด : {{user.user_province}}</v-row>
-        <v-row >กลุ่มผู้ใช้งาน : {{user.user_type}}</v-row>
+      <v-row><span class="primary--text mr-3 font-weight-medium">ชื่อ </span> {{ user.user_firstname }}</v-row>
+          <v-row><span class="primary--text mr-3 font-weight-medium">นามสกุล </span> {{ user.user_lastname }}</v-row>
+          <v-row><span class="primary--text mr-3 font-weight-medium">อีเมล</span>  {{ user.user_email }}</v-row>
+          <v-row><span class="primary--text mr-3 font-weight-medium">วันเดือนปีเกิด </span> {{ user.user_birthday }}</v-row>
+          <v-row><span class="primary--text mr-3 font-weight-medium">อายุ </span> {{ user.user_age }}</v-row>
+          <v-row><span class="primary--text mr-3 font-weight-medium">อำเภอ </span> {{ user.user_district }}</v-row>
+          <v-row><span class="primary--text mr-3 font-weight-medium">จังหวัด </span> {{ user.user_province }}</v-row>
+          <v-row><span class="primary--text mr-3 font-weight-medium">กลุ่มผู้ใช้งาน</span>  {{ user.user_type }}</v-row>
         </div>
         </v-card-text>
     <!-- <v-virtual-scroll
@@ -185,6 +210,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+import Swal from 'sweetalert2'
 import NavbarAdmin from '@/components/NavbarAdmin'
 
 export default {
@@ -192,21 +219,40 @@ export default {
     NavbarAdmin
   },
   data: () => ({
-    user: {
-      user_firstname: 'สิริวิมล',
-      user_lastname: 'เพชรเวียง',
-      user_email: 'friend.siriwimol@kkumail.com',
-      user_tel: '0943706163',
-      user_age: '22',
-      user_birthday: '2000-06-09',
-      user_district: 'บ้านไผ่',
-      user_province: 'ขอนแก่น',
-      user_type: 'นักศึกษา'
-    },
-    colors: ['#2196F3', '#90CAF9', '#64B5F6', '#42A5F5', '#1E88E5', '#1976D2', '#1565C0', '#0D47A1', '#82B1FF', '#448AFF', '#2979FF', '#2962FF'],
-    names: ['Oliver', 'Jake', 'Noah', 'James', 'Jack', 'Connor', 'Liam', 'John', 'Harry', 'Callum', 'Mason', 'Robert', 'Jacob', 'Jacob', 'Jacob', 'Michael', 'Charlie', 'Kyle', 'William', 'William', 'Thomas', 'Joe', 'Ethan', 'David', 'George', 'Reece', 'Michael', 'Richard', 'Oscar', 'Rhys', 'Alexander', 'Joseph', 'James', 'Charlie', 'James', 'Charles', 'William', 'Damian', 'Daniel', 'Thomas', 'Amelia', 'Margaret', 'Emma', 'Mary', 'Olivia', 'Samantha', 'Olivia', 'Patricia', 'Isla', 'Bethany'],
-    surnames: ['Smith', 'Anderson', 'Clark', 'Wright', 'Mitchell', 'Johnson', 'Thomas', 'Rodriguez', 'Lopez', 'Perez', 'Williams', 'Jackson', 'Lewis', 'Hill', 'Roberts', 'Jones', 'White', 'Lee', 'Scott', 'Turner', 'Brown', 'Harris', 'Walker', 'Green', 'Phillips', 'Davis', 'Martin', 'Hall', 'Adams', 'Campbell', 'Miller', 'Thompson', 'Allen', 'Baker', 'Parker', 'Wilson', 'Garcia', 'Young', 'Gonzalez', 'Evans', 'Moore', 'Martinez', 'Hernandez', 'Nelson', 'Edwards', 'Taylor', 'Robinson', 'King', 'Carter', 'Collins'],
+    valid: false,
     dialog: false,
+    menu: false,
+    firstnameRules: [
+      v => !!v || 'กรุณากรอกชื่อ'
+    ],
+    lastnameRules: [
+      v => !!v || 'กรุณากรอกนามสกุล'
+    ],
+    emailRules: [
+      v => !!v || 'กรุณากรอกอีเมล',
+      v => /.+@.+\..+/.test(v) || 'กรุณาใส่กรอกอีเมลให้ถูกต้อง'
+    ],
+    birthdayRules: [
+      v => !!v || 'กรุณากรอกวันเดือนปีเกิด'
+    ],
+    districtRules: [
+      v => !!v || 'กรุณากรอกอำเภอ'
+    ],
+    provinceRules: [
+      v => !!v || 'กรุณากรอกจังหวัด'
+    ],
+    user: {
+      user_id: localStorage.getItem('id'),
+      user_firstname: localStorage.getItem('user_firstname'),
+      user_lastname: localStorage.getItem('user_lastname'),
+      user_email: localStorage.getItem('user_email'),
+      user_age: localStorage.getItem('user_age'),
+      user_birthday: localStorage.getItem('user_birthday'),
+      user_district: localStorage.getItem('user_district'),
+      user_province: localStorage.getItem('user_province'),
+      user_type: localStorage.getItem('type'),
+      create_at: localStorage.getItem('create_at')
+    },
     breadcrumbs: [
       {
         text: 'Dashboard',
@@ -222,28 +268,70 @@ export default {
 
   }),
 
-  computed: {
-    items () {
-      const namesLength = this.names.length
-      const surnamesLength = this.surnames.length
-      const colorsLength = this.colors.length
-
-      return Array.from({ length: 10000 }, (k, v) => {
-        const name = this.names[this.genRandomIndex(namesLength)]
-        const surname = this.surnames[this.genRandomIndex(surnamesLength)]
-
-        return {
-          color: this.colors[this.genRandomIndex(colorsLength)],
-          fullName: `${name} ${surname}`,
-          initials: `${name[0]} ${surname[0]}`
-        }
-      })
-    }
-  },
-
   methods: {
     genRandomIndex (length) {
       return Math.ceil(Math.random() * (length - 1))
+    },
+    editItem (data) {
+      // console.log('item:', this.items)มันไม่มีค่า มันเอามาจากตัวแปรitems:{}ข้างบน มันว่าง
+      // console.log('item:', data)คือฟังก์ชันedit(data)ข้างบนdataที่ส่งมา
+      this.dialog = true
+      this.user.user_firstname = data.user_firstname
+      this.user.user_lastname = data.user_lastname
+      this.user.user_email = data.user_email
+      this.user.user_age = data.user_age
+      this.user.user_birthday = data.user_birthday
+      this.user.user_district = data.user_district
+      this.user.user_province = data.user_province
+      this.user.user_type = data.type
+      this.user.create_at = data.create_at
+
+      // console.log('friend data item', data)
+      // console.log(this.allshow)
+    },
+    async saveUpdate () {
+      localStorage.setItem('id', this.user.user_id)
+      localStorage.setItem('type', this.user.user_type)
+      localStorage.setItem('user_firstname', this.user.user_firstname)
+      localStorage.setItem('user_lastname', this.user.user_lastname)
+      localStorage.setItem('user_email', this.user.user_email)
+      localStorage.setItem('user_birthday', this.user.user_birthday)
+      localStorage.setItem('user_age', this.user.user_age)
+      localStorage.setItem('user_district', this.user.user_district)
+      localStorage.setItem('user_province', this.user.user_province)
+      localStorage.setItem('create_at', this.create_at)
+
+      var bodyValue = {
+
+        user_id: this.user.user_id,
+        user_firstname: this.user.user_firstname,
+        user_lastname: this.user.user_lastname,
+        user_email: this.user.user_email,
+        user_age: this.user.user_age,
+        user_birthday: this.user.user_birthday,
+        user_district: this.user.user_district,
+        user_province: this.user.user_province,
+        user_type: this.user.user_type,
+        create_at: this.create_at
+
+      }
+      var { data } = await axios.put('http://localhost/vue-backend/updateUser.php', bodyValue)
+      console.log(data, 'data here!')
+      this.dialog = true
+      Swal.fire({
+        icon: 'success',
+        title: 'แก้ไขสำเร็จ',
+        showConfirmButton: false,
+        // text: 'คำอธิบาย',
+        customClass: {
+          title: 'csss'
+        },
+        timer: 1500
+      })
+      // setTimeout(() => {
+      //   this.getData()
+      // }, 2000)
+      this.dialog = false
     }
   }
 }

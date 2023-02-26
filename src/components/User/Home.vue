@@ -120,10 +120,11 @@ export default {
       }
     ],
     slides: [
-      { title: '<p style="font-size: 2em;color: #000">บทที่1</p>', src: require('../../assets/i3.png'), link: 'lesson' },
-      { title: '<p style="font-size: 2em;color: #000">บทที่2</p>', src: require('../../assets/i4.png'), link: 'lesson' },
-      { title: '<p style="font-size: 2em;color: #000">บทที่3</p>', src: require('../../assets/i2.png'), link: 'lesson' },
-      { title: '<p style="font-size: 2em;color: #000">บทที่4</p>', src: require('../../assets/i1.png'), link: 'lesson' }
+      { title: '<p style="font-size: 2em;color: #000">บทที่1</p>', src: require('../../assets/i3.png'), link: 'Lessondetail/1' },
+      { title: '<p style="font-size: 2em;color: #000">บทที่2</p>', src: require('../../assets/i4.png'), link: 'Lessondetail/2' },
+      { title: '<p style="font-size: 2em;color: #000">บทที่3</p>', src: require('../../assets/i2.png'), link: 'Lessondetail/3' },
+      { title: '<p style="font-size: 2em;color: #000">บทที่4</p>', src: require('../../assets/i1.png'), link: 'Lessondetail/4' },
+      { title: '<p style="font-size: 2em;color: #000">บทที่4</p>', src: require('../../assets/i1.png'), link: 'Lessondetail/5' }
     ]
   })
 }

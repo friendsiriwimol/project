@@ -1,68 +1,85 @@
 <template>
   <div class="app">
-    <NavbarUser/>
+    <NavbarUser />
     <div>
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      large
-    ></v-breadcrumbs>
-  </div>
+      <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
+    </div>
     <h1 class="mt-0 mb-7" align="center">กระทู้</h1>
-<v-card class="cardShowuser">
-    <v-card-title>
-      <!-- <v-icon class="mr-2" color="#fcad74">mdi-book-open-variant</v-icon> -->
-      <!-- <v-card class="mx-auto ma-5" width="60%">
+    <v-card class="cardShowuser">
+      <v-card-title>
+        <!-- <v-icon class="mr-2" color="#fcad74">mdi-book-open-variant</v-icon> -->
+        <!-- <v-card class="mx-auto ma-5" width="60%">
      <v-card-title> -->
-<v-row
-    align="center"
-    justify="space-around"
-    >
-        <v-col cols="9" class="ma-0 col9">
-          <center>
-            <v-form v-model="valid" ref="form">
-          <v-text-field
-          v-model="post_detail"
-          class="inputpost"
-            label="โพสต์ข้อความ"
-            color="#099fae"
-            filled
-            rounded
-            clearable
-            dense
-            @keyup.enter="writePost()"
-          ></v-text-field>
-          </v-form>
-          </center>
-        </v-col>
-        <v-col cols="3" class="ma-0">
-          <!-- <div class="text-center"> -->
+        <v-row align="center" justify="space-around">
+          <v-col cols="9" class="ma-0 col9">
             <center>
-          <v-btn :disabled='!post_detail'  height="52px" width="100%" class="white--text" rounded color="#099fae" @click="writePost()">โพสต์</v-btn>
-          </center>
-          <!-- </div> -->
-        </v-col>
-</v-row>
-      <!-- </v-card-title>
+              <v-form v-model="valid" ref="form">
+                <v-text-field
+                  v-model="post_detail"
+                  class="inputpost"
+                  label="โพสต์ข้อความ"
+                  color="#099fae"
+                  filled
+                  rounded
+                  clearable
+                  dense
+                  @click="dialogPost()"
+                ></v-text-field>
+              </v-form>
+            </center>
+          </v-col>
+          <v-col cols="3" class="ma-0">
+            <!-- <div class="text-center"> -->
+            <center>
+              <v-btn
+                :disabled="!post_detail"
+                height="52px"
+                width="100%"
+                class="white--text"
+                rounded
+                color="#099fae"
+                @click="writePost()"
+                >โพสต์</v-btn
+              >
+            </center>
+            <!-- </div> -->
+          </v-col>
+        </v-row>
+        <!-- </v-card-title>
     </v-card> -->
-    </v-card-title>
+      </v-card-title>
     </v-card>
 
-    <v-card class="cardShowuser" v-for="(postuser, index) in allapprove" :key="postuser.post_id">
+    <v-card
+      class="cardShowuser"
+      v-for="(postuser, index) in allapprove"
+      :key="postuser.post_id"
+    >
       <!-- {{postuser}} -->
       <v-card-title>
-        Siriwimol&nbsp;<span style="color: #21777f;">{{postuser.post_detail}}</span>
+        {{ postuser.user_firstname }} {{ postuser.user_lastname }}&nbsp;<span
+          style="color: #21777f"
+          >{{ postuser.post_detail }}</span
+        >
       </v-card-title>
       <v-img
-                  class="black--text align-end"
-                  width="300px"
-                  :src="postuser.post_img">
-                </v-img>
-      <v-card-subtitle>โพสต์เมื่อ วันที่ {{postuser.create_at}} น.</v-card-subtitle>
+        class="black--text align-end"
+        width="300px"
+        :src="postuser.post_img"
+      >
+      </v-img>
+      <v-card-subtitle
+        >โพสต์เมื่อ วันที่ {{ postuser.create_at }} น.</v-card-subtitle
+      >
 
       <v-card-actions>
         <v-spacer></v-spacer>
 
-        <v-btn v-if='panel !== postuser.post_id' icon @click="showtest(index, postuser.post_id)">
+        <v-btn
+          v-if="panel !== postuser.post_id"
+          icon
+          @click="showtest(index, postuser.post_id)"
+        >
           <v-icon color="#099fae">mdi-comment</v-icon>
         </v-btn>
         <v-btn v-else icon @click="showtest2(index)">
@@ -71,41 +88,142 @@
       </v-card-actions>
 
       <v-expand-transition>
-        <div v-show="show === index" >
-          <v-container fluid >
-            <v-form  v-model="valid2" ref="form2">
-              <div class="mx-auto ma-3" width="60%" v-for="comment in allcomment" v-bind:key="comment.comment_id">
-              <div v-if="comment.post_id === postuser.post_id">
-              <v-divider class="mb-2"></v-divider>
-              <div color="#099fae">Siriwimol <span style="color: gray;">แสดงความคิดเห็นเมื่อ {{comment.create_at}} น.</span> </div>
-              <div>{{comment.comment_detail}}</div>
-              <!-- <v-divider class="mt-3"></v-divider> -->
+        <div v-show="show === index">
+          <v-container fluid>
+            <v-form v-model="valid2" ref="form2">
+              <div
+                class="mx-auto ma-3"
+                width="60%"
+                v-for="comment in allcomment"
+                v-bind:key="comment.comment_id"
+              >
+                <div v-if="comment.post_id === postuser.post_id">
+                  <v-divider class="mb-2"></v-divider>
+                  <div color="#099fae">
+                    {{ comment.user_firstname }} {{ comment.user_lastname }}
+                    <span style="color: gray"
+                      >แสดงความคิดเห็นเมื่อ {{ comment.create_at }} น.</span
+                    >
+                  </div>
+                  <div>{{ comment.comment_detail }}</div>
+                  <!-- <v-divider class="mt-3"></v-divider> -->
+                </div>
               </div>
-              </div>
-            <v-textarea
-              v-model="comment_detail"
-              filled
-              auto-grow
-              label="แสดงความคิดเห็น"
-              rows="2"
-              color="#099fae"
-              row-height="20"
-              @keyup.enter="writeComment(postuser.post_id)"
-            >
-            </v-textarea>
-            <div class="text-center">
-              <v-btn rounded color="#099fae" dark @click="writeComment(postuser.post_id)">
-                <!-- <v-icon aria-label="My Account" role="img" aria-hidden="false">
+              <v-textarea
+                v-model="comment_detail"
+                filled
+                auto-grow
+                label="แสดงความคิดเห็น"
+                rows="2"
+                color="#099fae"
+                row-height="20"
+                @keyup.enter="writeComment(postuser.post_id)"
+              >
+              </v-textarea>
+              <div class="text-center">
+                <v-btn
+                  rounded
+                  color="#099fae"
+                  dark
+                  @click="writeComment(postuser.post_id)"
+                >
+                  <!-- <v-icon aria-label="My Account" role="img" aria-hidden="false">
                   mdi-comment
                 </v-icon> -->
-                แสดงความคิดเห็น
-              </v-btn>
-            </div>
+                  แสดงความคิดเห็น
+                </v-btn>
+              </div>
             </v-form>
           </v-container>
         </div>
       </v-expand-transition>
     </v-card>
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title class="justify-center align-center"><v-spacer></v-spacer>สร้างกระทู้<v-spacer></v-spacer><v-btn icon @click="dialog = false" >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn></v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" class="ma-0 pb-0">
+                <v-textarea
+                v-model="post_detail"
+                  label="โพสต์ข้อความ"
+                  auto-grow
+                  filled
+                  rows="3"
+                  row-height="50"
+                  shaped
+                  color="#099fae"
+                  clearable
+                  rounded
+                  class="mt-7 rounded-b-xl rounded-t-xl"
+                ></v-textarea>
+              </v-col>
+              <v-col cols="12">
+                <v-card
+                outlined
+>
+                  <v-card-actions >
+                    เพิ่มลงในกระทู้ของคุณ
+              <v-spacer></v-spacer>
+              <v-btn
+              icon
+        color="primary"
+        round
+        depressed
+        :loading="isSelecting"
+        @click="onButtonClick"
+      >
+        <v-icon>
+          mdi-image
+        </v-icon>
+        <!-- {{ buttonText }} -->
+      </v-btn>
+      <input
+        ref="uploader"
+        class="d-none"
+        type="file"
+        accept="image/*"
+        @change="onFileChanged"
+      >
+                        </v-card-actions>
+                            </v-card>
+              </v-col>
+                <!--<v-btn
+                :disabled="!post_detail"
+                height="52px"
+                width="100%"
+                class="white--text"
+                rounded
+                color="#099fae"
+                @click="writePost()"
+                >โพสต์</v-btn
+              > -->
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-text>
+        <v-container>
+            <v-row>
+              <v-col cols="12" class="ma-0 pb-0">
+                <v-btn
+          width="100%"
+          :disabled="!post_detail"
+          class="white--text"
+          color="#099fae"
+          @click="writePost()">
+            โพสต์
+          </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -119,6 +237,22 @@ export default {
   },
   name: 'show',
   data: () => ({
+    defaultButtonText: null,
+    selectedFile: null,
+    isSelecting: false,
+    dialog: false,
+    user: {
+      user_id: localStorage.getItem('id'),
+      user_firstname: localStorage.getItem('user_firstname'),
+      user_lastname: localStorage.getItem('user_lastname'),
+      user_email: localStorage.getItem('user_email'),
+      user_age: localStorage.getItem('user_age'),
+      user_birthday: localStorage.getItem('user_birthday'),
+      user_district: localStorage.getItem('user_district'),
+      user_province: localStorage.getItem('user_province'),
+      user_type: localStorage.getItem('type'),
+      create_at: localStorage.getItem('create_at')
+    },
     allapprove: [],
     allpost: [],
     allcomment: [],
@@ -155,8 +289,12 @@ export default {
     // postRules: [
     //   v => !!v || ''
     // ]
-  }
-  ),
+  }),
+  computed: {
+    buttonText () {
+      return this.selectedFile ? this.selectedFile.name : this.defaultButtonText
+    }
+  },
   created () {
     this.getPost()
     this.getComment()
@@ -165,6 +303,22 @@ export default {
   //   this.$emit('test', true)
   // },
   methods: {
+    dialogPost () {
+      this.dialog = true
+    },
+    onButtonClick () {
+      this.isSelecting = true
+      window.addEventListener('focus', () => {
+        this.isSelecting = false
+      }, { once: true })
+
+      this.$refs.uploader.click()
+    },
+    onFileChanged (e) {
+      this.selectedFile = e.target.files[0]
+
+      // do something
+    },
     showtest (index, postid) {
       this.show = index
       this.panel = postid
@@ -197,13 +351,17 @@ export default {
     },
     async writePost () {
       // console.log(this.$refs.form.validate(), 'pp')
-      if (this.$refs.form.validate()) { // กรอกครบมั้ย
-        var { data } = await axios.post('http://localhost/vue-backend/insertPost.php', {
-          // post_id: this.post_id,
-          post_detail: this.post_detail,
-          post_status: 'waiting',
-          user_id: 61
-        })
+      if (this.$refs.form.validate()) {
+        // กรอกครบมั้ย
+        var { data } = await axios.post(
+          'http://localhost/vue-backend/insertPost.php',
+          {
+            // post_id: this.post_id,
+            post_detail: this.post_detail,
+            post_status: 'waiting',
+            user_id: this.user.user_id
+          }
+        )
         if (data === 'success') {
           Swal.fire({
             icon: 'success',
@@ -224,12 +382,16 @@ export default {
     async writeComment (postid) {
       console.log(postid, 'post ja')
       console.log(this.$refs.form.validate(), 'pp')
-      if (this.comment_detail !== '') { // กรอกครบมั้ย
-        var { data } = await axios.post('http://localhost/vue-backend/insertComment.php', {
-          comment_detail: this.comment_detail,
-          post_id: postid,
-          user_id: 61
-        })
+      if (this.comment_detail !== '') {
+        // กรอกครบมั้ย
+        var { data } = await axios.post(
+          'http://localhost/vue-backend/insertComment.php',
+          {
+            comment_detail: this.comment_detail,
+            post_id: postid,
+            user_id: this.user.user_id
+          }
+        )
         if (data === 'success') {
           Swal.fire({
             icon: 'success',
@@ -249,15 +411,14 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
-*{
-font-family: 'Prompt', sans-serif;
+* {
+  font-family: "Prompt", sans-serif;
 }
 .btnpost {
-display: flex !important;
+  display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   /* height: 50px !important; */
@@ -265,10 +426,10 @@ display: flex !important;
   text-align: center !important;
   padding: 0px 30px !important;
 }
-.col9{
+.col9 {
   height: 76px;
 }
-.inputpost{
+.inputpost {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -277,14 +438,14 @@ display: flex !important;
 }
 .csss {
   /* color: black !important; */
-  font-family: 'Kanit';
+  font-family: "Kanit";
   font-weight: 400;
 }
-.cardShowuser{
+.cardShowuser {
   margin-top: 2%;
 }
 .v-breadcrumbs >>> a {
-    color: #fcad74;
+  color: #fcad74;
 }
 /* .app{
   background-color: black;

@@ -47,6 +47,7 @@
                 rounded
                 dense
                 class="input1"
+                @keyup.enter = "Login"
               ></v-text-field>
               <v-row >
               <input type="button" class="button button1 btn solid" value="เข้าสู่ระบบ" @click="Login"/>
@@ -97,9 +98,24 @@ export default {
         })
           .then(function (response) {
             test.data = response.data[0]
-            // console.log(test.data, 'friend')
+
+            console.log(test.data, 'friend')
+            // alert(test.data.firstname)
             if (test.data.status === 1) {
+              localStorage.setItem('id', test.data.id)
+              localStorage.setItem('type', test.data.type)
+              localStorage.setItem('user_firstname', test.data.user_firstname)
+              localStorage.setItem('user_lastname', test.data.user_lastname)
+              localStorage.setItem('user_email', test.data.user_email)
+              localStorage.setItem('user_birthday', test.data.user_birthday)
+              localStorage.setItem('user_age', test.data.user_age)
+              localStorage.setItem('user_district', test.data.user_district)
+              localStorage.setItem('user_province', test.data.user_province)
+              localStorage.setItem('create_at', test.data.create_at)
+
               console.log('id', test.data.id)
+
+              //  localStorage.setItem('user_id', test.data.id)
               if (test.data.type === 'นักศึกษา') {
                 // localStorage.setItem('email', this.user.user_email)
                 test.$router.push('/home')
@@ -159,7 +175,6 @@ input {
 }
 .input1 {
   width: 100vw !important;
-  color: #04befe;
 }
 .container {
   position: relative;
@@ -225,7 +240,7 @@ form.sign-in-form {
 .input-field {
   max-width: 380px;
   width: 100%;
-  background-color: #f0f0f0;
+  // background-color: #f0f0f0;
   margin: 10px 0;
   height: 55px;
   border-radius: 55px;

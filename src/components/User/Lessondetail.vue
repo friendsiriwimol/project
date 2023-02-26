@@ -12,9 +12,9 @@
     <div>{{item.lesson_name}}</div>
     <div>{{item}}</div> -->
     <v-card class="mt-7 mb-7 pa-5">
-      <h1 class="text-center ma-5">บทที่ {{ item.lesson_id}} <span class="teal--text">{{lesson_name}}</span></h1>
+      <h1 class="text-center ma-5">บทที่ {{ lesson_id}} <span class="teal--text">{{lesson_name}}</span></h1>
     <div class="output ql-snow">
-      <div class="ql-editor" v-html="item.lesson_description"></div>
+      <div class="ql-editor" v-html="lesson_description"></div>
     </div>
     <v-card  elevation="0" style="border-color:#fcad74; border-width: 2px;" rounded outlined >
       <v-card-title>
@@ -22,7 +22,7 @@
       </v-card-title>
       <v-card-subtitle>
         <div  v-for="website in allwebsite" v-bind:key="website.website_id">
-      <ul v-if="website.lesson_id === item.lesson_id">
+      <ul v-if="website.lesson_id === lesson_id">
         <a :href="website.website_link" target="_blank"><li>{{ website.website_link }}</li></a>
         <!-- <li>{{ website.website_link }}</li> -->
       </ul>
@@ -97,14 +97,32 @@ export default {
   },
   methods: {
     async getLesson () {
-      axios.get('http://localhost/vue-backend/lesson.php?id=this.lesson_id').then((res) => {
-        console.log('บทเรียน:', res.data)
-        if (res.data) {
-          // this.item = res.data[this.lesson_id - 2]
-          this.item = res.data[this.lesson_id - 2]
-          // console.log('item', this.item)
-        }
+      const url = 'http://localhost/vue-backend/lesson_detail.php?id=' + this.lesson_id
+      // alert(url)
+      // alert('http://localhost/vue-backend/lesson_detail.php?id=', this.lesson_id)
+
+      axios.get(url).then((response) => {
+        console.log(response)
+        this.info = response.data[0]
+        // alert(this.info)
+        this.lesson_id = this.info.lesson_id
+        this.lesson_name = this.info.lesson_name
+        this.lesson_description = this.info.lesson_description
+      }).then(response => (
+        this.info = response
+      ))
+      /*
+      axios.post(url, {
+        request: 1
+
       })
+        .then(function (response) {
+          alert('work')
+          this.data = response.data[0]
+          alert(response.data.status)
+          // alert(this.data.status)
+        })
+      */
     },
     async getWebsite () {
       axios.get('http://localhost/vue-backend/website.php').then((res) => {

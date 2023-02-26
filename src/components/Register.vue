@@ -163,7 +163,7 @@
             v-on="on"
           ></v-text-field>
         </template>
-        <v-date-picker v-model="user.user_birthday" @input="menu = false"></v-date-picker>
+        <v-date-picker v-model="user.user_birthday" locale="th" @input="menu = false"></v-date-picker>
       </v-menu>
      </v-col>
      <v-col

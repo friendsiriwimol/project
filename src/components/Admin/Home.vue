@@ -73,7 +73,9 @@
               <div class="mx-auto ma-3" width="60%" v-for="comment in allcomment" v-bind:key="comment.comment_id">
               <div v-if="comment.post_id === postuser.post_id">
               <v-divider class="mb-2"></v-divider>
-              <div color="#099fae">Siriwimol <span style="color: gray;">แสดงความคิดเห็นเมื่อ {{comment.create_at}} น.</span> </div>
+              <div color="#099fae">
+                    {{ comment.user_firstname }} {{ comment.user_lastname }}
+                <span style="color: gray;">แสดงความคิดเห็นเมื่อ {{comment.create_at}} น.</span> </div>
               <div>{{comment.comment_detail}}</div>
               <!-- <v-divider class="mt-3"></v-divider> -->
               </div>
@@ -115,6 +117,18 @@ export default {
   },
   name: 'show',
   data: () => ({
+    user: {
+      user_id: localStorage.getItem('id'),
+      user_firstname: localStorage.getItem('user_firstname'),
+      user_lastname: localStorage.getItem('user_lastname'),
+      user_email: localStorage.getItem('user_email'),
+      user_age: localStorage.getItem('user_age'),
+      user_birthday: localStorage.getItem('user_birthday'),
+      user_district: localStorage.getItem('user_district'),
+      user_province: localStorage.getItem('user_province'),
+      user_type: localStorage.getItem('type'),
+      create_at: localStorage.getItem('create_at')
+    },
     allapprove: [],
     allpost: [],
     allcomment: [],
@@ -198,7 +212,7 @@ export default {
           // post_id: this.post_id,
           post_detail: this.post_detail,
           post_status: 'waiting',
-          user_id: 61
+          user_id: this.user.user_id
         })
         if (data === 'success') {
           Swal.fire({
@@ -224,7 +238,7 @@ export default {
         var { data } = await axios.post('http://localhost/vue-backend/insertComment.php', {
           comment_detail: this.comment_detail,
           post_id: postid,
-          user_id: 61
+          user_id: this.user.user_id
         })
         if (data === 'success') {
           Swal.fire({
