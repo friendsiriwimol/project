@@ -20,9 +20,21 @@
         ></v-text-field>
 
       </v-card-title> -->
-      <v-card-title class="justify-center">บทที่ 1</v-card-title>
-      <v-card-text>1.1</v-card-text>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/gQlMMD8auMs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <v-card-title class="justify-center">บทที่ {{ lesson_id}}</v-card-title>
+        <v-row>
+          <v-col cols="12" sm="12" v-for="video in allvideo" v-bind:key="video.video_id">
+                    <v-card class="pa-12">
+                      <div>
+                        <iframe :src="video.video_file" width="100%" height="600px"></iframe>
+
+                      <!-- <iframe width="100%" src="https://www.youtube.com/embed/GTcM3qCeup0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+
+                      <div class="mt-2 mb-2">{{video.video_subunit}}
+                        <router-link v-bind:to="'/videodetail/'">{{video.video_name}}</router-link></div>
+                    </div>
+                    </v-card>
+          </v-col>
+        </v-row>
     </center>
     </v-card>
   </div>
@@ -37,7 +49,8 @@ export default {
   data: () => ({
     reveal: false,
     alllesson: [],
-    lesson_id: '',
+    allvideo: [],
+    lesson_id: localStorage.getItem('vdo_lession_id'),
     lesson_unit: '',
     lesson_name: '',
     lesson_description: '',
@@ -76,11 +89,14 @@ export default {
   },
   methods: {
     async getVideo () {
-      console.log('rewload')
-      axios.get('http://localhost/vue-backend/video.php').then(res => {
-        console.log('data:', res.data)
-        if (res.data) {
-          this.allvideo = res.data
+      var url = 'http://localhost/vue-backend/video.php?lesson_id=' + this.lesson_id
+      // alert(url)
+      // alert('vdo')
+      axios.get(url).then((res1) => {
+        console.log('data:', res1.data)
+        if (res1.data) {
+          this.allvideo = res1.data
+          // alert(res1.data.video_id)
         }
       })
     },

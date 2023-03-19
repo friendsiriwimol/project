@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     async getLesson () {
-      const url = 'http://localhost/vue-backend/lesson_detail.php?id=' + this.lesson_id
+      const url = 'http://localhost/vue-backend/lessonDetail.php?id=' + this.lesson_id
       // alert(url)
       // alert('http://localhost/vue-backend/lesson_detail.php?id=', this.lesson_id)
 

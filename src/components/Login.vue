@@ -107,6 +107,7 @@ export default {
               localStorage.setItem('user_firstname', test.data.user_firstname)
               localStorage.setItem('user_lastname', test.data.user_lastname)
               localStorage.setItem('user_email', test.data.user_email)
+              localStorage.setItem('user_password', test.data.user_password)
               localStorage.setItem('user_birthday', test.data.user_birthday)
               localStorage.setItem('user_age', test.data.user_age)
               localStorage.setItem('user_district', test.data.user_district)

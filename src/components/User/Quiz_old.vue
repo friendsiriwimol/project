@@ -1,11 +1,13 @@
 <template>
+<div>
+  <NavbarUser/>
   <div>
-    <NavbarUser />
-    <div>
-      <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
-    </div>
-    <h1 class="mt-7 mb-7" align="center">แบบทดสอบ</h1>
-
+    <v-breadcrumbs
+      :items="breadcrumbs"
+      large
+    ></v-breadcrumbs>
+  </div>
+      <h1 class="mt-7 mb-7" align="center">แบบทดสอบ</h1>
     <!-- <v-card class="cardShowuser">
     <v-card-title>
       <v-icon class="mr-2" color="#fcad74">mdi-book-open-variant</v-icon>
@@ -56,7 +58,7 @@
       </template>
     </v-data-table>
     </v-card> -->
-    <!-- <v-row>
+<!-- <v-row>
 <v-col cols="12"
                 sm="6"
                 md="3"
@@ -76,27 +78,58 @@
   </v-col>
   </v-row> -->
 
-    <v-card class="cardShowuser mt-0">
+  <v-card class="cardShowuser mt-0">
 
-      <v-simple-table fixed-header height="1024px">
-
-        <template v-slot:default>
-          <div class="container">
-            <!-- {{url='http://localhost/faq1/oq/login_auth.php?username='+user.user_email+'&password='+user.user_password }} -->
-            <router-link v-bind:to="'/lessondetail/'+ lesson.lesson_id">
-    </router-link>
-    <!--
-            <a :href="' <a :href="website.website_link" target="_blank"><li>{{ website.website_link }}</li></a>" width="100%"  height="1024px" frameborder="0">test</a>
-            -->
-            <a :href="allwebsite" target="_blank">เริ่มทำแบบทดสอบ</a>
-            <!-- <iframe src="{{url='http://localhost/faq1/oq/login_auth.php?username='+user.user_email+'&password='+user.user_password }}" width="100%"  height="1024px" frameborder="0">
-            </iframe> -->
-            <!-- <a :href="website.website_link" target="_blank"><li>{{ website.website_link }}</li></a> -->
-
-          </div>
-        </template>
-      </v-simple-table>
-    </v-card>
+  <v-simple-table
+  fixed-header
+    height="350px">
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th class="text-left">
+            ลำดับบทเรียน
+          </th>
+          <th class="text-left">
+            ชื่อบทเรียน
+          </th>
+          <th class="text-left">
+          </th>
+          <!-- <th class="text-left">
+            {{lesson.lesson_name}}
+          </th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="lesson in alllesson" v-bind:key="lesson.lesson_id" class="lessonmore">
+          <!-- <td>{{lesson.lesson_id}}</td> -->
+          <td class="text-left">{{lesson.lesson_id}}</td>
+          <td class="text-left">{{lesson.lesson_name}}</td>
+          <td class="text-left">
+            <!-- <a href="Quizlesson" text color="#FAD234"> -->
+              <!-- <router-link to="/test/">test</router-link> -->
+              <router-link v-bind:to="'/quiz/posttest/'+ lesson.lesson_id">
+                <v-btn
+                  color="#fcad74"
+                  text
+                >
+                ทำข้อสอบ
+                </v-btn>
+              </router-link>
+            <!-- <v-btn
+              text
+              color="primary"
+              @click="linkDetail(lesson.lesson_id)"
+              >
+            ทำข้อสอบ
+          </v-btn> -->
+          <!-- <router-link v-bind:to="'/test/'+ lesson.lesson_id"><div>click</div></router-link> -->
+          <!-- </a> -->
+          </td>
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
+  </v-card>
   </div>
 </template>
 
@@ -108,19 +141,6 @@ export default {
     NavbarUser
   },
   data: () => ({
-    user: {
-      user_id: localStorage.getItem('id'),
-      user_firstname: localStorage.getItem('user_firstname'),
-      user_lastname: localStorage.getItem('user_lastname'),
-      user_email: localStorage.getItem('user_email'),
-      user_password: localStorage.getItem('user_password'),
-      user_age: localStorage.getItem('user_age'),
-      user_birthday: localStorage.getItem('user_birthday'),
-      user_district: localStorage.getItem('user_district'),
-      user_province: localStorage.getItem('user_province'),
-      user_type: localStorage.getItem('type'),
-      create_at: localStorage.getItem('create_at')
-    },
     reveal: false,
     alllesson: [],
     lesson: {
@@ -177,9 +197,6 @@ export default {
   methods: {
     async getLesson () {
       console.log('rewload')
-      // alert(this.user.user_email)
-      // alert(this.user.user_password)
-      this.allwebsite = 'http://localhost/faq1/oq/login_auth.php?username=stu@stu.com&password=8cfa2282b17de0a598c010f5f0109e7d'
       axios.get('http://localhost/vue-backend/lesson.php').then((res) => {
         console.log('data:', res.data)
         if (res.data) {
@@ -199,32 +216,26 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
-
-* {
-  font-family: 'Prompt', sans-serif;
+*{
+font-family: 'Prompt', sans-serif;
 }
-
 .text-h4 {
   text-align: center;
   font-size: 20px;
 }
-
-.mt-0 {
+.mt-0{
   margin-top: -10px;
   text-align: center;
 }
-
-h1 {
+h1{
   color: #000;
 }
-
 .img1 {
-  width: 500px;
-  height: 100px;
-  text-align: center;
+ width: 500px;
+ height: 100px;
+ text-align: center;
 }
-
-.mx {
+.mx{
   margin-top: 40px;
   height: 400px;
   padding: 20px;
@@ -232,36 +243,32 @@ h1 {
   margin-right: auto;
 }
 
-.text-center {
+.text-center{
   font-size: 25px;
   font-style: bold;
   padding: 15px;
   color: #56a062;
 }
-
-.text-title {
+.text-title{
   text-align: center;
   padding: 15px;
   font-size: 1.3em !important;
   color: rgb(75, 75, 75);
 }
-
-a {
-  text-decoration: none;
+a{
+  text-decoration:none;
 }
-
-.lesson {
+.lesson{
   text-align: center;
   margin-top: 30px;
 }
 
 .v-card {
-  transition: opacity .5s ease-in-out rgb(255, 255, 107);
+  transition: opacity .5s ease-in-out rgb(255, 255, 107) ;
 }
-
 .v-card:not(.on-hover) {
   box-shadow: 1px 1px 10px px rgb(179, 179, 149);
-}
+ }
 
 .show-btns {
   color: #feedb0 !important;
@@ -274,42 +281,37 @@ a {
   position: absolute;
   width: 100%;
 }
-
 .text-h4 {
   text-align: center;
   font-size: 20px;
 }
-
 .img1 {
-  width: 500px;
-  height: 100px;
-  text-align: center;
+ width: 500px;
+ height: 100px;
+ text-align: center;
 }
-
-.mx {
+.mx{
   margin-top: 100px;
   height: 250px;
   padding: 20px;
   margin-left: auto;
   margin-right: auto;
 }
-
-.text-center {
+.text-center{
   font-size: 25px;
   font-style: bold;
   padding: 15px;
 }
-
-a {
-  text-decoration: none;
+a{
+  text-decoration:none;
   text-align: center;
   color: #56a062;
 }
-
-.quiz {
-  text-align: center;
+.quiz{
+text-align: center;
+}
+.v-breadcrumbs >>> a {
+    color: #fcad74;
 }
 
-.v-breadcrumbs>>>a {
-  color: #fcad74;
-}</style>
+</style>

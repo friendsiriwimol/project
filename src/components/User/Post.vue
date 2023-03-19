@@ -15,7 +15,6 @@
             <center>
               <v-form v-model="valid" ref="form">
                 <v-text-field
-                  v-model="post_detail"
                   class="inputpost"
                   label="โพสต์ข้อความ"
                   color="#099fae"
@@ -62,16 +61,18 @@
           >{{ postuser.post_detail }}</span
         >
       </v-card-title>
-      <v-img
-        class="black--text align-end"
-        width="300px"
+      <div align="center" justify="space-around">
+        <v-img
+        class="align-center ml-5"
+        width="20%"
         :src="postuser.post_img"
+        rounded
       >
       </v-img>
+      </div>
       <v-card-subtitle
         >โพสต์เมื่อ วันที่ {{ postuser.create_at }} น.</v-card-subtitle
       >
-
       <v-card-actions>
         <v-spacer></v-spacer>
 
@@ -140,36 +141,47 @@
     </v-card>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
-        <v-card-title class="justify-center align-center"><v-spacer></v-spacer>สร้างกระทู้<v-spacer></v-spacer><v-btn icon @click="dialog = false" >
-                  <v-icon>mdi-close</v-icon>
-                </v-btn></v-card-title>
+        <v-card-title class="justify-center align-center"
+          ><v-spacer></v-spacer>สร้างกระทู้<v-spacer></v-spacer
+          ><v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn></v-card-title
+        >
         <v-divider></v-divider>
         <v-card-text>
           <v-container>
-            <v-row>
-              <v-col cols="12" class="ma-0 pb-0">
-                <v-textarea
-                v-model="post_detail"
-                  label="โพสต์ข้อความ"
-                  auto-grow
-                  filled
-                  rows="3"
-                  row-height="50"
-                  shaped
-                  color="#099fae"
-                  clearable
-                  rounded
-                  class="mt-7 rounded-b-xl rounded-t-xl"
-                ></v-textarea>
-              </v-col>
-              <v-col cols="12">
-                <v-card
-                outlined
->
-                  <v-card-actions >
-                    เพิ่มลงในกระทู้ของคุณ
-              <v-spacer></v-spacer>
-              <v-btn
+            <v-form v-model="valid" ref="form">
+              <v-row>
+                <v-col cols="12" class="ma-0 pb-0">
+                  <v-textarea
+                    v-model="post_detail"
+                    label="โพสต์ข้อความ"
+                    auto-grow
+                    filled
+                    rows="3"
+                    row-height="50"
+                    shaped
+                    color="#099fae"
+                    clearable
+                    rounded
+                    class="mt-7 rounded-b-xl rounded-t-xl"
+                  ></v-textarea>
+                </v-col>
+                <v-col cols="12">
+                  <v-card outlined>
+                    <v-card-actions>
+                      <!-- เพิ่มลงในกระทู้ของคุณ
+              <v-spacer></v-spacer> -->
+                      <v-file-input
+                        required
+                        accept="image/*"
+                        color="#099fae"
+                        class="mt-3"
+                        prepend-icon="mdi-image"
+                        v-model="post_img"
+                        label="เพิ่มรูปภาพ"
+                      ></v-file-input>
+                      <!-- <v-btn
               icon
         color="primary"
         round
@@ -180,7 +192,6 @@
         <v-icon>
           mdi-image
         </v-icon>
-        <!-- {{ buttonText }} -->
       </v-btn>
       <input
         ref="uploader"
@@ -188,10 +199,10 @@
         type="file"
         accept="image/*"
         @change="onFileChanged"
-      >
-                        </v-card-actions>
-                            </v-card>
-              </v-col>
+      > -->
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
                 <!--<v-btn
                 :disabled="!post_detail"
                 height="52px"
@@ -202,27 +213,29 @@
                 @click="writePost()"
                 >โพสต์</v-btn
               > -->
-            </v-row>
+              </v-row>
+            </v-form>
           </v-container>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-text>
-        <v-container>
+          <v-container>
             <v-row>
               <v-col cols="12" class="ma-0 pb-0">
                 <v-btn
-          width="100%"
-          :disabled="!post_detail"
-          class="white--text"
-          color="#099fae"
-          @click="writePost()">
-            โพสต์
-          </v-btn>
+                  width="100%"
+                  :disabled="!post_detail"
+                  class="white--text"
+                  color="#099fae"
+                  @click="addFormData()"
+                >
+                  โพสต์
+                </v-btn>
               </v-col>
             </v-row>
           </v-container>
         </v-card-text>
-        </v-card>
+      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -258,8 +271,10 @@ export default {
     allcomment: [],
     show: false,
     post_detail: '',
+    post_img: '',
     post_id: '',
     post_status: '',
+    post_statusWait: 'waiting',
     user_id: '',
     comment_detail: '',
     comment_id: '',
@@ -292,12 +307,14 @@ export default {
   }),
   computed: {
     buttonText () {
-      return this.selectedFile ? this.selectedFile.name : this.defaultButtonText
+      return this.selectedFile
+        ? this.selectedFile.name
+        : this.defaultButtonText
     }
   },
   created () {
-    this.getPost()
     this.getComment()
+    this.getPost()
   },
   // mounted () {
   //   this.$emit('test', true)
@@ -308,9 +325,13 @@ export default {
     },
     onButtonClick () {
       this.isSelecting = true
-      window.addEventListener('focus', () => {
-        this.isSelecting = false
-      }, { once: true })
+      window.addEventListener(
+        'focus',
+        () => {
+          this.isSelecting = false
+        },
+        { once: true }
+      )
 
       this.$refs.uploader.click()
     },
@@ -330,7 +351,7 @@ export default {
     },
     async getPost () {
       console.log('rewload')
-      axios.get('http://localhost/vue-backend/postApprove.php').then((res) => {
+      axios.get('http://localhost/vue-backend/post.php').then((res) => {
         console.log('data:', res.data)
         if (res.data) {
           this.allpost = res.data
@@ -348,6 +369,52 @@ export default {
           console.log(this.allcomment, 'Comment')
         }
       })
+    },
+    addFormData () {
+      if (this.$refs.form.validate()) {
+        const formData = new FormData()
+        formData.append('post_detail', this.post_detail)
+        formData.append('post_img', this.post_img)
+        formData.append('post_status', this.post_statusWait)
+        formData.append('user_id', this.user.user_id)
+        //   alert(this.file)
+        var headers = {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+
+        var { data } = axios
+          .post(
+            'http://localhost/vue-backend/insertPost.php',
+            formData,
+            headers
+          )
+          .then(function (response) {
+            // handle success
+            console.log(response)
+            console.log('success')
+            if (data === 'success') {
+              Swal.fire({
+                icon: 'success',
+                title: 'โพสต์สำเร็จ',
+                showConfirmButton: false,
+                // text: 'คำอธิบาย',
+                customClass: {
+                  title: 'csss'
+                },
+                timer: 1500
+              })
+            }
+          })
+          .catch(function (response) {
+            // handle error
+            console.log(response)
+            console.log('sorry')
+          })
+      }
+      this.dialog = false
+      this.$refs.form.reset()
+      this.getPost()
     },
     async writePost () {
       // console.log(this.$refs.form.validate(), 'pp')

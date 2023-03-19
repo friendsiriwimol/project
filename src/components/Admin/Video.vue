@@ -134,9 +134,8 @@
               <v-col cols="12">
                 <v-text-field
                   label="บทที่"
-                  v-model="lesson_unit"
+                  v-model="lesson_id"
                   required
-                  disabled
                 ></v-text-field>
               </v-col>
               <v-col cols="12">
@@ -161,7 +160,6 @@
                 cols="12"
               >
               <v-file-input
-              ref="file"
                 small-chips
                 multiple
                 label="ไฟล์วิดีโอ"
@@ -212,7 +210,7 @@
               <v-col cols="12">
                 <v-text-field
                   label="บทที่"
-                  v-model="lesson_unit"
+                  v-model="lesson_id"
                   required
                   disabled
                 ></v-text-field>
@@ -372,6 +370,52 @@ export default {
     },
     openinsert () {
       this.dialog1 = true
+    },
+    addFormData () {
+      if (this.$refs.form1.validate()) {
+        const formData = new FormData()
+        formData.append('video_subunit', this.video_subunit)
+        formData.append('video_name', this.video_name)
+        formData.append('video_file', this.video_file)
+        formData.append('lesson_id', this.lesson_id)
+        //   alert(this.file)
+        var headers = {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+
+        var { data } = axios
+          .post(
+            'http://localhost/vue-backend/insertVideo.php',
+            formData,
+            headers
+          )
+          .then(function (response) {
+            // handle success
+            console.log(response)
+            console.log('success')
+            if (data === 'success') {
+              Swal.fire({
+                icon: 'success',
+                title: 'โพสต์สำเร็จ',
+                showConfirmButton: false,
+                // text: 'คำอธิบาย',
+                customClass: {
+                  title: 'csss'
+                },
+                timer: 1500
+              })
+            }
+          })
+          .catch(function (response) {
+            // handle error
+            console.log(response)
+            console.log('sorry')
+          })
+      }
+      this.dialog = false
+      this.$refs.form1.reset()
+      this.getVideo()
     },
     insertVideo () {
       if (this.$refs.form1.validate() && this.file) {

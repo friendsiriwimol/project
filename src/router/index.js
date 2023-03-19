@@ -44,6 +44,9 @@ import adminscore from '../components/Admin/Score.vue'
 import resetPass from '../components/Resetpass.vue'
 import myPost from '../components/User/Mypost.vue'
 import videoDetail from '../components/User/Videodetail.vue'
+import testvue from '../components/User/testvue.vue'
+import image from '../components/Image.vue'
+import imageUp from '../components/fileUpload.vue'
 
 Vue.use(VueRouter)
 
@@ -274,6 +277,21 @@ const routes = [
     path: '/videoDetail',
     name: 'videoDetail',
     component: videoDetail
+  },
+  {
+    path: '/testvue',
+    name: 'testvue',
+    component: testvue
+  },
+  {
+    path: '/image',
+    name: 'image',
+    component: image
+  },
+  {
+    path: '/imageUp',
+    name: 'imageUp',
+    component: imageUp
   }
 ]
 

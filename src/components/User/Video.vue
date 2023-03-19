@@ -36,15 +36,16 @@
         no-results-text="ไม่พบข้อมูลที่ค้นหา"
       >
         <template slot="data">
-          <td>{{ lesson_id }}</td>
+          <td>{{ lesson_id}}</td>
           <td>{{ lesson_name }}</td>
-
         </template>
+
         <template v-slot:item.edit="{ item }">
-          <v-icon small @click="openVideo(item)" color="#56a062">
+          <v-icon small @click="openVideo(item.lesson_id)" color="#56a062">
             mdi-video
           </v-icon>
         </template>
+
       </v-data-table>
       <v-dialog v-model="dialog" max-width="900px" persistent>
         <v-card>
@@ -132,8 +133,9 @@ export default {
   },
   methods: {
     async getVideo () {
-      console.log('rewload')
-      axios.get('http://localhost/vue-backend/video.php').then((res) => {
+      var url = 'http://localhost/vue-backend/video.php?lesson_id=10'
+      // alert(url)
+      axios.get(url).then((res) => {
         console.log('data:', res.data)
         if (res.data) {
           this.allvideo = res.data
@@ -149,7 +151,19 @@ export default {
       })
     },
     openVideo (item) {
-      this.dialog = true
+      // this.dialog = true
+      // this.dialog = true
+      // alert(item)
+      // var url2 = '/vue-backend/video.php?lesson_id='
+      // alert(url2)
+      // this.$router.push('videoDetail/')
+      // this.$router.push(url2)
+      // this.getVideo(1)
+      // alert(item)
+      // this.dialog = true
+      localStorage.setItem('vdo_lession_id', item)
+      this.$router.push('videoDetail')
+      // window.location.href = 'videoDetail/' + ===
     },
     deleteItem (item) {
       this.dialog = false
