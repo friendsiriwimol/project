@@ -1,6 +1,11 @@
 <template>
   <div>
     <v-form v-model="valid">
+      <v-text-field
+            v-model="name"
+            label="name"
+            required
+          ></v-text-field>
         <v-text-field
             v-model="name"
             label="name"

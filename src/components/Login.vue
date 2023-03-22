@@ -168,7 +168,7 @@ body {
 
 }
 body,
-input {
+input{
 //   font-family: "Poppins", sans-serif;
 }
 .reg{

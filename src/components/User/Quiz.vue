@@ -179,7 +179,7 @@ export default {
       console.log('rewload')
       // alert(this.user.user_email)
       // alert(this.user.user_password)
-      this.allwebsite = 'http://localhost/faq1/oq/login_auth.php?username=stu@stu.com&password=8cfa2282b17de0a598c010f5f0109e7d'
+      this.allwebsite = 'http://localhost/faq1/oq/login_auth.php?username=' + this.user.user_email + '&password=' + this.user.user_password
       axios.get('http://localhost/vue-backend/lesson.php').then((res) => {
         console.log('data:', res.data)
         if (res.data) {

@@ -63,6 +63,8 @@
     </v-btn>
     </template>
     </v-data-table>
+                <a :href="allwebsite" target="_blank">เริ่มทำแบบทดสอบ</a>
+
   </v-card>
   </div>
 </template>
@@ -84,6 +86,19 @@ export default {
   },
   data () {
     return {
+      user: {
+        user_id: localStorage.getItem('id'),
+        user_firstname: localStorage.getItem('user_firstname'),
+        user_lastname: localStorage.getItem('user_lastname'),
+        user_email: localStorage.getItem('user_email'),
+        user_password: localStorage.getItem('user_password'),
+        user_age: localStorage.getItem('user_age'),
+        user_birthday: localStorage.getItem('user_birthday'),
+        user_district: localStorage.getItem('user_district'),
+        user_province: localStorage.getItem('user_province'),
+        user_type: localStorage.getItem('type'),
+        create_at: localStorage.getItem('create_at')
+      },
       dialog: false,
       dialog1: false,
       alllesson: [],
@@ -151,7 +166,11 @@ export default {
   },
   methods: {
     async getLesson () {
-      axios.get('http://localhost/vue-backend/editLesson.php').then((res) => {
+      console.log('rewload')
+      // alert(this.user.user_email)
+      // alert(this.user.user_password)
+      this.allwebsite = 'http://localhost/faq1/oq/login_auth.php?username=' + this.user.user_email + '&password=' + this.user.user_password
+      axios.get('http://localhost/vue-backend/lesson.php').then((res) => {
         console.log('data:', res.data)
         if (res.data) {
           this.alllesson = res.data
