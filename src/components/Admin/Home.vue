@@ -7,58 +7,83 @@
       large
     ></v-breadcrumbs>
   </div>
-    <h1 class="mt-0 mb-7" align="center">กระทู้</h1>
-<v-card class="cardShowuser">
-    <v-card-title>
-      <!-- <v-icon class="mr-2" color="#fcad74">mdi-book-open-variant</v-icon> -->
-      <!-- <v-card class="mx-auto ma-5" width="60%">
+<h1 class="mt-0 mb-7" align="center">กระทู้</h1>
+    <v-card class="cardShowuser">
+      <v-card-title>
+        <!-- <v-icon class="mr-2" color="#fcad74">mdi-book-open-variant</v-icon> -->
+        <!-- <v-card class="mx-auto ma-5" width="60%">
      <v-card-title> -->
-<v-row
-    align="center"
-    justify="space-around"
-    >
-        <v-col cols="9" class="ma-0 col9">
-          <center>
-            <v-form v-model="valid" ref="form">
-          <v-text-field
-          v-model="post_detail"
-          class="inputpost"
-            label="โพสต์ข้อความ"
-            color="#099fae"
-            filled
-            rounded
-            clearable
-            dense
-            @keyup.enter="writePost()"
-          ></v-text-field>
-          </v-form>
-          </center>
-        </v-col>
-        <v-col cols="3" class="ma-0">
-          <!-- <div class="text-center"> -->
+        <v-row align="center" justify="space-around">
+          <v-col cols="9" class="ma-0 col9">
             <center>
-          <v-btn :disabled='!post_detail'  height="52px" width="100%" class="white--text" rounded color="#099fae" @click="writePost()">โพสต์</v-btn>
-          </center>
-          <!-- </div> -->
-        </v-col>
-</v-row>
-      <!-- </v-card-title>
+              <v-form v-model="valid" ref="form">
+                <v-text-field
+                  class="inputpost"
+                  label="โพสต์ข้อความ"
+                  color="#099fae"
+                  filled
+                  rounded
+                  clearable
+                  dense
+                  @click="dialogPost()"
+                ></v-text-field>
+              </v-form>
+            </center>
+          </v-col>
+          <v-col cols="3" class="ma-0">
+            <!-- <div class="text-center"> -->
+            <center>
+              <v-btn
+                :disabled="!post_detail"
+                height="52px"
+                width="100%"
+                class="white--text"
+                rounded
+                color="#099fae"
+                @click="writePost()"
+                >โพสต์</v-btn
+              >
+            </center>
+            <!-- </div> -->
+          </v-col>
+        </v-row>
+        <!-- </v-card-title>
     </v-card> -->
-    </v-card-title>
+      </v-card-title>
     </v-card>
 
-    <v-card class="cardShowuser" v-for="(postuser, index) in allapprove" :key="postuser.post_id">
+    <v-card
+      class="cardShowuser"
+      v-for="(postuser, index) in allapprove"
+      :key="postuser.post_id"
+    >
       <!-- {{postuser}} -->
       <v-card-title>
-        Siriwimol&nbsp;<span style="color: #21777f;">{{postuser.post_detail}}</span>
+        {{ postuser.user_firstname }} {{ postuser.user_lastname }}&nbsp;<span
+          style="color: #21777f"
+          >{{ postuser.post_detail }}</span
+        >
       </v-card-title>
-
-      <v-card-subtitle>โพสต์เมื่อ วันที่ {{postuser.create_at}} น.</v-card-subtitle>
-
+      <div align="center" justify="space-around">
+        <v-img
+        class="align-center ml-5"
+        width="20%"
+        :src="postuser.post_img"
+        rounded
+      >
+      </v-img>
+      </div>
+      <v-card-subtitle
+        >โพสต์เมื่อ วันที่ {{ postuser.create_at }} น.</v-card-subtitle
+      >
       <v-card-actions>
         <v-spacer></v-spacer>
 
-        <v-btn v-if='panel !== postuser.post_id' icon @click="showtest(index, postuser.post_id)">
+        <v-btn
+          v-if="panel !== postuser.post_id"
+          icon
+          @click="showtest(index, postuser.post_id)"
+        >
           <v-icon color="#099fae">mdi-comment</v-icon>
         </v-btn>
         <v-btn v-else icon @click="showtest2(index)">
@@ -67,43 +92,154 @@
       </v-card-actions>
 
       <v-expand-transition>
-        <div v-show="show === index" >
-          <v-container fluid >
-            <v-form  v-model="valid2" ref="form2">
-              <div class="mx-auto ma-3" width="60%" v-for="comment in allcomment" v-bind:key="comment.comment_id">
-              <div v-if="comment.post_id === postuser.post_id">
-              <v-divider class="mb-2"></v-divider>
-              <div color="#099fae">
+        <div v-show="show === index">
+          <v-container fluid>
+            <v-form v-model="valid2" ref="form2">
+              <div
+                class="mx-auto ma-3"
+                width="60%"
+                v-for="comment in allcomment"
+                v-bind:key="comment.comment_id"
+              >
+                <div v-if="comment.post_id === postuser.post_id">
+                  <v-divider class="mb-2"></v-divider>
+                  <div color="#099fae">
                     {{ comment.user_firstname }} {{ comment.user_lastname }}
-                <span style="color: gray;">แสดงความคิดเห็นเมื่อ {{comment.create_at}} น.</span> </div>
-              <div>{{comment.comment_detail}}</div>
-              <!-- <v-divider class="mt-3"></v-divider> -->
+                    <span style="color: gray"
+                      >แสดงความคิดเห็นเมื่อ {{ comment.create_at }} น.</span
+                    >
+                  </div>
+                  <div>{{ comment.comment_detail }}</div>
+                  <!-- <v-divider class="mt-3"></v-divider> -->
+                </div>
               </div>
-              </div>
-            <v-textarea
-              v-model="comment_detail"
-              filled
-              auto-grow
-              label="แสดงความคิดเห็น"
-              rows="2"
-              color="#099fae"
-              row-height="20"
-              @keyup.enter="writeComment(postuser.post_id)"
-            >
-            </v-textarea>
-            <div class="text-center">
-              <v-btn rounded color="#099fae" dark @click="writeComment(postuser.post_id)">
-                <!-- <v-icon aria-label="My Account" role="img" aria-hidden="false">
+              <v-textarea
+                v-model="comment_detail"
+                filled
+                auto-grow
+                label="แสดงความคิดเห็น"
+                rows="2"
+                color="#099fae"
+                row-height="20"
+                @keyup.enter="writeComment(postuser.post_id)"
+              >
+              </v-textarea>
+              <div class="text-center">
+                <v-btn
+                  rounded
+                  color="#099fae"
+                  dark
+                  @click="writeComment(postuser.post_id)"
+                >
+                  <!-- <v-icon aria-label="My Account" role="img" aria-hidden="false">
                   mdi-comment
                 </v-icon> -->
-                แสดงความคิดเห็น
-              </v-btn>
-            </div>
+                  แสดงความคิดเห็น
+                </v-btn>
+              </div>
             </v-form>
           </v-container>
         </div>
       </v-expand-transition>
     </v-card>
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title class="justify-center align-center"
+          ><v-spacer></v-spacer>สร้างกระทู้<v-spacer></v-spacer
+          ><v-btn icon @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn></v-card-title
+        >
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-container>
+            <v-form v-model="valid" ref="form">
+              <v-row>
+                <v-col cols="12" class="ma-0 pb-0">
+                  <v-textarea
+                    v-model="post_detail"
+                    label="โพสต์ข้อความ"
+                    auto-grow
+                    filled
+                    rows="3"
+                    row-height="50"
+                    shaped
+                    color="#099fae"
+                    clearable
+                    rounded
+                    class="mt-7 rounded-b-xl rounded-t-xl"
+                  ></v-textarea>
+                </v-col>
+                <v-col cols="12">
+                  <v-card outlined>
+                    <v-card-actions>
+                      <!-- เพิ่มลงในกระทู้ของคุณ
+              <v-spacer></v-spacer> -->
+                      <v-file-input
+                        required
+                        accept="image/*"
+                        color="#099fae"
+                        class="mt-3"
+                        prepend-icon="mdi-image"
+                        v-model="post_img"
+                        label="เพิ่มรูปภาพ"
+                      ></v-file-input>
+                      <!-- <v-btn
+              icon
+        color="primary"
+        round
+        depressed
+        :loading="isSelecting"
+        @click="onButtonClick"
+      >
+        <v-icon>
+          mdi-image
+        </v-icon>
+      </v-btn>
+      <input
+        ref="uploader"
+        class="d-none"
+        type="file"
+        accept="image/*"
+        @change="onFileChanged"
+      > -->
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+                <!--<v-btn
+                :disabled="!post_detail"
+                height="52px"
+                width="100%"
+                class="white--text"
+                rounded
+                color="#099fae"
+                @click="writePost()"
+                >โพสต์</v-btn
+              > -->
+              </v-row>
+            </v-form>
+          </v-container>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" class="ma-0 pb-0">
+                <v-btn
+                  width="100%"
+                  :disabled="!post_detail"
+                  class="white--text"
+                  color="#099fae"
+                  @click="addFormData()"
+                >
+                  โพสต์
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 

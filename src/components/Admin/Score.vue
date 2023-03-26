@@ -4,14 +4,14 @@
         <div>
             <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
         </div>
-        <div id="years">{{ years }}</div>
+        <!-- <div id="years">{{ years }}</div>
         <div>{{ years }}</div>
         <div v-for="(year, y) in yearsList" :key="y" :value="year" >่อ้าว{{year}}</div>
         <v-select v-model="selectedYear"  placeholder="234234">
         <option v-for="(year, y) in yearsList" :key="y" :value="year" >
           {{year}}
         </option>
-      </v-select>
+      </v-select> -->
         <v-card class="cardShowuser mt-0">
             <v-card-title>
                 <v-icon class="mr-2" color="#fcad74">mdi-format-list-numbered</v-icon>
@@ -40,19 +40,21 @@
         <template v-slot:activator="{ on, attrs }">
           <v-text-field
             v-model="date"
-            label="Picker in dialog"
+            label="ปีการศึกษา"
             readonly
+            color="#fcad74"
             v-bind="attrs"
             v-on="on"
+            outlined
           ></v-text-field>
         </template>
-        <v-date-picker v-model="date" type="month" scrollable color="red" locale="th">
+        <v-date-picker v-model="date" type="month" scrollable color="#fcad74" locale="th">
           <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
+          <v-btn text color="primary" @click="modal = false">ยกเลิก</v-btn>
+          <v-btn text color="primary" @click="$refs.dialog.save(date)">บันทึก</v-btn>
         </v-date-picker>
       </v-dialog>
-                <v-select
+                <!-- <v-select
                     required
                     :items="['2560', '2561', '2562', '2563', '2564', '2565']"
                     label="ปีการศึกษา"
@@ -62,7 +64,7 @@
                   <option v-for="(year, y) in yearsList" :key="y" :value="year">
           {{year}}
         </option>
-                  </v-select>
+                  </v-select> -->
             </v-card-title>
             <!-- <v-card-title>friend</v-card-title> -->
             <v-data-table
@@ -240,7 +242,7 @@ export default {
 .v-breadcrumbs>>>a {
     color: #fcad74;
 }
-.v-text-field--outlined >>> fieldset {
+/* .v-text-field--outlined >>> fieldset {
   border-color: #fcad74;
-}
+} */
 </style>

@@ -48,6 +48,7 @@
         <template slot="data">
           <td>{{ lesson_id }}</td>
           <td>{{ lesson_name }}</td>
+          <td>{{ lesson_nameimg }}</td>
         </template>
         <template v-slot:item.edit="{ item }">
           <v-icon small @click="editItem(item)" color="#56a062">
@@ -65,7 +66,7 @@
       </td>
     </template> -->
       </v-data-table>
-      <v-dialog v-model="dialog1" max-width="600px" persistent>
+      <v-dialog v-model="dialog1" max-width="1250px" persistent>
         <v-card>
           <v-card-title> เพิ่มบทเรียน </v-card-title>
           <v-card-text>
@@ -87,7 +88,12 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
-                    <v-file-input v-model="lesson_unitimg" required label="รูปภาพหน้าปกบทเรียน" variant="underlined"></v-file-input>
+                    <v-file-input
+                    accept="image/*"
+                    v-model="lesson_unitimg"
+                    required
+                    label="รูปภาพหน้าปกบทเรียน"
+                    variant="underlined"></v-file-input>
                   </v-col>
                   <!-- <v-col cols="12">
                             <v-text-field
@@ -132,7 +138,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="dialog" max-width="600px" persistent>
+      <v-dialog v-model="dialog" max-width="1250px" persistent>
         <v-card>
           <v-card-title> แก้ไขบทเรียน </v-card-title>
           <v-card-text>
@@ -153,6 +159,21 @@
                       v-model="lesson_name"
                     ></v-text-field>
                   </v-col>
+                  <!-- <v-col cols="12">
+                    <v-text-field
+                      label="บทเรียนเรื่อง"
+                      required
+                      v-model="lesson_nameimg"
+                    ></v-text-field>
+                  </v-col> -->
+                  <!-- <v-col cols="12">
+                    <v-file-input
+                    accept="image/*"
+                    v-model="lesson_unitimg"
+                    required
+                    label="รูปภาพหน้าปกบทเรียน"
+                    ></v-file-input>
+                  </v-col> -->
                   <!-- <v-col cols="12">
                             <v-text-field
                               label="เนื้อหาบทเรียน"
@@ -291,6 +312,7 @@ export default {
           value: 'lesson_id'
         },
         { text: 'บทเรียนเรื่อง', value: 'lesson_name' },
+        { text: 'บทเรียนเรื่อง', value: 'lesson_nameimg' },
         // { text: 'เนื้อหาบทเรียน', value: 'lesson_description' },
         { text: 'แก้ไข', value: 'edit', sortable: false },
         { text: 'ลบ', value: 'delete', sortable: false }
@@ -340,19 +362,23 @@ export default {
       this.lesson_description = ''
     },
     async insertLesson () {
-      if (this.$refs.form1.validate()) {
-        // กรอกครบมั้ย
-        var { data } = await axios.post(
-          'http://localhost/vue-backend/insertLesson.php',
-          {
-            // post_id: this.post_id,
-            // lesson_id: this.lesson_id,
-            lesson_id: this.lesson_id,
-            lesson_name: this.lesson_name,
-            lesson_description: this.lesson_description
-          }
-        )
-        if (data === 'success') {
+      const formData = new FormData()
+      formData.append('lesson_id', this.lesson_id)
+      formData.append('lesson_name', this.lesson_name)
+      formData.append('lesson_unitimg', this.lesson_unitimg)
+      formData.append('lesson_description', this.lesson_description)
+      //   alert(this.file)
+      var headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+      axios.post('http://localhost/vue-backend/insertLesson.php', formData, headers)
+        .then(function (response) {
+          // handle success
+          this.dialog1 = false
+          this.$refs.form1.reset()
+          console.log(response)
+          console.log('success')
           Swal.fire({
             icon: 'success',
             title: 'เพิ่มสำเร็จ',
@@ -363,14 +389,26 @@ export default {
             },
             timer: 1500
           })
-        }
-        this.dialog1 = false
-        this.getLesson()
-        // this.$refs.form.reset()
-        // this.lesson_description = ''
-        // this.$refs.form.reset()
-        // this.postuser.post_detail = ''
-      }
+        })
+        .catch(function (response) {
+          // handle error
+          console.log(response)
+          console.log('sorry')
+        })
+      Swal.fire({
+        icon: 'success',
+        title: 'เพิ่มสำเร็จ',
+        showConfirmButton: false,
+        // text: 'คำอธิบาย',
+        customClass: {
+          title: 'csss'
+        },
+        timer: 1500
+      })
+      this.dialog1 = false
+      this.$refs.form1.reset()
+      this.lesson_description = ''
+      this.getLesson()
     },
     // async saveInsert () {
     //   var bodyValue = {
@@ -403,6 +441,7 @@ export default {
       // console.log('item:', data)คือฟังก์ชันedit(data)ข้างบนdataที่ส่งมา
       this.dialog = true
       this.lesson_id = data.lesson_id
+      // this.lesson_nameimg = data.lesson_nameimg
       this.lesson_name = data.lesson_name
       this.lesson_description = data.lesson_description
       this.create_at = data.create_at

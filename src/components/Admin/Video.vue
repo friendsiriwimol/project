@@ -40,7 +40,7 @@
           <td>{{ lesson_name }}</td>
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon small @click="editItem(item)" color="#56a062">
+          <v-icon small  @click="openVideo(item.lesson_id)" color="#56a062">
             mdi-pencil
           </v-icon>
         </template>
@@ -90,7 +90,7 @@
                           <v-btn
                             icon
                           >
-                          <v-icon small @click="deleteItem(item)" color="#ea5859">mdi-delete</v-icon>
+                          <v-icon small @click="dialog= false" color="#ea5859">mdi-delete</v-icon>
                           </v-btn>
                           <v-btn
                             icon
@@ -107,7 +107,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">
+            <v-btn color="blue darken-1" text @click="openVideo(item.lesson_id)">
               ปิด
             </v-btn>
             <!-- <v-btn color="blue darken-1" text @click="saveUpdate()">
@@ -343,14 +343,31 @@ export default {
     this.getVideo()
   },
   methods: {
+    // async getVideo () {
+    //   console.log('rewload')
+    //   axios.get('http://localhost/vue-backend/video.php').then((res) => {
+    //     console.log('data:', res.data)
+    //     if (res.data) {
+    //       this.allvideo = res.data
+    //     }
+    //   })
+    // },
     async getVideo () {
-      console.log('rewload')
-      axios.get('http://localhost/vue-backend/video.php').then((res) => {
-        console.log('data:', res.data)
-        if (res.data) {
-          this.allvideo = res.data
+      var url = 'http://localhost/vue-backend/video.php?lesson_id=' + this.lesson_id
+      // alert(url)
+      // alert('vdo')
+      axios.get(url).then((res1) => {
+        console.log('data:', res1.data)
+        if (res1.data) {
+          this.allvideo = res1.data
+          // alert(res1.data.video_id)
         }
       })
+    },
+
+    openVideo (item) {
+      localStorage.setItem('vdo_lesson_id', item)
+      this.$router.push('adminVideoDetail')
     },
     async getLesson () {
       axios.get('http://localhost/vue-backend/editLesson.php').then((res) => {
@@ -364,9 +381,6 @@ export default {
       this.dialog1 = true
       this.$refs.form.reset()
       this.lesson_description = ''
-    },
-    openVideo () {
-      this.dialog = true
     },
     openinsert () {
       this.dialog1 = true

@@ -1,9 +1,23 @@
 <template>
   <div>
+    <div>
+      <!-- {{ alllesson[0] }} -->
+        <!-- <p>{{ lesson.lesson_id }} {{ lesson.lesson_name }}</p> -->
+    <v-select
+    v-for="lesson in alllesson" v-bind:key="lesson.lesson_id"
+        :items="lesson.lesson_id"
+          label="Standard"
+          v-model="lesson.lesson_name"
+        >
+        <!-- <option v-for="lesson in alllesson" v-bind:key="lesson.lesson_id">
+      {{ lesson.lesson_name }}
+    </option> -->
+        </v-select>
+      </div>
     <v-form v-model="valid">
       <v-text-field
-            v-model="name"
-            label="name"
+            v-model="unit"
+            label="บทเรียน"
             required
           ></v-text-field>
         <v-text-field
@@ -36,7 +50,7 @@
       class="mr-4"
       @click="addFormData()"
     >
-      Reset Form
+      Save
     </v-btn>
     </v-form>
     <v-container>
@@ -76,14 +90,33 @@ import Swal from 'sweetalert2'
 
 export default {
   data: () => ({
+    items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+    alllesson: [],
     file: '',
     valid: false,
+    unit: '',
     name: '',
     files: [],
     filess: [],
-    readers: []
+    readers: [],
+    lesson: {
+      lesson_id: '',
+      lesson_name: '',
+      lesson_description: ''
+    }
   }),
+  created () {
+    this.getLesson()
+  },
   methods: {
+    async getLesson () {
+      axios.get('http://localhost/vue-backend/editLesson.php').then((res) => {
+        console.log('lesson:', res.data)
+        if (res.data) {
+          this.alllesson = res.data
+        }
+      })
+    },
     async writePost () {
       // console.log(this.$refs.form.validate(), 'pp')
       if (this.$refs.form.validate()) {
@@ -140,6 +173,7 @@ export default {
     },
     addFormData () {
       const formData = new FormData()
+      formData.append('unit', this.unit)
       formData.append('name', this.name)
       formData.append('file', this.file)
       //   alert(this.file)

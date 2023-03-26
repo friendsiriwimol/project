@@ -31,7 +31,7 @@ import testImg from '../components/testshowimg.vue'
 import testUploadImg from '../components/Admin/test.vue'
 import lessondetail from '../components/User/Lessondetail'
 import adminvideo from '../components/Admin/Video'
-import testVideo from '../components/testVideo'
+import testVideo from '../components/Video.vue'
 import table from '../components/Table.vue'
 import testLogin from '../components/testLogin.vue'
 import forgetpassword from '../components/User/ForgetPassword.vue'
@@ -47,6 +47,7 @@ import videoDetail from '../components/User/Videodetail.vue'
 import testvue from '../components/User/testvue.vue'
 import image from '../components/Image.vue'
 import imageUp from '../components/fileUpload.vue'
+import adminVideoDetail from '../components/Admin/Videodetail.vue'
 
 Vue.use(VueRouter)
 
@@ -277,6 +278,11 @@ const routes = [
     path: '/videoDetail',
     name: 'videoDetail',
     component: videoDetail
+  },
+  {
+    path: '/adminVideoDetail',
+    name: 'adminVideoDetail',
+    component: adminVideoDetail
   },
   {
     path: '/testvue',

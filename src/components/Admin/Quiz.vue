@@ -1,71 +1,61 @@
 <template>
-<div>
-  <NavbarAdmin/>
   <div>
-<v-breadcrumbs
-  :items="breadcrumbs"
-  large
-></v-breadcrumbs>
-</div>
-  <v-card class="cardShowuser mt-0">
-    <v-card-title>
-      <v-icon class="mr-2" color="#fcad74">mdi-notebook-edit</v-icon>
-     แบบทดสอบ
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="ค้นหา"
-        dense
-        color="#099fae"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <!-- <v-card-title>friend</v-card-title> -->
-       <v-data-table
-       :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
-       :items="alllesson"
-       :headers="headers"
-       :items-per-page="5"
-       :search="search"
-       no-data-text="ไม่พบข้อมูล"
-        no-results-text="ไม่พบข้อมูลที่ค้นหา">
-       <template slot="data">
-        <td>{{lesson_id}}</td>
-        <td>{{lesson_name}}</td>
-      </template>
-      <!-- <template v-slot:item.edit="{ item }">
-        <router-link v-bind:to="'/admininsertquiz/'+ lesson.lesson_id">
-    <v-btn
-      text
-        color="#56a062"
-    >
-      เพิ่มแบบทดสอบ
-    </v-btn>
-    </router-link>
-
-    </template> -->
-      <template v-slot:item.edit="{ item }">
-        <!-- <v-icon
-        small
-        class="mr-2"
-        @click="editItem(item)"
+    <NavbarAdmin />
+    <div>
+      <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
+    </div>
+    <v-card class="cardShowuser mt-0">
+      <v-card-title>
+        <v-icon class="mr-2" color="#fcad74">mdi-notebook-edit</v-icon>แบบทดสอบ
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="ค้นหา"
+          dense
+          color="#099fae"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <!-- <v-card-title>friend</v-card-title> -->
+      <v-data-table
+        :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+        :items="alllesson"
+        :headers="headers"
+        :items-per-page="5"
+        :search="search"
+        no-data-text="ไม่พบข้อมูล"
+        no-results-text="ไม่พบข้อมูลที่ค้นหา"
       >
-        mdi-pencil
-      </v-icon> -->
-    <v-btn
-      text
-              @click="linkDetail(item)"
-        color="#56a062"
-    >
-      เพิ่มแบบทดสอบ
-    </v-btn>
-    </template>
-    </v-data-table>
-                <a :href="allwebsite" target="_blank">เริ่มทำแบบทดสอบ</a>
+        <template slot="data">
+          <td>{{lesson_id}}</td>
+          <td>{{lesson_name}}</td>
+        </template>
+        <!-- <template v-slot:item.edit="{ item }">
+          <router-link v-bind:to="'/admininsertquiz/'+ lesson.lesson_id">
+      <v-btn
+        text
+          color="#56a062"
+      >
+        เพิ่มแบบทดสอบ
+      </v-btn>
+      </router-link>
 
-  </v-card>
+        </template>-->
+        <template v-slot:item.edit="{ item }">
+          <!-- <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+        >
+          mdi-pencil
+          </v-icon>-->
+          <v-btn text @click="linkDetail(item)" color="#56a062">เพิ่มแบบทดสอบ</v-btn>
+        </template>
+      </v-data-table>
+      <a :href="allwebsite" target="_blank">เริ่มทำแบบทดสอบ</a>
+    </v-card>
   </div>
 </template>
 
@@ -169,8 +159,12 @@ export default {
       console.log('rewload')
       // alert(this.user.user_email)
       // alert(this.user.user_password)
-      this.allwebsite = 'http://localhost/faq1/oq/login_auth.php?username=' + this.user.user_email + '&password=' + this.user.user_password
-      axios.get('http://localhost/vue-backend/lesson.php').then((res) => {
+      this.allwebsite =
+        'http://localhost/faq1/oq/login_auth.php?username=' +
+        this.user.user_email +
+        '&password=' +
+        this.user.user_password
+      axios.get('http://localhost/vue-backend/lesson.php').then(res => {
         console.log('data:', res.data)
         if (res.data) {
           this.alllesson = res.data
@@ -179,52 +173,54 @@ export default {
     },
     linkDetail (data) {
       console.log(data, 'id จ้า')
-      this.$router.push({ name: 'admininsertquiz', params: { id: data.lesson_id } })
+      this.$router.push({
+        name: 'admininsertquiz',
+        params: { id: data.lesson_id }
+      })
       // this.$router.push({ name: 'test', params: { id: data } })
     }
   }
 }
 </script>
 
-<style scoped>
-*{
-font-family: 'Prompt', sans-serif;
+  <style scoped>
+* {
+  font-family: "Prompt", sans-serif;
 }
-.cardShowuser{
+.cardShowuser {
   margin-top: 5%;
 }
-.head{
+.head {
   background-color: red;
 }
 .example {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
-    .editor {
-        width: 100%;
-      height: 30rem;
-      overflow: hidden;
-    }
-
-    .output {
-      width: 100%;
-      height: 20rem;
-      margin: 0;
-      border: 1px solid #ccc;
-      overflow-y: auto;
-      resize: vertical;
-    }
-      .code {
-        padding: 1rem;
-        height: 16rem;
-      }
-
-      .ql-snow {
-        border-top: none;
-        height: 24rem;
-      }
-      .v-breadcrumbs >>> a {
-    color: #fcad74;
+.editor {
+  width: 100%;
+  height: 30rem;
+  overflow: hidden;
 }
 
+.output {
+  width: 100%;
+  height: 20rem;
+  margin: 0;
+  border: 1px solid #ccc;
+  overflow-y: auto;
+  resize: vertical;
+}
+.code {
+  padding: 1rem;
+  height: 16rem;
+}
+
+.ql-snow {
+  border-top: none;
+  height: 24rem;
+}
+.v-breadcrumbs >>> a {
+  color: #fcad74;
+}
 </style>

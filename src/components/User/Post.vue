@@ -351,7 +351,7 @@ export default {
     },
     async getPost () {
       console.log('rewload')
-      axios.get('http://localhost/vue-backend/post.php').then((res) => {
+      axios.get('http://localhost/vue-backend/postApprove.php').then((res) => {
         console.log('data:', res.data)
         if (res.data) {
           this.allpost = res.data
