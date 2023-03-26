@@ -4,57 +4,101 @@
     <div>
       <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
     </div>
-    <v-card class="cardShowuser mt-0">
-      <v-card-title>
-        <v-icon class="mr-2" color="#fcad74">mdi-notebook-edit</v-icon>แบบทดสอบ
-        <v-spacer></v-spacer>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="ค้นหา"
-          dense
-          color="#099fae"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <!-- <v-card-title>friend</v-card-title> -->
-      <v-data-table
-        :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
-        :items="alllesson"
-        :headers="headers"
-        :items-per-page="5"
-        :search="search"
-        no-data-text="ไม่พบข้อมูล"
-        no-results-text="ไม่พบข้อมูลที่ค้นหา"
-      >
-        <template slot="data">
-          <td>{{lesson_id}}</td>
-          <td>{{lesson_name}}</td>
-        </template>
-        <!-- <template v-slot:item.edit="{ item }">
-          <router-link v-bind:to="'/admininsertquiz/'+ lesson.lesson_id">
-      <v-btn
-        text
-          color="#56a062"
-      >
-        เพิ่มแบบทดสอบ
-      </v-btn>
-      </router-link>
+    <h1 class="mt-7 mb-7" align="center">แบบทดสอบ</h1>
 
-        </template>-->
-        <template v-slot:item.edit="{ item }">
-          <!-- <v-icon
-          small
-          class="mr-2"
-          @click="editItem(item)"
-        >
-          mdi-pencil
-          </v-icon>-->
-          <v-btn text @click="linkDetail(item)" color="#56a062">เพิ่มแบบทดสอบ</v-btn>
+    <!-- <v-card class="cardShowuser">
+    <v-card-title>
+      <v-icon class="mr-2" color="#fcad74">mdi-book-open-variant</v-icon>
+     บทเรียน
+      <v-spacer></v-spacer>
+<v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        dense
+        color="#099fae"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+    <v-card-title>
+      <v-spacer></v-spacer>
+    <v-btn
+      class="mx-2"
+      fab
+      dark
+      small
+      color="#099fae"
+      @click="insertItem(lesson)"
+
+    >
+      <v-icon dark
+      >
+        mdi-plus
+      </v-icon>
+    </v-btn>
+    </v-card-title>
+    <v-card-title>friend</v-card-title>
+       <v-data-table :items="alllesson" :headers="headers" :items-per-page="10" :search="search">
+       <template slot="data">
+          <td>{{lesson_unit}}</td>
+        <td>{{lesson_name}}</td>
+      </template>
+      <template v-slot:item.delete="{ item }">
+        <v-icon
+        small
+        @click="deleteItem(item)"
+        color="#ea5859"
+        href="login"
+      >
+        mdi-delete
+      </v-icon>
+      </template>
+    </v-data-table>
+    </v-card> -->
+    <!-- <v-row>
+<v-col cols="12"
+                sm="6"
+                md="3"
+                v-for="lesson in alllesson" v-bind:key="lesson.lesson_id">
+  <v-card class="mx" max-width="250">
+  <v-card-text>
+      <div class="text-center mt-0">บทที่ {{lesson.lesson_unit}}</div>
+      <p class="text-title">{{lesson.lesson_name}}</p>
+    </v-card-text>
+    <v-card-actions>
+      <center>
+      <a href="Quizlesson" text color="#FAD234" >
+        คลิ๊กเพื่อทำข้อสอบ
+      </a></center>
+      </v-card-actions>
+  </v-card>
+  </v-col>
+  </v-row> -->
+
+    <v-card class="cardShowuser mt-0">
+
+        <template v-slot:default>
+          <div class="container">
+            <!-- {{url='http://localhost/faq1/oq/login_auth.php?username='+user.user_email+'&password='+user.user_password }} -->
+            <router-link v-bind:to="'/lessondetail/'+ lesson.lesson_id">
+    </router-link>
+    <!--
+            <a :href="' <a :href="website.website_link" target="_blank"><li>{{ website.website_link }}</li></a>" width="100%"  height="1024px" frameborder="0">test</a>
+            -->
+            <v-btn class="button"  style="background-color: #099fae !important;
+  color: #fff; margin-bottom:15px" ><a :href="allwebsite" target="_blank" style="color: #fff;">จัดการแบบทดสอบ</a></v-btn>
+            <v-row>
+      <v-col cols="12" md="12">
+        <v-img src="../../assets/imgquiz.png" contain margin-top="10px"></v-img>
+      </v-col>
+    </v-row>
+            <!-- <iframe src="{{url='http://localhost/faq1/oq/login_auth.php?username='+user.user_email+'&password='+user.user_password }}" width="100%"  height="1024px" frameborder="0">
+            </iframe> -->
+            <!-- <a :href="website.website_link" target="_blank"><li>{{ website.website_link }}</li></a> -->
+
+          </div>
         </template>
-      </v-data-table>
-      <a :href="allwebsite" target="_blank">เริ่มทำแบบทดสอบ</a>
     </v-card>
   </div>
 </template>
@@ -159,12 +203,8 @@ export default {
       console.log('rewload')
       // alert(this.user.user_email)
       // alert(this.user.user_password)
-      this.allwebsite =
-        'http://localhost/faq1/oq/login_auth.php?username=' +
-        this.user.user_email +
-        '&password=' +
-        this.user.user_password
-      axios.get('http://localhost/vue-backend/lesson.php').then(res => {
+      this.allwebsite = 'http://localhost/faq1/oq/login_auth.php?username=' + this.user.user_email + '&password=' + this.user.user_password
+      axios.get('http://localhost/vue-backend/lesson.php').then((res) => {
         console.log('data:', res.data)
         if (res.data) {
           this.alllesson = res.data
@@ -173,54 +213,130 @@ export default {
     },
     linkDetail (data) {
       console.log(data, 'id จ้า')
-      this.$router.push({
-        name: 'admininsertquiz',
-        params: { id: data.lesson_id }
-      })
+      this.$router.push({ name: 'admininsertquiz', params: { id: data.lesson_id } })
       // this.$router.push({ name: 'test', params: { id: data } })
     }
   }
 }
 </script>
 
-  <style scoped>
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Prompt&display=swap');
+
 * {
-  font-family: "Prompt", sans-serif;
-}
-.cardShowuser {
-  margin-top: 5%;
-}
-.head {
-  background-color: red;
-}
-.example {
-  display: flex;
-  flex-direction: column;
-}
-.editor {
-  width: 100%;
-  height: 30rem;
-  overflow: hidden;
+  font-family: 'Prompt', sans-serif;
 }
 
-.output {
-  width: 100%;
-  height: 20rem;
-  margin: 0;
-  border: 1px solid #ccc;
-  overflow-y: auto;
-  resize: vertical;
-}
-.code {
-  padding: 1rem;
-  height: 16rem;
+.text-h4 {
+  text-align: center;
+  font-size: 20px;
 }
 
-.ql-snow {
-  border-top: none;
-  height: 24rem;
+.mt-0 {
+  margin-top: -10px;
+  text-align: center;
 }
-.v-breadcrumbs >>> a {
+
+h1 {
+  color: #000;
+}
+
+.img1 {
+  width: 500px;
+  height: 100px;
+  text-align: center;
+}
+
+.mx {
+  margin-top: 40px;
+  height: 400px;
+  padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  font-size: 25px;
+  font-style: bold;
+  padding: 15px;
+  color: #56a062;
+}
+.button:hover {
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+border-radius: 8px;
+}
+.text-title {
+  text-align: center;
+  padding: 15px;
+  font-size: 1.3em !important;
+  color: rgb(75, 75, 75);
+}
+
+a {
+  text-decoration: none;
+}
+
+.lesson {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.v-card {
+  transition: opacity .5s ease-in-out rgb(255, 255, 107);
+}
+
+.v-card:not(.on-hover) {
+  box-shadow: 1px 1px 10px px rgb(179, 179, 149);
+}
+
+.show-btns {
+  color: #feedb0 !important;
+  box-shadow: 10px 10px 5px 12px lightblue;
+}
+
+.v-card--reveal {
+  bottom: 0;
+  opacity: 1 !important;
+  position: absolute;
+  width: 100%;
+}
+
+.text-h4 {
+  text-align: center;
+  font-size: 20px;
+}
+
+.img1 {
+  width: 500px;
+  height: 100px;
+  text-align: center;
+}
+
+.mx {
+  margin-top: 100px;
+  height: 250px;
+  padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  font-size: 25px;
+  font-style: bold;
+  padding: 15px;
+}
+
+a {
+  text-decoration: none;
+  text-align: center;
+  color: #56a062;
+}
+
+.quiz {
+  text-align: center;
+}
+
+.v-breadcrumbs>>>a {
   color: #fcad74;
 }
 </style>

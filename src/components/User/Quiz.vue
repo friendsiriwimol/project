@@ -78,8 +78,6 @@
 
     <v-card class="cardShowuser mt-0">
 
-      <v-simple-table fixed-header height="1024px">
-
         <template v-slot:default>
           <div class="container">
             <!-- {{url='http://localhost/faq1/oq/login_auth.php?username='+user.user_email+'&password='+user.user_password }} -->
@@ -88,14 +86,27 @@
     <!--
             <a :href="' <a :href="website.website_link" target="_blank"><li>{{ website.website_link }}</li></a>" width="100%"  height="1024px" frameborder="0">test</a>
             -->
-            <a :href="allwebsite" target="_blank">เริ่มทำแบบทดสอบ</a>
+            <!-- <v-btn
+        color="#fcad74"
+        outlined
+        class="allwebsite"
+        target="_blank"
+      >
+      เริ่มทำแบบทดสอบ
+      </v-btn> -->
+           <v-btn class="button"  style="background-color: #099fae !important;
+  color: #fff; margin-bottom:15px" ><a :href="allwebsite" target="_blank" style="color: #fff;">เริ่มทำแบบทดสอบ</a></v-btn>
+            <v-row>
+      <v-col cols="12" md="12">
+        <v-img src="../../assets/imgquiz.png" contain margin-top="10px"></v-img>
+      </v-col>
+    </v-row>
             <!-- <iframe src="{{url='http://localhost/faq1/oq/login_auth.php?username='+user.user_email+'&password='+user.user_password }}" width="100%"  height="1024px" frameborder="0">
             </iframe> -->
             <!-- <a :href="website.website_link" target="_blank"><li>{{ website.website_link }}</li></a> -->
 
           </div>
         </template>
-      </v-simple-table>
     </v-card>
   </div>
 </template>
@@ -208,7 +219,10 @@ export default {
   text-align: center;
   font-size: 20px;
 }
-
+.button:hover {
+  box-shadow: 0 10px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+border-radius: 8px;
+}
 .mt-0 {
   margin-top: -10px;
   text-align: center;
@@ -312,4 +326,5 @@ a {
 
 .v-breadcrumbs>>>a {
   color: #fcad74;
-}</style>
+}
+</style>
