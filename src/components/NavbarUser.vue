@@ -96,7 +96,7 @@ export default {
       items: [
         { title: 'หน้าแรก', icon: 'mdi-home', route: '/home' },
         { title: 'กระทู้', icon: 'mdi-clipboard-edit', route: '/post' },
-        { title: 'กระทู้ของฉัน', icon: 'mdi-clipboard-edit', route: '/mypost' },
+        // { title: 'กระทู้ของฉัน', icon: 'mdi-clipboard-edit', route: '/mypost' },
         { title: 'บทเรียน', icon: 'mdi-book-open-variant', route: '/lesson' },
         { title: 'แบบทดสอบ', icon: 'mdi-notebook-edit', route: '/quiz' },
         { title: 'วิดีโอ', icon: 'mdi-video', route: '/video' },

@@ -7,7 +7,7 @@
       large
     ></v-breadcrumbs>
   </div>
-<h1 class="mt-0 mb-7" align="center">กระทู้</h1>
+  <h1 class="mt-0 mb-7" align="center">กระทู้</h1>
     <v-card class="cardShowuser">
       <v-card-title>
         <!-- <v-icon class="mr-2" color="#fcad74">mdi-book-open-variant</v-icon> -->
@@ -253,6 +253,10 @@ export default {
   },
   name: 'show',
   data: () => ({
+    defaultButtonText: null,
+    selectedFile: null,
+    isSelecting: false,
+    dialog: false,
     user: {
       user_id: localStorage.getItem('id'),
       user_firstname: localStorage.getItem('user_firstname'),
@@ -270,8 +274,10 @@ export default {
     allcomment: [],
     show: false,
     post_detail: '',
+    post_img: '',
     post_id: '',
     post_status: '',
+    post_statusWait: 'waiting',
     user_id: '',
     comment_detail: '',
     comment_id: '',
@@ -288,14 +294,14 @@ export default {
     panel: '',
     breadcrumbs: [
       {
-        text: 'Dashboard',
+        text: 'หน้าแรก',
         disabled: false,
-        href: 'admindashboard'
+        href: 'home'
       },
       {
-        text: 'หน้าแรก',
+        text: 'กระทู้',
         disabled: true,
-        href: 'adminhome'
+        href: 'home'
       }
     ]
     // postRules: [
@@ -303,6 +309,13 @@ export default {
     // ]
   }
   ),
+  computed: {
+    buttonText () {
+      return this.selectedFile
+        ? this.selectedFile.name
+        : this.defaultButtonText
+    }
+  },
   created () {
     this.getPost()
     this.getComment()
@@ -311,6 +324,26 @@ export default {
   //   this.$emit('test', true)
   // },
   methods: {
+    dialogPost () {
+      this.dialog = true
+    },
+    onButtonClick () {
+      this.isSelecting = true
+      window.addEventListener(
+        'focus',
+        () => {
+          this.isSelecting = false
+        },
+        { once: true }
+      )
+
+      this.$refs.uploader.click()
+    },
+    onFileChanged (e) {
+      this.selectedFile = e.target.files[0]
+
+      // do something
+    },
     showtest (index, postid) {
       this.show = index
       this.panel = postid
@@ -341,15 +374,65 @@ export default {
         }
       })
     },
+    addFormData () {
+      if (this.$refs.form.validate()) {
+        const formData = new FormData()
+        formData.append('post_detail', this.post_detail)
+        formData.append('post_img', this.post_img)
+        formData.append('post_status', this.post_statusWait)
+        formData.append('user_id', this.user.user_id)
+        //   alert(this.file)
+        var headers = {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        }
+
+        var { data } = axios
+          .post(
+            'http://localhost/vue-backend/insertPost.php',
+            formData,
+            headers
+          )
+          .then(function (response) {
+            // handle success
+            console.log(response)
+            console.log('success')
+            if (data === 'success') {
+              Swal.fire({
+                icon: 'success',
+                title: 'โพสต์สำเร็จ',
+                showConfirmButton: false,
+                // text: 'คำอธิบาย',
+                customClass: {
+                  title: 'csss'
+                },
+                timer: 1500
+              })
+            }
+          })
+          .catch(function (response) {
+            // handle error
+            console.log(response)
+            console.log('sorry')
+          })
+      }
+      this.dialog = false
+      this.$refs.form.reset()
+      this.getPost()
+    },
     async writePost () {
       // console.log(this.$refs.form.validate(), 'pp')
-      if (this.$refs.form.validate()) { // กรอกครบมั้ย
-        var { data } = await axios.post('http://localhost/vue-backend/insertPost.php', {
-          // post_id: this.post_id,
-          post_detail: this.post_detail,
-          post_status: 'waiting',
-          user_id: this.user.user_id
-        })
+      if (this.$refs.form.validate()) {
+        // กรอกครบมั้ย
+        var { data } = await axios.post(
+          'http://localhost/vue-backend/insertPost.php',
+          {
+            // post_id: this.post_id,
+            post_detail: this.post_detail,
+            post_status: 'waiting',
+            user_id: this.user.user_id
+          }
+        )
         if (data === 'success') {
           Swal.fire({
             icon: 'success',
@@ -370,12 +453,16 @@ export default {
     async writeComment (postid) {
       console.log(postid, 'post ja')
       console.log(this.$refs.form.validate(), 'pp')
-      if (this.comment_detail !== '') { // กรอกครบมั้ย
-        var { data } = await axios.post('http://localhost/vue-backend/insertComment.php', {
-          comment_detail: this.comment_detail,
-          post_id: postid,
-          user_id: this.user.user_id
-        })
+      if (this.comment_detail !== '') {
+        // กรอกครบมั้ย
+        var { data } = await axios.post(
+          'http://localhost/vue-backend/insertComment.php',
+          {
+            comment_detail: this.comment_detail,
+            post_id: postid,
+            user_id: this.user.user_id
+          }
+        )
         if (data === 'success') {
           Swal.fire({
             icon: 'success',

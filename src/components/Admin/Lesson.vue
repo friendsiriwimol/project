@@ -312,7 +312,6 @@ export default {
           value: 'lesson_id'
         },
         { text: 'บทเรียนเรื่อง', value: 'lesson_name' },
-        { text: 'บทเรียนเรื่อง', value: 'lesson_nameimg' },
         // { text: 'เนื้อหาบทเรียน', value: 'lesson_description' },
         { text: 'แก้ไข', value: 'edit', sortable: false },
         { text: 'ลบ', value: 'delete', sortable: false }

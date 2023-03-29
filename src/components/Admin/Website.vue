@@ -81,23 +81,25 @@
               <v-form v-model="valid1" ref="form1">
               <v-row>
                 <v-col cols="12">
-                  <v-text-field
-                    label="บทที่"
-                    required
-                    v-model="lesson_id"
-                  ></v-text-field>
+                  <v-select
+          :items="alllesson"
+          item-text="lesson_id"
+          label="บทที่"
+          v-model="website.lesson_id"
+          dense
+        ></v-select>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     label="ชื่อเว็บไซต์"
                     required
-                    v-model="website_name"
+                    v-model="website.website_name"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     label="ลิงก์เว็บไซต์"
-                    v-model="website_link"
+                    v-model="website.website_link"
                     required
                   ></v-text-field>
                 </v-col>
@@ -121,11 +123,13 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <v-text-field
-                    label="บทที่"
-                    required
-                    v-model="lesson_id"
-                  ></v-text-field>
+                  <v-select
+          :items="alllesson"
+          item-text="lesson_id"
+          label="บทที่"
+          v-model="lesson_id"
+          dense
+        ></v-select>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
@@ -171,6 +175,7 @@ export default {
     return {
       dialog: false,
       dialog1: false,
+      alllesson: [],
       allwebsite: [],
       lesson_id: '',
       lesson_unit: '',
@@ -180,12 +185,20 @@ export default {
       valid: false,
       valid2: false,
       search: '',
+      website: {
+        lesson_id: '',
+        website_id: '',
+        website_name: '',
+        website_link: ''
+
+      },
       headers: [
         {
           text: 'บทที่',
           align: 'start',
           value: 'lesson_id'
         },
+        { text: 'ชื่อบทเรียน', value: 'lesson_name' },
         { text: 'ชื่อเว็บไซต์', value: 'website_name' },
         { text: 'ลิงก์เว็บไซต์', value: 'website_link' },
         // { text: 'เนื้อหาบทเรียน', value: 'lesson_description' },
@@ -211,8 +224,17 @@ export default {
   },
   created () {
     this.getWebsite()
+    this.getLesson()
   },
   methods: {
+    async getLesson () {
+      axios.get('http://localhost/vue-backend/editLesson.php').then((res) => {
+        console.log('data:', res.data)
+        if (res.data) {
+          this.alllesson = res.data
+        }
+      })
+    },
     async getWebsite () {
       axios.get('http://localhost/vue-backend/editWebsite.php').then((res) => {
         console.log('data:', res.data)
@@ -229,9 +251,9 @@ export default {
       if (this.$refs.form1.validate()) { // กรอกครบมั้ย
         var { data } = await axios.post('http://localhost/vue-backend/insertWebsite.php', {
           // post_id: this.post_id,
-          lesson_id: this.lesson_id,
-          website_name: this.website_name,
-          website_link: this.website_link
+          lesson_id: this.website.lesson_id,
+          website_name: this.website.website_name,
+          website_link: this.website.website_link
         })
         if (data === 'success') {
           Swal.fire({

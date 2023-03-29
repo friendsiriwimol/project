@@ -38,7 +38,7 @@ export default {
         'Access-Control-Allow-Origin': '*'
       }
 
-      axios.post('http://localhost/vue-backend/uploadVideo.php', formData, headers)
+      axios.post('http://localhost/vue-backend/testVideo.php', formData, headers)
         .then(function (response) {
           // handle success
           console.log(response)

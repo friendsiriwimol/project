@@ -110,7 +110,7 @@
           <v-card-title> เพิ่มวิดีโอ </v-card-title>
           <v-card-text>
             <v-container>
-              <v-form v-model="valid1" ref="form1">
+              <v-form v-model="valid1" ref="form1" enctype='multipart/form-data'>
               <v-row>
                 <v-col cols="12">
                   <v-text-field

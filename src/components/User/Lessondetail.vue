@@ -27,6 +27,9 @@
         <!-- <li>{{ website.website_link }}</li> -->
       </ul>
     </div>
+    <div v-if="website.lesson_id !== lesson_id">
+      <p>ไม่พบเว็บไซต์ที่เกี่ยวข้อง</p>
+    </div>
     </v-card-subtitle>
 
     </v-card>
