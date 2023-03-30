@@ -914,7 +914,7 @@ export default {
       if (this.$refs.formAdmin.validate()) {
         console.log('mmmm')
         axios
-          .post('http://localhost/vue-backend/register.php', {
+          .post('http://localhost/vue-backend/registerAdmin.php', {
             user_firstname: this.admin.user_firstname,
             user_lastname: this.admin.user_lastname,
             user_email: this.admin.user_email,

@@ -173,7 +173,6 @@
                       <!-- เพิ่มลงในกระทู้ของคุณ
               <v-spacer></v-spacer> -->
                       <v-file-input
-                        required
                         accept="image/*"
                         color="#099fae"
                         class="mt-3"

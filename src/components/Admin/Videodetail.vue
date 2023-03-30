@@ -315,14 +315,14 @@ export default {
       this.lesson_id = data.lesson_id
       this.video_subunit = data.video_subunit
       this.video_name = data.video_name
-      this.create_at = data.create_at
+      // this.create_at = data.create_at
     },
     async saveUpdate () {
       var bodyValue = {
         lesson_id: this.lesson_id,
         video_subunit: this.video_subunit,
-        video_name: this.video_name,
-        create_at: this.create_at
+        video_name: this.video_name
+        // create_at: this.create_at
 
       }
       var { data } = await axios.put('http://localhost/vue-backend/updateVideo.php', bodyValue)
@@ -339,6 +339,7 @@ export default {
           },
           timer: 1500
         })
+        this.dialog = false
         this.getVideo()
       // setTimeout(() => {
       //   this.getData()

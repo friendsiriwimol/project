@@ -77,20 +77,20 @@
                     <v-text-field
                       label="บทที่"
                       required
-                      v-model="lesson_id"
+                      v-model="lesson.lesson_id"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-text-field
                       label="บทเรียนเรื่อง"
                       required
-                      v-model="lesson_name"
+                      v-model="lesson.lesson_name"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-file-input
                     accept="image/*"
-                    v-model="lesson_unitimg"
+                    v-model="lesson.lesson_unitimg"
                     required
                     label="รูปภาพหน้าปกบทเรียน"
                     variant="underlined"></v-file-input>
@@ -113,7 +113,7 @@
                         @blur="onEditorBlur($event)"
                         @focus="onEditorFocus($event)"
                         @ready="onEditorReady($event)"
-                        v-model="lesson_description"
+                        v-model="lesson.lesson_description"
                       />
                       <!-- <div class="output code">
                                   <code class="hljs" v-html="contentCode"></code>
@@ -299,7 +299,9 @@ export default {
       lesson_name: '',
       lesson_description: '',
       lesson: {
+        lesson_id: '',
         lesson_name: '',
+        lesson_unitimg: '',
         lesson_description: ''
       },
       valid: false,
@@ -362,10 +364,10 @@ export default {
     },
     async insertLesson () {
       const formData = new FormData()
-      formData.append('lesson_id', this.lesson_id)
-      formData.append('lesson_name', this.lesson_name)
-      formData.append('lesson_unitimg', this.lesson_unitimg)
-      formData.append('lesson_description', this.lesson_description)
+      formData.append('lesson_id', this.lesson.lesson_id)
+      formData.append('lesson_name', this.lesson.lesson_name)
+      formData.append('lesson_unitimg', this.lesson.lesson_unitimg)
+      formData.append('lesson_description', this.lesson.lesson_description)
       //   alert(this.file)
       var headers = {
         'Content-Type': 'application/json',
@@ -374,25 +376,31 @@ export default {
       axios.post('http://localhost/vue-backend/insertLesson.php', formData, headers)
         .then(function (response) {
           // handle success
-          this.dialog1 = false
-          this.$refs.form1.reset()
+          // this.dialog1 = false
+          // this.$refs.form1.reset()
+          // this.getLesson()
           console.log(response)
           console.log('success')
-          Swal.fire({
-            icon: 'success',
-            title: 'เพิ่มสำเร็จ',
-            showConfirmButton: false,
-            // text: 'คำอธิบาย',
-            customClass: {
-              title: 'csss'
-            },
-            timer: 1500
-          })
+          // Swal.fire({
+          //   icon: 'success',
+          //   title: 'เพิ่มสำเร็จ',
+          //   showConfirmButton: false,
+          //   // text: 'คำอธิบาย',
+          //   customClass: {
+          //     title: 'csss'
+          //   },
+          //   timer: 1500
+          // })
+          // this.dialog1 = false
+          // this.$refs.form1.reset()
+          // this.lesoon.lesson_description = ''
+          // this.getLesson()
         })
         .catch(function (response) {
           // handle error
           console.log(response)
           console.log('sorry')
+          this.getLesson()
         })
       Swal.fire({
         icon: 'success',
@@ -404,10 +412,10 @@ export default {
         },
         timer: 1500
       })
+      this.getLesson()
       this.dialog1 = false
       this.$refs.form1.reset()
-      this.lesson_description = ''
-      this.getLesson()
+      this.lesson.lesson_description = ''
     },
     // async saveInsert () {
     //   var bodyValue = {

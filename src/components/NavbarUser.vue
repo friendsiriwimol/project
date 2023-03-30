@@ -100,11 +100,11 @@ export default {
         { title: 'บทเรียน', icon: 'mdi-book-open-variant', route: '/lesson' },
         { title: 'แบบทดสอบ', icon: 'mdi-notebook-edit', route: '/quiz' },
         { title: 'วิดีโอ', icon: 'mdi-video', route: '/video' },
-        {
-          title: 'ประวัติเข้าเรียน',
-          icon: 'mdi-clipboard-text-clock',
-          route: '/history'
-        },
+        // {
+        //   title: 'ประวัติเข้าเรียน',
+        //   icon: 'mdi-clipboard-text-clock',
+        //   route: '/history'
+        // },
         { title: 'บัญชีผู้ใช้', icon: 'mdi-account', route: '/profile' }
       ]
     }

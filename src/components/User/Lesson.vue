@@ -22,7 +22,7 @@
     >
 
     <v-img
-      class="black--text align-end"
+      class="white--text align-end"
       height="200px"
       :src="lesson.lesson_unitimg">
       <v-card-title>บทที่ {{lesson.lesson_id}}</v-card-title>
