@@ -275,25 +275,35 @@ export default {
     //   this.dialog = false
     // }
     async deleteItem (data) {
-      // var idDel = parseInt(data.id)
-      var { data: deletes } = await axios.post('http://localhost/vue-backend/deleteLesson.php', {
-        lesson_id: data.lesson_id
+      Swal.fire({
+        title: 'คุณต้องการลบใช่ไหม?',
+        // text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#56a062',
+        cancelButtonColor: '#ea5859',
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post('http://localhost/vue-backend/deleteLesson.php', {
+            lesson_id: data.lesson_id
+          })
+          Swal.fire({
+            icon: 'success',
+            title: 'ลบสำเร็จ',
+            showConfirmButton: false,
+            // text: 'คำอธิบาย',
+            customClass: {
+              title: 'csss'
+            },
+            timer: 1500
+          })
+          setTimeout(() => {
+            this.getLesson()
+          }, 1500)
+        }
       })
-      console.log(deletes, 'delete')
-      if (deletes === 'success') {
-        this.dialog = false
-        Swal.fire({
-          icon: 'success',
-          title: 'ลบสำเร็จ',
-          showConfirmButton: false,
-          // text: 'คำอธิบาย',
-          customClass: {
-            title: 'csss'
-          },
-          timer: 1500
-        })
-        this.getLesson()
-      }
     },
     computed: {
       alllesson () {

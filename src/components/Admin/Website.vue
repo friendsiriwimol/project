@@ -16,7 +16,9 @@
         v-model="search"
         append-icon="mdi-magnify"
         label="ค้นหา"
-        dense
+        filled
+          rounded
+          dense
         color="#099fae"
         single-line
         hide-details
@@ -24,6 +26,9 @@
     </v-card-title>
     <v-card-title>
       <v-spacer></v-spacer>
+      <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+
     <v-btn
       class="mx-2"
       fab
@@ -31,6 +36,8 @@
       small
       color="#099fae"
       @click="OpenDialog()"
+      v-bind="attrs"
+          v-on="on"
 
     >
       <v-icon dark
@@ -38,10 +45,14 @@
         mdi-plus
       </v-icon>
     </v-btn>
+  </template>
+        <span>เพิ่มเว็บไซต์</span>
+      </v-tooltip>
+
     </v-card-title>
     <!-- <v-card-title>friend</v-card-title> -->
        <v-data-table
-       :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+       :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
        :items="allwebsite"
        :headers="headers"
        :items-per-page="5"
@@ -81,12 +92,33 @@
               <v-form v-model="valid1" ref="form1">
               <v-row>
                 <v-col cols="12">
+                  <v-card
+    class="d-flex pa-2"
+    outlined
+    tile
+  >
+    <div class="text-center">
+      <v-chip
+      class="ma-2"
+      color="success"
+      outlined
+    >
+      <v-icon left>
+        mdi-book-open-variant
+      </v-icon>
+      บทที่ {{ website.lesson_id}}
+    </v-chip>
+    </div>
+  </v-card>
+                </v-col>
+                <v-col cols="12">
                   <v-select
           :items="alllesson"
-          item-text="lesson_id"
-          label="บทที่"
+          item-text="lesson_name"
+          item-title="lesson_id"
+          label="บทเรียนเรื่อง"
           v-model="website.lesson_id"
-          dense
+          item-value="lesson_id"
         ></v-select>
                 </v-col>
                 <v-col cols="12">
@@ -99,6 +131,7 @@
                 <v-col cols="12">
                   <v-text-field
                     label="ลิงก์เว็บไซต์"
+                    :rules="[rules.url]"
                     v-model="website.website_link"
                     required
                   ></v-text-field>
@@ -123,12 +156,33 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
+                  <v-card
+    class="d-flex pa-2"
+    outlined
+    tile
+  >
+    <div class="text-center">
+      <v-chip
+      class="ma-2"
+      color="success"
+      outlined
+    >
+      <v-icon left>
+        mdi-book-open-variant
+      </v-icon>
+      บทที่ {{ lesson_id}}
+    </v-chip>
+    </div>
+  </v-card>
+                </v-col>
+                <v-col cols="12">
                   <v-select
           :items="alllesson"
-          item-text="lesson_id"
-          label="บทที่"
+          item-text="lesson_name"
+          label="บทเรียนเรื่อง"
           v-model="lesson_id"
           dense
+          item-value="lesson_id"
         ></v-select>
                 </v-col>
                 <v-col cols="12">
@@ -143,6 +197,7 @@
                     label="ลิงก์เว็บไซต์"
                     v-model="website_link"
                     required
+                    :rules="[rules.url]"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -173,6 +228,22 @@ export default {
   },
   data () {
     return {
+      rules: {
+        url: value => {
+          const regex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}/gm
+          return regex.test(value) || 'กรุณากรอกในรูปแบบลิงก์เว็บไซต์'
+        }
+      },
+      select: {
+        unit: 'บทที่',
+        name: 'ชื่อบทเรียน'
+      },
+      names: [
+        { id: 1, name: 'Paul', age: 23 },
+        { id: 2, name: 'Marcelo', age: 15 },
+        { id: 3, name: 'Any', age: 30 }
+      ],
+      name: null,
       dialog: false,
       dialog1: false,
       alllesson: [],
@@ -225,6 +296,7 @@ export default {
   created () {
     this.getWebsite()
     this.getLesson()
+    this.delete()
   },
   methods: {
     async getLesson () {
@@ -303,6 +375,7 @@ export default {
       // console.log('item:', data)คือฟังก์ชันedit(data)ข้างบนdataที่ส่งมา
       this.dialog = true
       this.lesson_id = data.lesson_id
+      this.website_id = data.website_id
       this.website_name = data.website_name
       this.website_link = data.website_link
       this.create_at = data.create_at
@@ -313,6 +386,7 @@ export default {
     async saveUpdate () {
       var bodyValue = {
         lesson_id: this.lesson_id,
+        website_id: this.website_id,
         website_name: this.website_name,
         website_link: this.website_link,
         create_at: this.create_at
@@ -338,10 +412,7 @@ export default {
       // }, 2000)
       }
     },
-    // closedialog () {
-    //   this.dialog = false
-    // }
-    async deleteItem (data) {
+    async delete (data) {
       var { data: deletes } = await axios.post(
         'http://localhost/vue-backend/deleteWebsite.php',
         {
@@ -365,6 +436,91 @@ export default {
           this.getWebsite()
         }, 1500)
       }
+    },
+    // closedialog () {
+    //   this.dialog = false
+    // }
+    // async deleteItem (data) {
+    //   var { data: deletes } = await axios.post(
+    //     'http://localhost/vue-backend/deleteWebsite.php',
+    //     {
+    //       website_id: data.website_id
+    //     }
+    //   )
+    //   console.log(deletes, 'delete')
+    //   if (deletes === 'success') {
+    //     this.dialog = false
+    //     Swal.fire({
+    //       icon: 'success',
+    //       title: 'ลบสำเร็จ',
+    //       showConfirmButton: false,
+    //       // text: 'คำอธิบาย',
+    //       customClass: {
+    //         title: 'csss'
+    //       },
+    //       timer: 1500
+    //     })
+    //     setTimeout(() => {
+    //       this.getWebsite()
+    //     }, 1500)
+    //   }
+    // }
+    async deleteItem (data) {
+      Swal.fire({
+        title: 'คุณต้องการลบใช่ไหม?',
+        // text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#56a062',
+        cancelButtonColor: '#ea5859',
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post(
+            'http://localhost/vue-backend/deleteWebsite.php',
+            {
+              website_id: data.website_id
+            }
+          )
+          Swal.fire({
+            icon: 'success',
+            title: 'ลบสำเร็จ',
+            showConfirmButton: false,
+            // text: 'คำอธิบาย',
+            customClass: {
+              title: 'csss'
+            },
+            timer: 1500
+          })
+          setTimeout(() => {
+            this.getWebsite()
+          }, 1500)
+        }
+      })
+      // var { data: deletes } = await axios.post(
+      //   'http://localhost/vue-backend/deleteWebsite.php',
+      //   {
+      //     website_id: data.website_id
+      //   }
+      // )
+      // console.log(deletes, 'delete')
+      // if (deletes === 'success') {
+      //   this.dialog = false
+      //   Swal.fire({
+      //     icon: 'success',
+      //     title: 'ลบสำเร็จ',
+      //     showConfirmButton: false,
+      //     // text: 'คำอธิบาย',
+      //     customClass: {
+      //       title: 'csss'
+      //     },
+      //     timer: 1500
+      //   })
+      //   setTimeout(() => {
+      //     this.getWebsite()
+      //   }, 1500)
+      // }
     }
   // mounted () {
   //   this.getUser()

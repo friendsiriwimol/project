@@ -20,41 +20,95 @@
   ></v-text-field>
 
 </v-card-title>-->
-<v-card-title>บทที่ {{ lesson_id}}
-  <v-spacer></v-spacer>
+<v-card-title>บทที่ {{ lesson_id}} <span class="teal--text">&nbsp;{{ this.lesson_name }}</span>
+          <v-spacer></v-spacer>
 
-</v-card-title>
+        </v-card-title>
 <v-divider></v-divider>
 <v-container>
-  <center>
-      <div class="mt-5">
-        <v-row>
-  <v-col cols="12" xs="12" sm="12"
-        md="6" v-for="video in allvideo" v-bind:key="video.video_id">
-        <v-card outlined style="border: 1px solid #fcad74;">
-    <video autoplay controls class="mt-5" width="90%">
-<source :src="video.video_file" />
+          <center>
+              <div class="mt-5">
+                <v-row>
+          <v-col cols="12" xs="12" sm="12"
+                md="6" v-for="video in allvideo" v-bind:key="video.video_id">
+                <v-card outlined style="border: 1px solid #fcad74;">
+            <video autoplay controls class="mt-5" width="90%">
+  <source :src="video.video_file" />
 </video>
 
-        <!-- <video autoplay controls :src="video.video_file">
-The “video” tag is not supported by your browser.
+                <!-- <video autoplay controls :src="video.video_file">
+  The “video” tag is not supported by your browser.
 </video> -->
-        <!-- <iframe :src="video.video_file" width="100%" height="600px"></iframe> -->
+                <!-- <iframe :src="video.video_file" width="100%" height="600px"></iframe> -->
 
-        <!-- <iframe width="100%" src="https://www.youtube.com/embed/GTcM3qCeup0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
-        <v-divider class="mt-5" color="#fcad74"></v-divider>
+                <!-- <iframe width="100%" src="https://www.youtube.com/embed/GTcM3qCeup0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                <v-divider class="mt-5" color="#fcad74"></v-divider>
 
-<v-card-actions class="ml-5 mr-5">
-{{video.video_subunit}} {{video.video_name}}
-<v-spacer></v-spacer>
+<v-card-actions class="ml-5 mr-5"  @click="OpenDialog(video)">
+  {{video.video_subunit}} {{video.video_name}}
+  <v-spacer></v-spacer>
+
+<v-btn icon>
+  <v-icon color="primary" @click="OpenDialog(video)">mdi-eye</v-icon>
+</v-btn>
 </v-card-actions>
-      </v-card>
-        </v-col>
-  </v-row>
-      </div>
-      </center>
-    </v-container>
+              </v-card>
+                </v-col>
+          </v-row>
+              </div>
+              </center>
+            </v-container>
 </v-card>
+<v-dialog
+      v-model="dialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar
+          dark
+          color="#099fae"
+        >
+          <v-btn
+            icon
+            dark
+            @click="dialog = false"
+          >
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title> บทที่ {{ lesson_id}} </v-toolbar-title>
+          <!-- <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn
+              dark
+              text
+              @click="dialog = false"
+            >
+              Save
+            </v-btn>
+          </v-toolbar-items> -->
+        </v-toolbar>
+        <v-container>
+          <v-alert
+      dense
+      text
+      type="success"
+      icon="mdi-book-open-variant"
+      width="80%"
+      class="ma-auto d-flex"
+    >
+    <strong>บทย่อย</strong> {{video_subunit}} {{video_name}}
+    </v-alert>
+          <center>
+
+        <video autoplay controls width="80%" class="mt-5">
+  <source :src="video_file" />
+</video>
+</center>
+</v-container>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -96,7 +150,7 @@ export default {
       {
         text: 'วิดีโอ',
         disabled: false,
-        href: 'video'
+        to: { name: 'video' }
       },
       {
         text: 'รายละเอียดวิดีโอ',
@@ -107,21 +161,63 @@ export default {
     dialog: false
   }),
   created () {
+    this.lesson_id = this.$route.params.id
     this.getLesson()
     this.getVideo()
   },
   methods: {
     async getVideo () {
-      var url = 'http://localhost/vue-backend/video.php?lesson_id=' + this.lesson_id
+      const url =
+        'http://localhost/vue-backend/videoDetail.php?lesson_id=' + this.lesson_id
       // alert(url)
-      // alert('vdo')
-      axios.get(url).then((res1) => {
-        console.log('data:', res1.data)
-        if (res1.data) {
-          this.allvideo = res1.data
-          // alert(res1.data.video_id)
-        }
-      })
+      // alert('http://localhost/vue-backend/lesson_detail.php?id=', this.lesson_id)
+
+      axios
+        .get(url)
+        .then(response => {
+          console.log(response)
+          this.allvideo = response.data
+          this.video = response.data[0]
+          this.lesson_name = this.video.lesson_name
+        //   this.info = response.data[0]
+        //   // alert(this.info)
+        //   this.lesson_id = this.info.lesson_id
+        //   this.video_subunit = this.info.video_subunit
+        //   this.video_name = this.info.video_name
+        //   this.video_file = this.info.video_file
+        })
+      /*
+        axios.post(url, {
+          request: 1
+
+        })
+          .then(function (response) {
+            alert('work')
+            this.data = response.data[0]
+            alert(response.data.status)
+            // alert(this.data.status)
+          })
+        */
+    },
+    // async getVideo () {
+    //   var url = 'http://localhost/vue-backend/video.php?lesson_id=' + this.lesson_id
+    //   // alert(url)
+    //   // alert('vdo')
+    //   axios.get(url).then((res1) => {
+    //     console.log('data:', res1.data)
+    //     if (res1.data) {
+    //       this.allvideo = res1.data
+    //       // alert(res1.data.video_id)
+    //     }
+    //   })
+    // },
+    OpenDialog (data) {
+      this.dialog = true
+      this.lesson_id = data.lesson_id
+      this.video_id = data.video_id
+      this.video_subunit = data.video_subunit
+      this.video_name = data.video_name
+      this.video_file = data.video_file
     },
     async getLesson () {
       axios.get('http://localhost/vue-backend/editLesson.php').then(res => {

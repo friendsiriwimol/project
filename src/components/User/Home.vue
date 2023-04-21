@@ -58,7 +58,7 @@
         <v-spacer></v-spacer>
         <a href="/lesson"><span class="black--text">ดูบทเรียนทั้งหมด</span></a>
       </v-toolbar>
-      <v-row>
+      <!-- <v-row>
 <v-col cols="12"
                 sm="6"
                 md="3"
@@ -75,10 +75,6 @@
       :src="lesson.lesson_unitimg">
       <v-card-title>บทที่ {{lesson.lesson_id}}</v-card-title>
     </v-img>
-
-    <!-- <v-card-subtitle class="pb-0">
-      Number 10
-    </v-card-subtitle> -->
 
     <v-card-text class="text--primary">
       <div>{{lesson.lesson_name}}</div>
@@ -97,6 +93,79 @@
     </v-card-actions>
   </v-card>
 </v-col>
+  </v-row> -->
+  <v-row>
+    <v-col>
+      <v-sheet
+    class="mx-auto"
+  >
+    <v-slide-group
+      v-model="model"
+      class="pa-4"
+      center-active
+      show-arrows
+    >
+      <v-slide-item
+      v-for="lesson in alllesson" v-bind:key="lesson.lesson_id"
+      v-slot="{ active, toggle }"
+      >
+        <!-- <v-card
+          :color="active ? 'primary' : 'grey lighten-1'"
+          class="ma-4"
+          height="200"
+          width="300"
+          @click="toggle"
+        >
+          <v-row
+            class="fill-height"
+            align="center"
+            justify="center"
+          >
+            <v-scale-transition>
+              <v-icon
+                v-if="active"
+                color="white"
+                size="48"
+                v-text="'mdi-close-circle-outline'"
+              ></v-icon>
+            </v-scale-transition>
+          </v-row>
+        </v-card> -->
+        <v-card
+    class="mx-auto ma-5 ml-2"
+    color= "#fff"
+          height="310"
+          width="300"
+          @click="toggle"
+    >
+
+    <v-img
+      class="white--text align-end"
+      height="200px"
+      :src="lesson.lesson_unitimg">
+      <v-card-title>บทที่ {{lesson.lesson_id}}</v-card-title>
+    </v-img>
+
+    <v-card-text class="text--primary">
+      <div>{{lesson.lesson_name}}</div>
+    </v-card-text>
+
+    <v-card-actions>
+      <router-link v-bind:to="'/lessondetail/'+ lesson.lesson_id">
+      <v-btn
+        color="#fcad74"
+        outlined
+      >
+      อ่านเพิ่มเติม
+      </v-btn>
+    </router-link>
+
+    </v-card-actions>
+  </v-card>
+      </v-slide-item>
+    </v-slide-group>
+  </v-sheet>
+    </v-col>
   </v-row>
     <v-toolbar flat color="rgba(0,0,0,0)" dense class="mt-10 mb-10">
         <v-toolbar-title>เกี่ยวกับเรา</v-toolbar-title>
@@ -217,7 +286,7 @@ export default {
   methods: {
     async getLesson () {
       console.log('rewload')
-      axios.get('http://localhost/vue-backend/lessonHome.php').then((res) => {
+      axios.get('http://localhost/vue-backend/lesson.php').then((res) => {
         console.log('data:', res.data)
         if (res.data) {
           this.alllesson = res.data

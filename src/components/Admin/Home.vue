@@ -1,13 +1,10 @@
 <template>
   <div class="app">
-    <NavbarAdmin/>
+    <NavbarAdmin />
     <div>
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      large
-    ></v-breadcrumbs>
-  </div>
-  <h1 class="mt-0 mb-7" align="center">กระทู้</h1>
+      <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
+    </div>
+    <h1 class="mt-0 mb-7" align="center">กระทู้</h1>
     <v-card class="cardShowuser">
       <v-card-title>
         <!-- <v-icon class="mr-2" color="#fcad74">mdi-book-open-variant</v-icon> -->
@@ -54,7 +51,7 @@
 
     <v-card
       class="cardShowuser"
-      v-for="(postuser, index) in allapprove"
+      v-for="(postuser) in allapprove"
       :key="postuser.post_id"
     >
       <!-- {{postuser}} -->
@@ -64,19 +61,26 @@
           >{{ postuser.post_detail }}</span
         >
       </v-card-title>
-      <div align="center" justify="space-around">
-        <v-img
-        class="align-center ml-5"
-        width="20%"
-        :src="postuser.post_img"
-        rounded
-      >
-      </v-img>
+      <v-container v-if="postuser.post_img==='null'" class="pa-0">
+    </v-container>
+      <v-container  justify="space-around" v-if="postuser.post_img!=='null'">
+      <div align="center">
+        <v-row class="align-center justify-center">
+          <v-col class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
+            <v-img
+          class="align-center"
+          :src="postuser.post_img"
+          rounded
+        >
+        </v-img>
+          </v-col>
+        </v-row>
       </div>
+    </v-container>
       <v-card-subtitle
         >โพสต์เมื่อ วันที่ {{ postuser.create_at }} น.</v-card-subtitle
       >
-      <v-card-actions>
+      <!-- <v-card-actions>
         <v-spacer></v-spacer>
 
         <v-btn
@@ -84,41 +88,59 @@
           icon
           @click="showtest(index, postuser.post_id)"
         >
-          <v-icon color="#099fae">mdi-comment</v-icon>
+          <v-icon color="#red">mdi-comment</v-icon>
         </v-btn>
         <v-btn v-else icon @click="showtest2(index)">
-          <v-icon color="#099fae">mdi-comment-outline</v-icon>
+          <v-icon color="#000">mdi-comment-outline</v-icon>
         </v-btn>
-      </v-card-actions>
+      </v-card-actions> -->
 
       <v-expand-transition>
-        <div v-show="show === index">
+        <div>
           <v-container fluid>
             <v-form v-model="valid2" ref="form2">
               <div
-                class="mx-auto ma-3"
+                class="mx-auto"
                 width="60%"
                 v-for="comment in allcomment"
                 v-bind:key="comment.comment_id"
+                rounded
               >
                 <div v-if="comment.post_id === postuser.post_id">
-                  <v-divider class="mb-2"></v-divider>
-                  <div color="#099fae">
+                  <v-divider class="mb-3"></v-divider>
+                  <v-card color="#F2FBFC" outlined class="mb-3">
+                  <v-card-title>
+                    {{ comment.user_firstname }}
+                    {{ comment.user_lastname }}&nbsp;<span
+                      style="color: #099fae;"
+                      >{{ comment.comment_detail }}</span
+                    >
+                  </v-card-title>
+                  <v-card-subtitle
+                    >แสดงความคิดเห็นเมื่อ
+                    {{ comment.create_at }} น.</v-card-subtitle
+                  >
+                </v-card>
+                  <!-- <div color="#099fae" class="mb-5">
                     {{ comment.user_firstname }} {{ comment.user_lastname }}
-                    <span style="color: gray"
+                    <span style="color: gray; font-weight:normal"
                       >แสดงความคิดเห็นเมื่อ {{ comment.create_at }} น.</span
                     >
                   </div>
-                  <div>{{ comment.comment_detail }}</div>
+                  <div>&nbsp;<span
+          style="color: #21777f; font-size: 1.1em; margin-top:50px;">{{ comment.comment_detail }}</span></div> -->
                   <!-- <v-divider class="mt-3"></v-divider> -->
                 </div>
               </div>
+              <v-spacer></v-spacer>
               <v-textarea
                 v-model="comment_detail"
                 filled
                 auto-grow
                 label="แสดงความคิดเห็น"
                 rows="2"
+                margin-top="15"
+                rounded
                 color="#099fae"
                 row-height="20"
                 @keyup.enter="writeComment(postuser.post_id)"
@@ -176,7 +198,6 @@
                       <!-- เพิ่มลงในกระทู้ของคุณ
               <v-spacer></v-spacer> -->
                       <v-file-input
-                        required
                         accept="image/*"
                         color="#099fae"
                         class="mt-3"
@@ -294,21 +315,20 @@ export default {
     panel: '',
     breadcrumbs: [
       {
-        text: 'หน้าแรก',
+        text: 'Dashboard',
         disabled: false,
-        href: 'home'
+        href: 'admindashboard'
       },
       {
         text: 'กระทู้',
         disabled: true,
-        href: 'home'
+        href: 'adminhome'
       }
     ]
     // postRules: [
     //   v => !!v || ''
     // ]
-  }
-  ),
+  }),
   computed: {
     buttonText () {
       return this.selectedFile
@@ -317,8 +337,8 @@ export default {
     }
   },
   created () {
-    this.getPost()
     this.getComment()
+    this.getPost()
   },
   // mounted () {
   //   this.$emit('test', true)
@@ -349,10 +369,10 @@ export default {
       this.panel = postid
       this.comment_detail = ''
     },
-    showtest2 (index) {
-      this.show = !index
-      this.panel = ''
-    },
+    // showtest2 (index) {
+    //   this.show = !index
+    //   this.panel = ''
+    // },
     async getPost () {
       console.log('rewload')
       axios.get('http://localhost/vue-backend/postApprove.php').then((res) => {
@@ -482,15 +502,14 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
-*{
-font-family: 'Prompt', sans-serif;
+* {
+  font-family: "Prompt", sans-serif;
 }
 .btnpost {
-display: flex !important;
+  display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   /* height: 50px !important; */
@@ -498,10 +517,10 @@ display: flex !important;
   text-align: center !important;
   padding: 0px 30px !important;
 }
-.col9{
+.col9 {
   height: 76px;
 }
-.inputpost{
+.inputpost {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -510,14 +529,14 @@ display: flex !important;
 }
 .csss {
   /* color: black !important; */
-  font-family: 'Kanit';
+  font-family: "Kanit";
   font-weight: 400;
 }
-.cardShowuser{
+.cardShowuser {
   margin-top: 2%;
 }
 .v-breadcrumbs >>> a {
-    color: #fcad74;
+  color: #fcad74;
 }
 /* .app{
   background-color: black;

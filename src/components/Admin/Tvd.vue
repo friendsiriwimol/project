@@ -20,24 +20,12 @@
           ></v-text-field>
 
         </v-card-title>-->
-        <v-card-title>บทที่ {{ lesson_id}} <span class="teal--text">&nbsp;{{ this.lesson_name }}</span>
+        <v-card-title>บทที่ {{ lesson_id}} {{  this.lesson_name }}
           <v-spacer></v-spacer>
-                <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-          <v-btn class="mx-2"
-          fab
-          dark
-          small
-          color="#099fae"
-          @click="OpenDialog()"
-                    v-bind="attrs"
-          v-on="on"
->
-                <v-icon dark>mdi-plus</v-icon>
+          <v-btn icon>
+                <v-icon color="red" @click="OpenDialog()">mdi-plus</v-icon>
               </v-btn>
-      </template>
-        <span>เพิ่มวิดีโอ</span>
-      </v-tooltip>
+
         </v-card-title>
         <v-divider></v-divider>
         <v-container>
@@ -65,9 +53,6 @@
 
               <v-btn icon>
                 <v-icon color="#56a062" @click="editItem(video)">mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon color="primary" @click="editVideo(video)">mdi-video</v-icon>
               </v-btn>
               <v-btn icon>
                 <v-icon color="red" @click="deleteItem(video)">mdi-delete</v-icon>
@@ -108,20 +93,6 @@
                     required
                   ></v-text-field>
                 </v-col>
-                    <!-- <v-col cols="12">
-                    <v-file-input
-                    accept="video/*"
-                    v-model="videofile"
-                    required
-                    prepend-icon="mdi-video"
-                    label="ไฟล์วิดีโอ"
-                    variant="underlined"></v-file-input>
-                  </v-col> -->
-                <!-- <v-col cols="12">
-                  <video autoplay controls class="mt-5" width="100%">
-                    <source :src="video_file" />
-                  </video>
-                </v-col> -->
               </v-row>
             </v-container>
           </v-card-text>
@@ -131,45 +102,6 @@
               ปิด
             </v-btn>
             <v-btn color="blue darken-1" text @click="saveUpdate()"> บันทึก </v-btn>
-          </v-card-actions>
-        </v-card>
-                </v-dialog>
-                <v-dialog v-model="dialog2" max-width="600px" persistent>
-                      <v-card>
-          <v-card-title> วิดีโอ </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                    <v-col cols="12">
-                    <v-file-input
-                    accept="video/*"
-                    v-model="videofile"
-                    required
-                    prepend-icon="mdi-video"
-                    label="ไฟล์วิดีโอ"
-                    variant="underlined"></v-file-input>
-                  </v-col>
-                  <!-- <v-col>
-                    <v-textarea
-                    outlined
-                              auto-grow disabled
-                    label="Base64 value"
-                    v-model="base64"/>
-                  </v-col> -->
-                <!-- <v-col cols="12">
-                  <video autoplay controls class="mt-5" width="100%">
-                    <source :src="base64" />
-                  </video>
-                </v-col> -->
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog2 = false">
-              ปิด
-            </v-btn>
-            <v-btn color="blue darken-1" text @click="saveUpdateVideo()"> บันทึก </v-btn>
           </v-card-actions>
         </v-card>
                 </v-dialog>
@@ -184,7 +116,7 @@
                   <v-text-field
                     label="บทที่"
                     required
-                    v-model="video.lesson_id"
+                    v-model="lesson_id"
                     disabled
                   ></v-text-field>
                 </v-col>
@@ -192,33 +124,23 @@
                   <v-text-field
                     label="บทย่อยที่"
                     required
-                    v-model="video.subunit"
+                    v-model="video_subunit"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     label="ชื่อวิดีโอ"
-                    v-model="video.name"
+                    v-model="video_name"
                     required
                   ></v-text-field>
                 </v-col>
-                <v-row>
-                    <v-col cols="12">
-                    <v-file-input
-                    accept="video/*"
-                    v-model="videofile"
-                    required
-                    prepend-icon="mdi-video"
+                <v-col cols="12">
+                  <v-file-input
                     label="ไฟล์วิดีโอ"
-                    variant="underlined"></v-file-input>
-                  </v-col>
-                    <!-- <v-col  cols="12">
-                    <v-img
-                      :src="base64"
-                      width="100%"
-                    ></v-img>{{ videofile ? videofile.name : '' }}
-                  </v-col> -->
-                  </v-row>
+                    accept="video/*"
+                    required
+                    v-model="videofile"/>
+                </v-col>
               </v-row>
               </v-form>
             </v-container>
@@ -269,7 +191,6 @@ export default {
       videofile: null,
       dialog: false,
       dialog1: false,
-      dialog2: false,
       reveal: false,
       alllesson: [],
       allvideo: [],
@@ -278,10 +199,10 @@ export default {
       video_subunit: '',
       video_name: '',
       video: {
-        id: '',
-        subunit: '',
-        name: '',
-        file: ''
+        lesson_id: '',
+        video_subunit: '',
+        video_name: '',
+        video_file: ''
       },
       headers: [
         {
@@ -295,18 +216,19 @@ export default {
       ],
       breadcrumbs: [
         {
-          text: 'Dashboard',
+          text: 'หน้าแรก',
           disabled: false,
-          href: 'admindashboard'
+          href: 'home'
         },
         {
           text: 'จัดการวิดีโอ',
           disabled: false,
-          to: { name: 'adminvideo' }
+          href: 'adminvideo'
         },
         {
           text: 'วิดีโอ',
-          disabled: true
+          disabled: true,
+          href: 'adminvideo'
         }
       ],
       item: '',
@@ -368,6 +290,7 @@ export default {
         //   this.video_name = this.info.video_name
         //   this.video_file = this.info.video_file
         })
+        .then(response => (this.info = response))
       /*
         axios.post(url, {
           request: 1
@@ -387,8 +310,8 @@ export default {
     insertVideo () {
       if (this.$refs.form1.validate()) {
         const formData = new FormData()
-        formData.append('video_subunit', this.video.subunit)
-        formData.append('video_name', this.video.name)
+        formData.append('video_subunit', this.video_subunit)
+        formData.append('video_name', this.video_name)
         formData.append('video_file', this.base64)
         formData.append('lesson_id', this.lesson_id)
         //   alert(this.file)
@@ -397,92 +320,54 @@ export default {
           'Access-Control-Allow-Origin': '*'
         }
 
-        axios.post(
-          'http://localhost/vue-backend/insertVideo.php',
-          formData,
-          headers
-        )
+        var { data } = axios
+          .post(
+            'http://localhost/vue-backend/insertVideo.php',
+            formData,
+            headers
+          )
           .then(function (response) {
             // handle success
             console.log(response)
             console.log('success')
-            Swal.fire({
-              icon: 'success',
-              title: 'เพิ่มสำเร็จ',
-              showConfirmButton: false,
-              // text: 'คำอธิบาย',
-              customClass: {
-                title: 'csss'
-              },
-              timer: 1500
-            })
+            if (data === 'success') {
+              Swal.fire({
+                icon: 'success',
+                title: 'โพสต์สำเร็จ',
+                showConfirmButton: false,
+                // text: 'คำอธิบาย',
+                customClass: {
+                  title: 'csss'
+                },
+                timer: 1500
+              })
+            }
           })
           .catch(function (response) {
             // handle error
             console.log(response)
             console.log('sorry')
           })
-        this.getVideo()
-        location.reload()
-        this.dialog1 = false
-        this.$refs.form1.reset()
       }
-    },
-    editVideo (data) {
-      // console.log('item:', this.items)มันไม่มีค่า มันเอามาจากตัวแปรitems:{}ข้างบน มันว่าง
-      // console.log('item:', data)คือฟังก์ชันedit(data)ข้างบนdataที่ส่งมา
-      this.dialog2 = true
-      this.video_subunit = data.video_subunit
-      this.video_file = data.video_file
-      // this.create_at = data.create_at
-    },
-    async saveUpdateVideo () {
-      var bodyValue = {
-        video_subunit: this.video_subunit,
-        video_file: this.base64
-
-      }
-      await axios.put('http://localhost/vue-backend/updatefileVideo.php', bodyValue)
-      // if (data === 'success') {
-      this.dialog2 = false
+      this.dialog = false
+      this.$refs.form1.reset()
       this.getVideo()
-
-      Swal.fire({
-        icon: 'success',
-        title: 'แก้ไขสำเร็จ',
-        showConfirmButton: false,
-        // text: 'คำอธิบาย',
-        customClass: {
-          title: 'csss'
-        },
-        timer: 1500
-      })
-      this.dialog2 = false
-      this.video_file = ''
-      location.reload()
-      this.getVideo()
-      // setTimeout(() => {
-      //   this.getData()
-      // }, 2000)
-      // }
     },
     editItem (data) {
       // console.log('item:', this.items)มันไม่มีค่า มันเอามาจากตัวแปรitems:{}ข้างบน มันว่าง
       // console.log('item:', data)คือฟังก์ชันedit(data)ข้างบนdataที่ส่งมา
       this.dialog = true
       this.lesson_id = data.lesson_id
-      this.video_id = data.video_id
       this.video_subunit = data.video_subunit
       this.video_name = data.video_name
-      this.create_at = data.create_at
+      // this.create_at = data.create_at
     },
     async saveUpdate () {
       var bodyValue = {
         lesson_id: this.lesson_id,
-        video_id: this.video_id,
         video_subunit: this.video_subunit,
-        video_name: this.video_name,
-        create_at: this.create_at
+        video_name: this.video_name
+        // create_at: this.create_at
 
       }
       var { data } = await axios.put('http://localhost/vue-backend/updateVideo.php', bodyValue)
@@ -500,7 +385,6 @@ export default {
           timer: 1500
         })
         this.dialog = false
-        // location.reload()
         this.getVideo()
       // setTimeout(() => {
       //   this.getData()
@@ -508,66 +392,30 @@ export default {
       }
     },
     async deleteItem (data) {
-      Swal.fire({
-        title: 'คุณต้องการลบใช่ไหม?',
-        // text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#56a062',
-        cancelButtonColor: '#ea5859',
-        confirmButtonText: 'ตกลง',
-        cancelButtonText: 'ยกเลิก'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          axios.post(
-            'http://localhost/vue-backend/deleteVideo.php',
-            {
-              video_id: data.video_id
-            }
-          )
-          Swal.fire({
-            icon: 'success',
-            title: 'ลบสำเร็จ',
-            showConfirmButton: false,
-            // text: 'คำอธิบาย',
-            customClass: {
-              title: 'csss'
-            },
-            timer: 1500
-          })
-          setTimeout(() => {
-            location.reload()
-            this.getVideo()
-          }, 1500)
-          // this.getVideo()
+      var { data: deletes } = await axios.post(
+        'http://localhost/vue-backend/deleteVideo.php',
+        {
+          video_subunit: data.video_subunit
         }
-      })
+      )
+      console.log(deletes, 'delete')
+      if (deletes === 'success') {
+        this.dialog = false
+        Swal.fire({
+          icon: 'success',
+          title: 'ลบสำเร็จ',
+          showConfirmButton: false,
+          // text: 'คำอธิบาย',
+          customClass: {
+            title: 'csss'
+          },
+          timer: 1500
+        })
+        setTimeout(() => {
+          this.getVideo()
+        }, 1500)
+      }
     }
-    // async deleteItem (data) {
-    //   var { data: deletes } = await axios.post(
-    //     'http://localhost/vue-backend/deleteVideo.php',
-    //     {
-    //       video_subunit: data.video_subunit
-    //     }
-    //   )
-    //   console.log(deletes, 'delete')
-    //   if (deletes === 'success') {
-    //     this.dialog = false
-    //     Swal.fire({
-    //       icon: 'success',
-    //       title: 'ลบสำเร็จ',
-    //       showConfirmButton: false,
-    //       // text: 'คำอธิบาย',
-    //       customClass: {
-    //         title: 'csss'
-    //       },
-    //       timer: 1500
-    //     })
-    //     setTimeout(() => {
-    //       this.getVideo()
-    //     }, 1500)
-    //   }
-    // }
   }
 }
 </script>

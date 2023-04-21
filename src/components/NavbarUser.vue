@@ -38,9 +38,7 @@
               </v-avatar>
             </v-list-item-avatar>
 
-            <v-list-item-title class="text">{{
-              user.user_firstname
-            }}</v-list-item-title>
+            <v-list-item-title class="text">{{user.user_firstname}} {{user.user_lastname}}</v-list-item-title>
           </v-list-item>
           <v-divider></v-divider>
 

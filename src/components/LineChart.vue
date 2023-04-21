@@ -5,7 +5,7 @@
     <v-card height="" flat color="transparent" class="mt-20">
       <!-- <v-card-title>สถิติการทำแบบทดสอบต่อเดือน</v-card-title> -->
       <v-toolbar color="rgba(0,0,0,0)" flat class="py-4">
-        <v-toolbar-title class=""> สถิติการทำแบบทดสอบต่อเดือน </v-toolbar-title>
+        <v-toolbar-title class=""> สถิติการทำแบบทดสอบต่อบท </v-toolbar-title>
       </v-toolbar>
       <div class="hello">
         <h1>{{ msg }}</h1>

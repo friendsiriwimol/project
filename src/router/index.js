@@ -48,6 +48,11 @@ import testvue from '../components/User/testvue.vue'
 import image from '../components/Image.vue'
 import imageUp from '../components/fileUpload.vue'
 import adminVideoDetail from '../components/Admin/Videodetail.vue'
+import tv from '../components/Admin/Tv.vue'
+import tvd from '../components/Admin/Tvd.vue'
+import sort from '../components/DataTable.vue'
+import adminlessonUser from '../components/Admin/LessonUser.vue'
+import adminlessondetailUser from '../components/Admin/LessondetailUser.vue'
 
 Vue.use(VueRouter)
 
@@ -275,12 +280,12 @@ const routes = [
     component: myPost
   },
   {
-    path: '/videoDetail',
+    path: '/videoDetail/:id',
     name: 'videoDetail',
     component: videoDetail
   },
   {
-    path: '/adminVideoDetail',
+    path: '/adminVideoDetail/:id',
     name: 'adminVideoDetail',
     component: adminVideoDetail
   },
@@ -298,6 +303,31 @@ const routes = [
     path: '/imageUp',
     name: 'imageUp',
     component: imageUp
+  },
+  {
+    path: '/tv',
+    name: 'tv',
+    component: tv
+  },
+  {
+    path: '/tvd',
+    name: 'tvd',
+    component: tvd
+  },
+  {
+    path: '/sort',
+    name: 'sort',
+    component: sort
+  },
+  {
+    path: '/adminlessonUser',
+    name: 'adminlessonUser',
+    component: adminlessonUser
+  },
+  {
+    path: '/adminlessondetailUser/:id',
+    name: 'adminlessondetailUser',
+    component: adminlessondetailUser
   }
 ]
 

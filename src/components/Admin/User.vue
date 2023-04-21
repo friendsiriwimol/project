@@ -2,11 +2,8 @@
   <div>
     <NavbarAdmin />
     <div>
-<v-breadcrumbs
-  :items="breadcrumbs"
-  large
-></v-breadcrumbs>
-</div>
+      <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
+    </div>
     <v-card class="cardShowuser mt-0">
       <v-tabs background-color="transparent" color="#099fae" grow v-model="tab">
         <v-tab @click="getUser('all')"> ทั้งหมด </v-tab>
@@ -24,8 +21,17 @@
     </v-tabs-items> -->
         <v-icon class="mr-2" color="#fcad74">mdi-account-cog</v-icon>
         รายชื่อผู้ใช้
-        <v-btn class="ml-5 text-capitalize" color="#e5ffee" dark elevation="1" @click="onExportall()">
-          <span style="color:#2a7e4a;"><v-icon left> mdi-microsoft-excel </v-icon>Export</span></v-btn>
+        <v-btn
+          class="ml-5 text-capitalize"
+          color="#e5ffee"
+          dark
+          elevation="1"
+          @click="onExportall()"
+        >
+          <span style="color: #2a7e4a"
+            ><v-icon left> mdi-microsoft-excel </v-icon>Export</span
+          ></v-btn
+        >
         <v-spacer></v-spacer>
         <!-- <button @click="exportUser()" value="Export">โหลด</button> -->
         <!-- <form >
@@ -33,9 +39,11 @@
     </form> -->
         <v-text-field
           v-model="search"
+          filled
+          rounded
+          dense
           append-icon="mdi-magnify"
           label="ค้นหา"
-          dense
           color="#099fae"
           single-line
           hide-details
@@ -43,7 +51,7 @@
       </v-card-title>
       <!-- <v-card-title>friend</v-card-title> -->
       <v-data-table
-      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"
@@ -91,7 +99,7 @@
           </v-icon>
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon small @click="editItem(item,type)" color="#56a062">
+          <v-icon small @click="editItem(item, type)" color="#56a062">
             mdi-pencil
           </v-icon>
         </template>
@@ -115,21 +123,32 @@
     </v-tabs-items> -->
         <v-icon class="mr-2" color="#fcad74">mdi-account-cog</v-icon>
         รายชื่อผู้ใช้
-        <v-btn class="ml-5 text-capitalize" color="#e5ffee" dark elevation="1" @click="onExportstudent()">
-          <span style="color:#2a7e4a;"><v-icon left> mdi-microsoft-excel </v-icon>Export</span></v-btn>
+        <v-btn
+          class="ml-5 text-capitalize"
+          color="#e5ffee"
+          dark
+          elevation="1"
+          @click="onExportstudent()"
+        >
+          <span style="color: #2a7e4a"
+            ><v-icon left> mdi-microsoft-excel </v-icon>Export</span
+          ></v-btn
+        >
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
+          filled
+          rounded
+          dense
           append-icon="mdi-magnify"
           label="ค้นหา"
-          dense
           color="#099fae"
           single-line
           hide-details
         ></v-text-field>
-        </v-card-title>
+      </v-card-title>
       <v-data-table
-      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"
@@ -167,21 +186,21 @@
           </v-icon>
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon small @click="editItem(item,type)" color="#56a062">
+          <v-icon small @click="editItem(item, type)" color="#56a062">
             mdi-pencil
           </v-icon>
         </template>
         <template v-slot:item.delete="{ item }">
-          <v-icon small @click="deleteItem(item,type), type" color="#ea5859">
+          <v-icon small @click="deleteItem(item, type), type" color="#ea5859">
             mdi-delete
           </v-icon>
         </template>
       </v-data-table>
-            <div v-if="!alluser.length && type === 'student'">
-              <p class="text-center ma-10 pa-10">ไม่พบข้อมูลนักศึกษา</p>
+      <div v-if="!alluser.length && type === 'student'">
+        <p class="text-center ma-10 pa-10">ไม่พบข้อมูลนักศึกษา</p>
       </div>
 
-      <v-card-title  v-show="type === 'farmer'">
+      <v-card-title v-show="type === 'farmer'">
         <!-- <v-tabs-items v-model="tab">
       <v-tab-item
         v-for="item in items"
@@ -191,21 +210,32 @@
     </v-tabs-items> -->
         <v-icon class="mr-2" color="#fcad74">mdi-account-cog</v-icon>
         รายชื่อผู้ใช้
-        <v-btn class="ml-5 text-capitalize" color="#e5ffee" dark elevation="1" @click="onExportfarmer()">
-          <span style="color:#2a7e4a;"><v-icon left> mdi-microsoft-excel </v-icon>Export</span></v-btn>
+        <v-btn
+          class="ml-5 text-capitalize"
+          color="#e5ffee"
+          dark
+          elevation="1"
+          @click="onExportfarmer()"
+        >
+          <span style="color: #2a7e4a"
+            ><v-icon left> mdi-microsoft-excel </v-icon>Export</span
+          ></v-btn
+        >
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
+          filled
+          rounded
+          dense
           append-icon="mdi-magnify"
           label="ค้นหา"
-          dense
           color="#099fae"
           single-line
           hide-details
         ></v-text-field>
-        </v-card-title>
+      </v-card-title>
       <v-data-table
-      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"
@@ -215,7 +245,7 @@
         no-results-text="ไม่พบข้อมูลที่ค้นหา"
         v-if="alluser.length"
       >
-         <template v-slot:[`item.user_type`]="{ item }">
+        <template v-slot:[`item.user_type`]="{ item }">
           <v-chip v--if="item.user_type === 'เกษตรกร'" color="#eaffed">
             <span style="color: #56a062">{{ item.user_type }}</span>
           </v-chip>
@@ -243,21 +273,20 @@
           </v-icon>
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon small @click="editItem(item,type)" color="#56a062">
+          <v-icon small @click="editItem(item, type)" color="#56a062">
             mdi-pencil
           </v-icon>
         </template>
         <template v-slot:item.delete="{ item }">
-          <v-icon small @click="deleteItem(item,type), type" color="#ea5859">
+          <v-icon small @click="deleteItem(item, type), type" color="#ea5859">
             mdi-delete
           </v-icon>
         </template>
       </v-data-table>
-            <div v-if="!alluser.length && type === 'farmer'">
-              <p class="text-center ma-10 pa-10">ไม่พบข้อมูลเกษตรกร</p>
-
+      <div v-if="!alluser.length && type === 'farmer'">
+        <p class="text-center ma-10 pa-10">ไม่พบข้อมูลเกษตรกร</p>
       </div>
-      <v-card-title  v-show="type === 'admin'">
+      <v-card-title v-show="type === 'admin'">
         <!-- <v-tabs-items v-model="tab">
       <v-tab-item
         v-for="item in items"
@@ -267,23 +296,43 @@
     </v-tabs-items> -->
         <v-icon class="mr-2" color="#fcad74">mdi-account-cog</v-icon>
         รายชื่อผู้ใช้
-        <v-btn class="ml-5 text-capitalize" color="#e5ffee" dark elevation="1" @click="onExportadmin()">
-          <span style="color:#2a7e4a;"><v-icon left> mdi-microsoft-excel </v-icon>Export</span></v-btn>
-          <v-btn class="ml-5 text-capitalize" color="#e8f0ff" dark elevation="1" @click="openinsertAdmin()">
-          <span style="color:#4481eb;"><v-icon left> mdi-plus </v-icon>เพิ่มแอดมิน</span></v-btn>
+        <v-btn
+          class="ml-5 text-capitalize"
+          color="#e5ffee"
+          dark
+          elevation="1"
+          @click="onExportadmin()"
+        >
+          <span style="color: #2a7e4a"
+            ><v-icon left> mdi-microsoft-excel </v-icon>Export</span
+          ></v-btn
+        >
+        <v-btn
+          class="ml-5 text-capitalize"
+          color="#e8f0ff"
+          dark
+          elevation="1"
+          @click="openinsertAdmin()"
+        >
+          <span style="color: #4481eb"
+            ><v-icon left> mdi-plus </v-icon>เพิ่มแอดมิน</span
+          ></v-btn
+        >
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
           label="ค้นหา"
+          filled
+          rounded
           dense
           color="#099fae"
           single-line
           hide-details
         ></v-text-field>
-        </v-card-title>
+      </v-card-title>
       <v-data-table
-      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"
@@ -293,8 +342,8 @@
         no-results-text="ไม่พบข้อมูลที่ค้นหา"
         v-if="alluser.length"
       >
- <template v-slot:[`item.user_type`]="{ item }">
-            <v-chip v-if="item.user_type === 'แอดมิน'" color="#fff5ef">
+        <template v-slot:[`item.user_type`]="{ item }">
+          <v-chip v-if="item.user_type === 'แอดมิน'" color="#fff5ef">
             <span style="color: #fcad74">{{ item.user_type }}</span>
           </v-chip>
           <!-- <td>
@@ -321,7 +370,7 @@
           </v-icon>
         </template>
         <template v-slot:item.edit="{ item }">
-          <v-icon small @click="editItem(item,type)" color="#56a062">
+          <v-icon small @click="editItem(item, type)" color="#56a062">
             mdi-pencil
           </v-icon>
         </template>
@@ -331,85 +380,212 @@
           </v-icon>
         </template>
       </v-data-table>
-            <div v-if="!alluser.length && type === 'admin'">
-              <p class="text-center ma-10 pa-10">ไม่พบข้อมูลแอดมิน</p>
+      <div v-if="!alluser.length && type === 'admin'">
+        <p class="text-center ma-10 pa-10">ไม่พบข้อมูลแอดมิน</p>
       </div>
       <!--  -->
       <v-dialog v-model="dialog" max-width="600px">
-        <v-form v-model="valid" ref="form" >
-        <v-card>
-          <v-card-title> แก้ไขผู้ใช้ </v-card-title>
+        <v-form v-model="valid" ref="form">
+          <v-card>
+            <v-card-title> แก้ไขผู้ใช้ </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="ชื่อ"
+                      required
+                      v-model="user_firstname"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="นามสกุล"
+                      required
+                      v-model="user_lastname"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="อีเมล"
+                      type="email"
+                      v-model="user_email"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-select
+                      v-model="user_type"
+                      :items="['นักศึกษา', 'เกษตรกร', 'แอดมิน']"
+                      :rules="typeRules"
+                      label="กลุ่มผู้ใช้งาน"
+                    >
+                      <template v-slot:item="{ item, attrs, on }">
+                        <v-list-item v-bind="attrs" v-on="on">
+                          <v-list-item-title
+                            :id="attrs['aria-labelledby']"
+                            v-text="item"
+                          ></v-list-item-title>
+                        </v-list-item>
+                      </template>
+                    </v-select>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-menu
+                      v-model="menuUpdate"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="user_birthday"
+                          label="วันเดือนปีเกิด"
+                          prepend-inner-icon="mdi-calendar-range"
+                          required
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="user_birthday"
+                        locale="th"
+                        @input="menuUpdate = false"
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="อายุ"
+                      v-model="user_age"
+                      disabled
+                      required
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialog = false">
+                ปิด
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="save(type)">
+                บันทึก
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-dialog>
+    </v-card>
+
+    <v-dialog v-model="dialoginsertAdmin" persistent max-width="600px">
+      <v-card>
+        <v-form v-model="validAdmin" ref="formAdmin">
+          <v-card-title> เพิ่มแอดมิน </v-card-title>
           <v-card-text>
             <v-container>
               <v-row>
                 <v-col cols="12">
                   <v-text-field
                     label="ชื่อ"
+                    v-model="admin.user_firstname"
+                    :rules="firstnameRules"
                     required
-                    v-model="user_firstname"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     label="นามสกุล"
+                    :rules="lastnameRules"
+                    v-model="admin.user_lastname"
                     required
-                    v-model="user_lastname"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     label="อีเมล"
+                    :rules="emailRules"
+                    v-model="admin.user_email"
                     type="email"
-                    v-model="user_email"
                     required
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-select
-                    v-model="user_type"
-                    :items="['นักศึกษา', 'เกษตรกร', 'แอดมิน']"
-                    :rules="typeRules"
-                    label="กลุ่มผู้ใช้งาน"
+                  <v-text-field
+                    label="รหัสผ่าน"
+                    v-model="admin.user_password"
+                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                    :rules="[passwordRules.required, passwordRules.min]"
+                    :type="show ? 'text' : 'password'"
+                    name="input-10-2"
+                    @click:append="show = !show"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    label="ยืนยันรหัสผ่าน"
+                    v-model="admin.user_confirmPassword"
+                    :rules="
+                      confirmPasswordRules.concat(passwordConfirmationRule)
+                    "
+                    :append-icon="showConfirm ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="showConfirm ? 'text' : 'password'"
+                    @click:append="showConfirm = !showConfirm"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-menu
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="290px"
                   >
-                    <template v-slot:item="{ item, attrs, on }">
-                      <v-list-item v-bind="attrs" v-on="on">
-                        <v-list-item-title
-                          :id="attrs['aria-labelledby']"
-                          v-text="item"
-                        ></v-list-item-title>
-                      </v-list-item>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="admin.user_birthday"
+                        label="วันเดือนปีเกิด"
+                        :rules="birthdayRules"
+                        prepend-inner-icon="mdi-calendar-range"
+                        required
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
                     </template>
-                  </v-select>
+                    <v-date-picker
+                      v-model="admin.user_birthday"
+                      locale="th"
+                      @input="menu = false"
+                    ></v-date-picker>
+                  </v-menu>
                 </v-col>
-                <v-col
-          cols="12"
-        >
-              <v-menu
-                v-model="menuUpdate"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="user_birthday"
-                    label="วันเดือนปีเกิด"
-                    prepend-inner-icon="mdi-calendar-range"
-                    required
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker v-model="user_birthday" locale="th" @input="menuUpdate = false"></v-date-picker>
-              </v-menu>
-            </v-col>
                 <v-col cols="12">
                   <v-text-field
-                    label="อายุ"
-                    v-model="user_age"
+                    label="ประเภทผู้ใช้งาน"
+                    v-model="admin.user_type"
+                    required
                     disabled
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    label="อำเภอ"
+                    v-model="admin.user_district"
+                    :rules="districtRules"
+                    required
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    label="จังหวัด"
+                    :rules="provinceRules"
+                    v-model="admin.user_province"
                     required
                   ></v-text-field>
                 </v-col>
@@ -418,150 +594,20 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="dialog = false">
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="dialoginsertAdmin = false"
+            >
               ปิด
             </v-btn>
-            <v-btn color="blue darken-1" text @click="save(type)"> บันทึก </v-btn>
+            <v-btn color="blue darken-1" text @click="insertAdmin()">
+              บันทึก
+            </v-btn>
           </v-card-actions>
-        </v-card>
-      </v-form>
-      </v-dialog>
-    </v-card>
-
-    <v-dialog
-      v-model="dialoginsertAdmin"
-      persistent
-      max-width="600px"
-    >
-      <v-card>
-        <v-form v-model="validAdmin" ref="formAdmin" >
-        <v-card-title>
-          เพิ่มแอดมิน
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  label="ชื่อ"
-                  v-model="admin.user_firstname"
-                  :rules="firstnameRules"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="นามสกุล"
-                  :rules="lastnameRules"
-                  v-model="admin.user_lastname"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="อีเมล"
-                  :rules="emailRules"
-                  v-model="admin.user_email"
-                  type="email"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-              <v-text-field
-                  label="รหัสผ่าน"
-                  v-model="admin.user_password"
-                  :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[passwordRules.required, passwordRules.min]"
-                  :type="show ? 'text' : 'password'"
-                  name="input-10-2"
-                  @click:append="show = !show"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-              <v-text-field
-                  label="ยืนยันรหัสผ่าน"
-                  v-model="admin.user_confirmPassword"
-                  :rules="confirmPasswordRules.concat(passwordConfirmationRule)"
-                  :append-icon="showConfirm ? 'mdi-eye' : 'mdi-eye-off'"
-                  :type="showConfirm ? 'text' : 'password'"
-                  @click:append="showConfirm = !showConfirm"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-          cols="12"
-        >
-      <v-menu
-        v-model="menu"
-        :close-on-content-click="false"
-        :nudge-right="40"
-        transition="scale-transition"
-        offset-y
-        min-width="290px"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-text-field
-            v-model="admin.user_birthday"
-            label="วันเดือนปีเกิด"
-            :rules="birthdayRules"
-            prepend-inner-icon="mdi-calendar-range"
-            required
-            v-bind="attrs"
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-date-picker v-model="admin.user_birthday" locale="th" @input="menu = false"></v-date-picker>
-      </v-menu>
-     </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="ประเภทผู้ใช้งาน"
-                  v-model="admin.user_type"
-                  required
-                  disabled
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="อำเภอ"
-                  v-model="admin.user_district"
-                  :rules="districtRules"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="จังหวัด"
-                  :rules="provinceRules"
-                  v-model="admin.user_province"
-                  required
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialoginsertAdmin = false"
-          >
-            ปิด
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="insertAdmin()"
-          >
-            บันทึก
-          </v-btn>
-        </v-card-actions>
-      </v-form>
+        </v-form>
       </v-card>
     </v-dialog>
-
   </div>
 </template>
 
@@ -833,32 +879,99 @@ export default {
     //   this.dialog = false
     // }
     async deleteItem (data, type) {
-      // var idDel = parseInt(data.id)
-      var { data: deletes } = await axios.post(
-        'http://localhost/vue-backend/deleteUser.php',
-        {
-          user_id: data.user_id
+      Swal.fire({
+        title: 'คุณต้องการลบใช่ไหม?',
+        // text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#56a062',
+        cancelButtonColor: '#ea5859',
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post(
+            'http://localhost/vue-backend/deleteUser.php',
+            {
+              user_id: data.user_id
+            }
+          )
+          Swal.fire({
+            icon: 'success',
+            title: 'ลบสำเร็จ',
+            showConfirmButton: false,
+            // text: 'คำอธิบาย',
+            customClass: {
+              title: 'csss'
+            },
+            timer: 1500
+          })
+          setTimeout(() => {
+            this.type = type
+            this.getReload(this.type)
+          }, 1500)
         }
-      )
-      console.log(deletes, 'delete')
-      if (deletes === 'success') {
-        this.dialog = false
-        Swal.fire({
-          icon: 'success',
-          title: 'ลบสำเร็จ',
-          showConfirmButton: false,
-          // text: 'คำอธิบาย',
-          customClass: {
-            title: 'csss'
-          },
-          timer: 1500
-        })
-        setTimeout(() => {
-          this.type = type
-          this.getReload(this.type)
-        }, 1500)
-      }
+      })
     },
+    // async deleteItem (data, type) {
+    //   // var idDel = parseInt(data.id)
+    //   var { data: deletes } = await axios.post(
+    //     'http://localhost/vue-backend/deleteUser.php',
+    //     {
+    //       user_id: data.user_id
+    //     }
+    //   )
+
+    //   if (deletes === 'success') {
+    //     this.dialog = false
+    //     Swal.fire({
+    //       title: 'Are you sure?',
+    //       text: "You won't be able to revert this!",
+    //       icon: 'warning',
+    //       showCancelButton: true,
+    //       confirmButtonColor: '#3085d6',
+    //       cancelButtonColor: '#d33',
+    //       confirmButtonText: 'Yes, delete it!'
+    //     }).then((result) => {
+    //       if (result.isConfirmed) {
+    //         Swal.fire(
+    //           'Deleted!',
+    //           'Your file has been deleted.',
+    //           'success'
+    //         )
+    //       }
+    //     })
+    //     this.type = type
+    //     this.getReload(this.type)
+    //   }
+    // },
+    // async deleteItem (data, type) {
+    //   // var idDel = parseInt(data.id)
+    //   var { data: deletes } = await axios.post(
+    //     'http://localhost/vue-backend/deleteUser.php',
+    //     {
+    //       user_id: data.user_id
+    //     }
+    //   )
+    //   console.log(deletes, 'delete')
+    //   if (deletes === 'success') {
+    //     this.dialog = false
+    //     Swal.fire({
+    //       icon: 'success',
+    //       title: 'ลบสำเร็จ',
+    //       showConfirmButton: false,
+    //       // text: 'คำอธิบาย',
+    //       customClass: {
+    //         title: 'csss'
+    //       },
+    //       timer: 1500
+    //     })
+    //     setTimeout(() => {
+    //       this.type = type
+    //       this.getReload(this.type)
+    //     }, 1500)
+    //   }
+    // },
     getReload (type) {
       if (type === 'all') {
         this.getUser('all')
@@ -940,6 +1053,7 @@ export default {
           })
         this.dialoginsertAdmin = false
         this.getReload()
+        this.$refs.formAdmin.reset()
           .catch(function (error) {
             console.log(error)
           })
@@ -957,6 +1071,7 @@ export default {
       }
       this.dialoginsertAdmin = false
       this.getAdmin()
+      this.$refs.formAdmin.reset()
     }
   }
 
@@ -978,6 +1093,6 @@ export default {
   background-color: red;
 }
 .v-breadcrumbs >>> a {
-    color: #fcad74;
+  color: #fcad74;
 }
 </style>

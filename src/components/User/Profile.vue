@@ -4,7 +4,7 @@
     <div>
       <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
     </div>
-    <v-card class="cardShowuser mt-0">
+    <center><v-card class="cardShowuser mt-0" width="500" >
       <v-card-title>
         <!-- <v-tabs-items v-model="tab">
         <v-tab-item
@@ -142,14 +142,14 @@
       </v-row>
       <v-card-text>
         <div class="ma-10">
-          <v-row><span class="primary--text mr-3 font-weight-medium">ชื่อ </span> {{ user.user_firstname }}</v-row>
-          <v-row><span class="primary--text mr-3 font-weight-medium">นามสกุล </span> {{ user.user_lastname }}</v-row>
-          <v-row><span class="primary--text mr-3 font-weight-medium">อีเมล</span>  {{ user.user_email }}</v-row>
-          <v-row><span class="primary--text mr-3 font-weight-medium">วันเดือนปีเกิด </span> {{ user.user_birthday }}</v-row>
-          <v-row><span class="primary--text mr-3 font-weight-medium">อายุ </span> {{ user.user_age }}</v-row>
-          <v-row><span class="primary--text mr-3 font-weight-medium">อำเภอ </span> {{ user.user_district }}</v-row>
-          <v-row><span class="primary--text mr-3 font-weight-medium">จังหวัด </span> {{ user.user_province }}</v-row>
-          <v-row><span class="primary--text mr-3 font-weight-medium">กลุ่มผู้ใช้งาน</span>  {{ user.user_type }}</v-row>
+          <v-row><v-card-title style="font-size:17px;" class="pa-0"><span class="primary--text mr-3 font-weight-medium" >ชื่อ </span> {{ user.user_firstname }}</v-card-title></v-row>
+            <v-row><v-card-title style="font-size:17px;" class="pa-0"><span class="primary--text mr-3 font-weight-medium" >นามสกุล </span> {{ user.user_lastname }}</v-card-title></v-row>
+            <v-row><v-card-title style="font-size:17px;" class="pa-0"><span class="primary--text mr-3 font-weight-medium" >อีเมล </span> {{ user.user_email }}</v-card-title></v-row>
+            <v-row><v-card-title style="font-size:17px;" class="pa-0"><span class="primary--text mr-3 font-weight-medium" >วันเดือนปีเกิด </span> {{ user.user_birthday }}</v-card-title></v-row>
+            <v-row><v-card-title style="font-size:17px;" class="pa-0"><span class="primary--text mr-3 font-weight-medium" >อายุ </span> {{ user.user_age }}</v-card-title></v-row>
+            <v-row><v-card-title style="font-size:17px;" class="pa-0"><span class="primary--text mr-3 font-weight-medium" >อำเภอ </span> {{ user.user_district }}</v-card-title></v-row>
+            <v-row><v-card-title style="font-size:17px;" class="pa-0"><span class="primary--text mr-3 font-weight-medium" >จังหวัด </span> {{ user.user_province }}</v-card-title></v-row>
+            <v-row><v-card-title style="font-size:17px;" class="pa-0"><span class="primary--text mr-3 font-weight-medium" >กลุ่มผู้ใช้งาน </span> {{ user.user_type }}</v-card-title></v-row>
         </div>
       </v-card-text>
       <!-- <v-virtual-scroll
@@ -192,6 +192,7 @@
         </template>
       </v-virtual-scroll> -->
     </v-card>
+  </center>
   </div>
 </template>
 

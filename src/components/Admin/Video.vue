@@ -1,21 +1,19 @@
 <template>
   <div>
     <NavbarAdmin />
-      <div>
-<v-breadcrumbs
-  :items="breadcrumbs"
-  large
-></v-breadcrumbs>
-</div>
+    <div>
+      <v-breadcrumbs :items="breadcrumbs" large></v-breadcrumbs>
+    </div>
     <v-card class="cardShowuser mt-0">
       <v-card-title>
-        <v-icon class="mr-2" color="#fcad74">mdi-video</v-icon>
-        วิดีโอ
+        <v-icon class="mr-2" color="#fcad74">mdi-video</v-icon>วิดีโอ
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
           label="ค้นหา"
+          filled
+          rounded
           dense
           color="#099fae"
           single-line
@@ -24,7 +22,7 @@
       </v-card-title>
       <!-- <v-card-title>friend</v-card-title> -->
       <v-data-table
-      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+      :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
         :items="alllesson"
         :headers="headers"
         :items-per-page="5"
@@ -39,239 +37,154 @@
           <td>{{ lesson_id }}</td>
           <td>{{ lesson_name }}</td>
         </template>
-        <template v-slot:item.edit="{ item }">
-          <v-icon small  @click="openVideo(item.lesson_id)" color="#56a062">
-            mdi-pencil
-          </v-icon>
+        <template v-slot:item.edit="{ item }" >
+            <router-link class="text-decoration-none" v-bind:to="'/adminVideoDetail/'+ item.lesson_id">
+          <v-icon small color="#56a062">mdi-pencil</v-icon>
+        </router-link>
         </template>
         <!-- <template v-slot:item.delete="{ item }">
-          <v-icon small @click="deleteItem(item)" color="#ea5859">
-            mdi-delete
-          </v-icon>
-        </template> -->
+            <v-icon small @click="deleteItem(item)" color="#ea5859">
+              mdi-delete
+            </v-icon>
+        </template>-->
         <!-- <template v-slot:expanded-item="{ headers, item }">
-          <td :colspan="headers.length" class="elevation-0 grey lighten-4">
-            0.0 {{item.lesson_name}}
-          </td>
-        </template> -->
+            <td :colspan="headers.length" class="elevation-0 grey lighten-4">
+              0.0 {{item.lesson_name}}
+            </td>
+        </template>-->
       </v-data-table>
       <v-dialog v-model="dialog" max-width="900px" persistent>
         <v-card>
-          <v-card-title> วิดีโอ </v-card-title>
+          <v-card-title>วิดีโอ</v-card-title>
           <v-card-text>
             <v-container>
-              <v-btn
-                  block
-                  color="primary"
-                  class="mb-3"
-                  @click="openinsert()"
-                >
-                  เพิ่มวิดีโอ
-                </v-btn>
+              <v-btn block color="primary" class="mb-3" @click="openinsert()">เพิ่มวิดีโอ</v-btn>
               <v-row>
                 <!-- <v-form v-model="valid" ref="form"> -->
-                  <v-col cols="12" sm="4" v-for="video in allvideo" v-bind:key="video.video_id">
-                    <v-card class="pa-3">
-                      <div >
+                <v-col cols="12" sm="4" v-for="video in allvideo" v-bind:key="video.video_id">
+                  <v-card class="pa-3">
+                    <div>
                       <iframe :src="video.video_file" width="100%"></iframe>
 
                       <!-- <iframe width="100%" src="https://www.youtube.com/embed/GTcM3qCeup0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
 
                       <div class="mt-2 mb-2">{{video.video_subunit}} {{video.video_name}}</div>
-                      <v-row >
+                      <v-row>
                         <v-col align="center">
-                          <v-btn
-                            icon
-                          >
+                          <v-btn icon>
                             <v-icon small color="#56a062" @click="editVideo(item)">mdi-pencil</v-icon>
                           </v-btn>
                         </v-col>
                         <v-col align="center">
-                          <v-btn
-                            icon
-                          >
-                          <v-icon small @click="dialog= false" color="#ea5859">mdi-delete</v-icon>
+                          <v-btn icon>
+                            <v-icon small @click="dialog= false" color="#ea5859">mdi-delete</v-icon>
                           </v-btn>
-                          <v-btn
-                            icon
-                          >
-                          </v-btn>
+                          <v-btn icon></v-btn>
                         </v-col>
                       </v-row>
                     </div>
-                    </v-card>
-                  </v-col>
+                  </v-card>
+                </v-col>
                 <!-- </v-form> -->
               </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="openVideo(item.lesson_id)">
-              ปิด
-            </v-btn>
+            <v-btn color="blue darken-1" text @click="openVideo(item.lesson_id)">ปิด</v-btn>
             <!-- <v-btn color="blue darken-1" text @click="saveUpdate()">
-              บันทึก
-            </v-btn> -->
+                บันทึก
+            </v-btn>-->
           </v-card-actions>
         </v-card>
       </v-dialog>
     </v-card>
     <v-row justify="center">
-    <v-dialog
-      v-model="dialog1"
-      persistent
-      max-width="600px"
-    >
-      <v-card>
-        <v-card-title>
-          เพิ่มวิดีโอ
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-form v-model="valid1" ref="form1" >
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  label="บทที่"
-                  v-model="lesson_id"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="บทย่อยที่"
-                  type="text"
-                  v-model="video_subunit"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-              >
-              <v-text-field
-                  label="ชื่อวิดีโอ"
-                  type="text"
-                  v-model="video_name"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-              >
-              <v-file-input
-                small-chips
-                multiple
-                label="ไฟล์วิดีโอ"
-                required
-                v-model="file"
-                v-on:change="onChangeFileUpload()"
-              ></v-file-input>
+      <v-dialog v-model="dialog1" persistent max-width="600px">
+        <v-card>
+          <v-card-title>เพิ่มวิดีโอ</v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-form v-model="valid1" ref="form1">
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field label="บทที่" v-model="lesson_id" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field label="บทย่อยที่" type="text" v-model="video_subunit" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field label="ชื่อวิดีโอ" type="text" v-model="video_name" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-file-input
+                      small-chips
+                      multiple
+                      label="ไฟล์วิดีโอ"
+                      required
+                      v-model="file"
+                      v-on:change="onChangeFileUpload()"
+                    ></v-file-input>
 
-              <!-- <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()" @input="pickFile" > -->
-
-            </v-col>
-            </v-row>
-          </v-form>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog1 = false"
-          >
-            ปิด
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            v-on:click="insertVideo()"
-          >
-            บันทึก
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-dialog
-      v-model="dialog2"
-      persistent
-      max-width="600px"
-    >
-      <v-card>
-        <v-card-title>
-          แก้ไขวิดีโอ
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-form v-model="valid2" ref="form2" >
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  label="บทที่"
-                  v-model="lesson_id"
+                    <!-- <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()" @input="pickFile" > -->
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog1 = false">ปิด</v-btn>
+            <v-btn color="blue darken-1" text v-on:click="insertVideo()">บันทึก</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialog2" persistent max-width="600px">
+        <v-card>
+          <v-card-title>แก้ไขวิดีโอ</v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-form v-model="valid2" ref="form2">
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field label="บทที่" v-model="lesson_id" required disabled></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field label="บทย่อยที่" type="text" v-model="video_subunit" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field label="ชื่อวิดีโอ" type="text" v-model="video_name" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <!-- <v-file-input
+                ref="file"
+                  small-chips
+                  multiple
+                  label="ไฟล์วิดีโอ"
                   required
-                  disabled
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="บทย่อยที่"
-                  type="text"
-                  v-model="video_subunit"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-              >
-              <v-text-field
-                  label="ชื่อวิดีโอ"
-                  type="text"
-                  v-model="video_name"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-              >
-              <!-- <v-file-input
-              ref="file"
-                small-chips
-                multiple
-                label="ไฟล์วิดีโอ"
-                required
-                v-model="file"
-                v-on:change="onChangeFileUpload()"
-              ></v-file-input> -->
+                  v-model="file"
+                  v-on:change="onChangeFileUpload()"
+                    ></v-file-input>-->
 
-              <input type="file" id="file" ref="file" v-on:change="onChangeFileUpload()" @input="pickFile" >
-
-            </v-col>
-            </v-row>
-          </v-form>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog2 = false"
-          >
-            ปิด
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            v-on:click="insertVideo()"
-          >
-            บันทึก
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+                    <input
+                      type="file"
+                      id="file"
+                      ref="file"
+                      v-on:change="onChangeFileUpload()"
+                      @input="pickFile"
+                    />
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog2 = false">ปิด</v-btn>
+            <v-btn color="blue darken-1" text v-on:click="insertVideo()">บันทึก</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-row>
   </div>
 </template>
@@ -353,10 +266,11 @@ export default {
     //   })
     // },
     async getVideo () {
-      var url = 'http://localhost/vue-backend/video.php?lesson_id=' + this.lesson_id
+      var url =
+        'http://localhost/vue-backend/video.php?lesson_id=' + this.lesson_id
       // alert(url)
       // alert('vdo')
-      axios.get(url).then((res1) => {
+      axios.get(url).then(res1 => {
         console.log('data:', res1.data)
         if (res1.data) {
           this.allvideo = res1.data
@@ -365,12 +279,12 @@ export default {
       })
     },
 
-    openVideo (item) {
-      localStorage.setItem('vdo_lesson_id', item)
-      this.$router.push('adminVideoDetail')
-    },
+    // openVideo (item) {
+    //   localStorage.setItem('vdo_lesson_id', item)
+    //   this.$router.push('adminVideoDetail')
+    // },
     async getLesson () {
-      axios.get('http://localhost/vue-backend/editLesson.php').then((res) => {
+      axios.get('http://localhost/vue-backend/editLesson.php').then(res => {
         console.log('data:', res.data)
         if (res.data) {
           this.alllesson = res.data
@@ -442,7 +356,8 @@ export default {
         console.log(formData)
         // กรอกครบมั้ย
         this.axios.post(
-          'http://localhost/vue-backend/insertVideo.php', formData,
+          'http://localhost/vue-backend/insertVideo.php',
+          formData,
           {
             // video_subunit: this.video_subunit,
             // video_name: this.video_name,
@@ -532,51 +447,85 @@ export default {
     //   this.dialog = false
     // }
     async deleteItem (data) {
-      // var idDel = parseInt(data.id)
-      var { data: deletes } = await axios.post(
-        'http://localhost/vue-backend/deleteLesson.php',
-        {
-          lesson_id: data.lesson_id
+      Swal.fire({
+        title: 'คุณต้องการลบใช่ไหม?',
+        // text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#56a062',
+        cancelButtonColor: '#ea5859',
+        confirmButtonText: 'ตกลง',
+        cancelButtonText: 'ยกเลิก'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post(
+            'http://localhost/vue-backend/deleteLesson.php',
+            {
+              lesson_id: data.lesson_id
+            }
+          )
+          Swal.fire({
+            icon: 'success',
+            title: 'ลบสำเร็จ',
+            showConfirmButton: false,
+            // text: 'คำอธิบาย',
+            customClass: {
+              title: 'csss'
+            },
+            timer: 1500
+          })
+          setTimeout(() => {
+            this.getLesson()
+          }, 1500)
         }
-      )
-      console.log(deletes, 'delete')
-      if (deletes === 'success') {
-        // this.dialog = false
-        // Swal.fire({
-        //   icon: 'success',
-        //   title: 'ลบสำเร็จ',
-        //   showConfirmButton: false,
-        //   text: 'คำอธิบาย',
-        //   customClass: {
-        //     title: 'csss'
-        //   },
-        //   timer: 1500
-        // })
-        Swal.fire({
-          title: 'คุณต้องการลบบทเรียน?',
-          // text: "You won't be able to revert this!",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Delete'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire({
-              icon: 'success',
-              title: 'ลบสำเร็จ',
-              showConfirmButton: false,
-              // text: 'คำอธิบาย',
-              customClass: {
-                title: 'csss'
-              },
-              timer: 1500
-            })
-          }
-        })
-        this.getLesson()
-      }
+      })
     }
+    // async deleteItem (data) {
+    //   // var idDel = parseInt(data.id)
+    //   var { data: deletes } = await axios.post(
+    //     'http://localhost/vue-backend/deleteLesson.php',
+    //     {
+    //       lesson_id: data.lesson_id
+    //     }
+    //   )
+    //   console.log(deletes, 'delete')
+    //   if (deletes === 'success') {
+    //     // this.dialog = false
+    //     // Swal.fire({
+    //     //   icon: 'success',
+    //     //   title: 'ลบสำเร็จ',
+    //     //   showConfirmButton: false,
+    //     //   text: 'คำอธิบาย',
+    //     //   customClass: {
+    //     //     title: 'csss'
+    //     //   },
+    //     //   timer: 1500
+    //     // })
+    //     Swal.fire({
+    //       title: 'คุณต้องการลบบทเรียน?',
+    //       // text: "You won't be able to revert this!",
+    //       icon: 'warning',
+    //       showCancelButton: true,
+    //       confirmButtonColor: '#3085d6',
+    //       cancelButtonColor: '#d33',
+    //       confirmButtonText: 'Delete'
+    //     }).then(result => {
+    //       if (result.isConfirmed) {
+    //         Swal.fire({
+    //           icon: 'success',
+    //           title: 'ลบสำเร็จ',
+    //           showConfirmButton: false,
+    //           // text: 'คำอธิบาย',
+    //           customClass: {
+    //             title: 'csss'
+    //           },
+    //           timer: 1500
+    //         })
+    //       }
+    //     })
+    //     this.getLesson()
+    //   }
+    // }
   }
   // mounted () {
   //   this.getUser()
@@ -584,7 +533,7 @@ export default {
 }
 </script>
 
-<style scoped>
+  <style scoped>
 * {
   font-family: "Prompt", sans-serif;
 }
@@ -626,6 +575,6 @@ export default {
   box-shadow: 0px;
 }
 .v-breadcrumbs >>> a {
-    color: #fcad74 ;
+  color: #fcad74;
 }
 </style>

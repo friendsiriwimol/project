@@ -13,14 +13,14 @@
              <dashboard />
             </v-col>
           </v-row>
-          <v-row class="mt-n5" >
+          <!-- <v-row class="mt-n5" >
             <v-col >
              <LineChart />
             </v-col>
             <v-col >
               <PieChart />
             </v-col>
-          </v-row>
+          </v-row> -->
           <v-row class="mt-n12">
             <v-col cols="12" sm="12">
               <Table />
@@ -33,8 +33,8 @@
 import NavbarAdmin from '@/components/NavbarAdmin'
 import Table from '../../components/Table'
 import dashboard from '../../components/dashboard'
-import LineChart from '../../components/LineChart'
-import PieChart from '../../components/PieChart'
+// import LineChart from '../../components/LineChart'
+// import PieChart from '../../components/PieChart'
 export default {
   name: 'Home',
   data: () => ({
@@ -73,8 +73,8 @@ export default {
     NavbarAdmin,
     // SideBarRight,
     dashboard,
-    LineChart,
-    PieChart,
+    // LineChart,
+    // PieChart,
     Table
   }
 }

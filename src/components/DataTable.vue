@@ -14,8 +14,8 @@
           append-icon="mdi-magnify"
           label="ค้นหา"
           filled
-          rounded
-          dense
+                rounded
+                dense
           color="#099fae"
           single-line
           hide-details
@@ -23,27 +23,6 @@
       </v-card-title>
       <v-card-title>
         <v-spacer></v-spacer>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <router-link v-bind:to="'/adminlessonUser'">
-        <v-btn
-          class="mx-2"
-          fab
-          dark
-          small
-          color="primary"
-          @click="OpenDialog()"
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon dark> mdi-eye </v-icon>
-        </v-btn>
-      </router-link>
-      </template>
-        <span>มุมมองผู้ใช้งาน</span>
-      </v-tooltip>
-      <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
         <v-btn
           class="mx-2"
           fab
@@ -51,15 +30,9 @@
           small
           color="#099fae"
           @click="OpenDialog()"
-          v-bind="attrs"
-          v-on="on"
-
         >
           <v-icon dark> mdi-plus </v-icon>
         </v-btn>
-      </template>
-        <span>เพิ่มบทเรียน</span>
-      </v-tooltip>
       </v-card-title>
     <v-data-table
     :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
@@ -150,23 +123,24 @@
                       v-model="lesson.lesson_name"
                     ></v-text-field>
                   </v-col>
-                  <v-row>
-                    <v-col cols="12" sm="12" md="10" lg="10">
+                  <v-col cols="12">
+                    <input type="file" name="attachment[]" @change="onFileChange" multiple />
+      Upload file
+                  </v-col>
+                  <v-col cols="12">
+                    <p v-for="(file, index) in files" :key="index">
+      {{ file.name }}
+    </p>
+                  </v-col>
+                  <v-col cols="12">
                     <v-file-input
                     accept="image/*"
-                    v-model="image"
+                    v-model="lesson.lesson_unitimg"
                     required
                     prepend-icon="mdi-image"
                     label="รูปภาพหน้าปกบทเรียน"
                     variant="underlined"></v-file-input>
                   </v-col>
-                    <v-col  cols="12" sm="12" md="2" lg="2" v-show="base64 !== null">
-                    <v-img
-                      :src="base64"
-                      width="100%"
-                    ></v-img>{{ image ? image.name : '' }}
-                  </v-col>
-                  </v-row>
                   <!-- <v-col  cols="12">
                     <v-file-input accept="image/*"
                 label="เพิ่มรูปภาพ"
@@ -248,20 +222,21 @@
                     ></v-text-field>
                   </v-col>
                   <v-row>
-                    <v-col cols="10">
+                    <v-col cols="9">
                       <v-file-input
                   accept="image/*"
                   label="รูปภาพหน้าปกบทเรียน"
                   prepend-icon="mdi-image"
+                  required
                     v-model="image"/>
                 </v-col>
-                    <v-col  cols="2" v-show="base64 === null">
+                    <v-col  cols="3" v-show="base64 === null">
                     <v-img
                       :src="lesson_unitimg"
                       width="100%"
                     ></v-img>{{ lesson_filename }}
                   </v-col>
-                  <v-col  cols="2" v-show="base64 !== null">
+                  <v-col  cols="3" v-show="base64 !== null">
                     <v-img
                       :src="base64"
                       width="100%"
@@ -385,7 +360,7 @@
 
 <script>
 // import { sortItems } from 'vuetify/src/util/helpers'
-import DataTableRowHandler from '../DataTableRowHandler.vue'
+import DataTableRowHandler from './DataTableRowHandler.vue'
 import draggable from 'vuedraggable'
 import axios from 'axios'
 import Swal from 'sweetalert2'
@@ -613,8 +588,7 @@ export default {
       const formData = new FormData()
       formData.append('lesson_id', this.lesson.lesson_id)
       formData.append('lesson_name', this.lesson.lesson_name)
-      formData.append('lesson_filename', this.image.name)
-      formData.append('lesson_unitimg', this.base64)
+      formData.append('lesson_unitimg', this.lesson.lesson_unitimg)
       formData.append('lesson_description', this.lesson.lesson_description)
       //   alert(this.file)
       var headers = {
@@ -708,23 +682,29 @@ export default {
       // console.log(this.allshow)
     },
     async saveUpdate () {
-      var bodyValue = {
-        lesson_id: this.lesson_id,
-        lesson_name: this.lesson_name,
-        lesson_filename_old: this.lesson_filename,
-        lesson_unitimg_old: this.lesson_unitimg,
-        lesson_filename: this.image.name,
-        lesson_unitimg: this.base64,
-        lesson_description: this.lesson_description,
-        create_at: this.create_at
+      const formData = new FormData()
+      formData.append('lesson_id', this.lesson_id)
+      formData.append('lesson_name', this.lesson_name)
+      formData.append('lesson_filename', this.lesson_filename)
+      formData.append('lesson_unitimg', this.lesson_unitimg)
+      formData.append('lesson_description', this.lesson_description)
+      formData.append('create_at', this.create_at)
+      //   alert(this.file)
+      var headers = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
       }
-      await axios.put(
-        'http://localhost/vue-backend/updateLesson.php',
-        bodyValue
-      )
-      // console.log(data, 'data here!')
-      // if (data === 'success') {
-      this.dialog = false
+      axios.put('http://localhost/vue-backend/updateLesson.php', formData, headers)
+        .then(function (response) {
+          console.log(response)
+          console.log('success')
+        })
+        .catch(function (response) {
+          // handle error
+          console.log(response)
+          console.log('sorry')
+          this.getLesson()
+        })
       Swal.fire({
         icon: 'success',
         title: 'แก้ไขสำเร็จ',
@@ -735,13 +715,11 @@ export default {
         },
         timer: 1500
       })
-      this.dialog = false
-      this.image = ''
       this.getLesson()
+      this.dialog = false
       // setTimeout(() => {
       //   this.getData()
       // }, 2000)
-      // }
     },
     // closedialog () {
     //   this.dialog = false

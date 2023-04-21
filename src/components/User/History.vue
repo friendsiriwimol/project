@@ -16,7 +16,9 @@
         v-model="search"
         append-icon="mdi-magnify"
         label="ค้นหา"
-        dense
+        filled
+          rounded
+          dense
         color="#099fae"
         single-line
         hide-details
@@ -27,7 +29,7 @@
     </v-card-title>
     <!-- <v-card-title>friend</v-card-title> -->
        <v-data-table :items="alllesson" :headers="headers" :items-per-page="5" :search="search"
-       :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}">
+       :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}">
        <template slot="data">
         <td>{{lesson_id}}</td>
         <td>{{lesson_name}}</td>

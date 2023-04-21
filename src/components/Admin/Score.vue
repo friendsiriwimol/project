@@ -21,9 +21,11 @@
                 <v-spacer></v-spacer>
                 <v-text-field
                 v-model="search"
+                filled
+                rounded
+                dense
                 append-icon="mdi-magnify"
                 label="ค้นหา"
-                dense
                 color="#099fae"
                 single-line
                     hide-details></v-text-field>
@@ -68,7 +70,7 @@
             </v-card-title>
             <!-- <v-card-title>friend</v-card-title> -->
             <v-data-table
-            :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+            :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
             :items="alluser"
             :headers="headers"
             :items-per-page="5"

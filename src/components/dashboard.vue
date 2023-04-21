@@ -60,12 +60,15 @@
         label="ค้นหา"
         single-line
         hide-details
+        filled
+          rounded
+          dense
         color="#fcad74"
         class="mt-5"
       ></v-text-field>
     </v-card-title>
               <v-data-table
-              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
         :items="allstudent"
         :headers="headers"
         :items-per-page="5"
@@ -148,7 +151,7 @@
       ></v-text-field>
     </v-card-title>
               <v-data-table
-              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
         :items="allfarmer"
         :headers="headers"
         :items-per-page="5"
@@ -231,7 +234,7 @@
       ></v-text-field>
     </v-card-title>
               <v-data-table
-              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
         :items="alladmin"
         :headers="headers"
         :items-per-page="5"
@@ -314,7 +317,7 @@
       ></v-text-field>
     </v-card-title>
               <v-data-table
-              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}'}"
+              :footer-props="{itemsPerPageText: 'แถวต่อหน้า',pageText: '{0}-{1} จาก {2}','items-per-page-all-text': 'ทั้งหมด'}"
         :items="alluser"
         :headers="headers"
         :items-per-page="5"

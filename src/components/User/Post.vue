@@ -51,7 +51,7 @@
 
     <v-card
       class="cardShowuser"
-      v-for="(postuser, index) in allapprove"
+      v-for="(postuser ) in allapprove"
       :key="postuser.post_id"
     >
       <!-- {{postuser}} -->
@@ -61,19 +61,26 @@
           >{{ postuser.post_detail }}</span
         >
       </v-card-title>
-      <div align="center" justify="space-around">
-        <v-img
-        class="align-center ml-5"
-        width="20%"
-        :src="postuser.post_img"
-        rounded
-      >
-      </v-img>
+      <v-container v-if="postuser.post_img==='null'" class="pa-0">
+    </v-container>
+      <v-container  justify="space-around" v-if="postuser.post_img!=='null'">
+      <div align="center">
+        <v-row class="align-center justify-center">
+          <v-col class="col-lg-4 col-md-4 col-sm-8 col-xs-12">
+            <v-img
+          class="align-center"
+          :src="postuser.post_img"
+          rounded
+        >
+        </v-img>
+          </v-col>
+        </v-row>
       </div>
+    </v-container>
       <v-card-subtitle
         >โพสต์เมื่อ วันที่ {{ postuser.create_at }} น.</v-card-subtitle
       >
-      <v-card-actions>
+      <!-- <v-card-actions>
         <v-spacer></v-spacer>
 
         <v-btn
@@ -81,41 +88,59 @@
           icon
           @click="showtest(index, postuser.post_id)"
         >
-          <v-icon color="#099fae">mdi-comment</v-icon>
+          <v-icon color="#red">mdi-comment</v-icon>
         </v-btn>
         <v-btn v-else icon @click="showtest2(index)">
-          <v-icon color="#099fae">mdi-comment-outline</v-icon>
+          <v-icon color="#000">mdi-comment-outline</v-icon>
         </v-btn>
-      </v-card-actions>
+      </v-card-actions> -->
 
       <v-expand-transition>
-        <div v-show="show === index">
+        <div>
           <v-container fluid>
             <v-form v-model="valid2" ref="form2">
               <div
-                class="mx-auto ma-3"
+                class="mx-auto"
                 width="60%"
                 v-for="comment in allcomment"
                 v-bind:key="comment.comment_id"
+                rounded
               >
                 <div v-if="comment.post_id === postuser.post_id">
-                  <v-divider class="mb-2"></v-divider>
-                  <div color="#099fae">
+                  <v-divider class="mb-3"></v-divider>
+                  <v-card color="#F2FBFC" outlined class="mb-3">
+                  <v-card-title>
+                    {{ comment.user_firstname }}
+                    {{ comment.user_lastname }}&nbsp;<span
+                      style="color: #099fae;"
+                      >{{ comment.comment_detail }}</span
+                    >
+                  </v-card-title>
+                  <v-card-subtitle
+                    >แสดงความคิดเห็นเมื่อ
+                    {{ comment.create_at }} น.</v-card-subtitle
+                  >
+                </v-card>
+                  <!-- <div color="#099fae" class="mb-5">
                     {{ comment.user_firstname }} {{ comment.user_lastname }}
-                    <span style="color: gray"
+                    <span style="color: gray; font-weight:normal"
                       >แสดงความคิดเห็นเมื่อ {{ comment.create_at }} น.</span
                     >
                   </div>
-                  <div>{{ comment.comment_detail }}</div>
+                  <div>&nbsp;<span
+          style="color: #21777f; font-size: 1.1em; margin-top:50px;">{{ comment.comment_detail }}</span></div> -->
                   <!-- <v-divider class="mt-3"></v-divider> -->
                 </div>
               </div>
+              <v-spacer></v-spacer>
               <v-textarea
                 v-model="comment_detail"
                 filled
                 auto-grow
                 label="แสดงความคิดเห็น"
                 rows="2"
+                margin-top="15"
+                rounded
                 color="#099fae"
                 row-height="20"
                 @keyup.enter="writeComment(postuser.post_id)"
@@ -138,8 +163,7 @@
           </v-container>
         </div>
       </v-expand-transition>
-    </v-card>
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    </v-card>    <v-dialog v-model="dialog" persistent max-width="600px">
       <v-card>
         <v-card-title class="justify-center align-center"
           ><v-spacer></v-spacer>สร้างกระทู้<v-spacer></v-spacer
@@ -300,9 +324,9 @@ export default {
         href: 'home'
       }
     ]
-    // postRules: [
-    //   v => !!v || ''
-    // ]
+  // postRules: [
+  //   v => !!v || ''
+  // ]
   }),
   computed: {
     buttonText () {
@@ -337,17 +361,17 @@ export default {
     onFileChanged (e) {
       this.selectedFile = e.target.files[0]
 
-      // do something
+    // do something
     },
     showtest (index, postid) {
       this.show = index
       this.panel = postid
       this.comment_detail = ''
     },
-    showtest2 (index) {
-      this.show = !index
-      this.panel = ''
-    },
+    // showtest2 (index) {
+    //   this.show = !index
+    //   this.panel = ''
+    // },
     async getPost () {
       console.log('rewload')
       axios.get('http://localhost/vue-backend/postApprove.php').then((res) => {
@@ -389,7 +413,7 @@ export default {
             headers
           )
           .then(function (response) {
-            // handle success
+          // handle success
             console.log(response)
             console.log('success')
             if (data === 'success') {
@@ -406,7 +430,7 @@ export default {
             }
           })
           .catch(function (response) {
-            // handle error
+          // handle error
             console.log(response)
             console.log('sorry')
           })
@@ -416,13 +440,13 @@ export default {
       this.getPost()
     },
     async writePost () {
-      // console.log(this.$refs.form.validate(), 'pp')
+    // console.log(this.$refs.form.validate(), 'pp')
       if (this.$refs.form.validate()) {
-        // กรอกครบมั้ย
+      // กรอกครบมั้ย
         var { data } = await axios.post(
           'http://localhost/vue-backend/insertPost.php',
           {
-            // post_id: this.post_id,
+          // post_id: this.post_id,
             post_detail: this.post_detail,
             post_status: 'waiting',
             user_id: this.user.user_id
@@ -449,7 +473,7 @@ export default {
       console.log(postid, 'post ja')
       console.log(this.$refs.form.validate(), 'pp')
       if (this.comment_detail !== '') {
-        // กรอกครบมั้ย
+      // กรอกครบมั้ย
         var { data } = await axios.post(
           'http://localhost/vue-backend/insertComment.php',
           {

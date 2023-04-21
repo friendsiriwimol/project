@@ -23,13 +23,14 @@
       <v-card-subtitle>
         <div  v-for="website in allwebsite" v-bind:key="website.website_id">
       <ul v-if="website.lesson_id === lesson_id">
-        <a :href="website.website_link" target="_blank"><li>{{ website.website_link }}</li></a>
+        <a :href="website.website_link" target="_blank">
+          <li> {{ website.website_name }} </li></a>
         <!-- <li>{{ website.website_link }}</li> -->
       </ul>
     </div>
-    <div v-show="website.lesson_id !== lesson_id">
+    <!-- <div v-if="website.lesson_id !== lesson_id">
       <p>ไม่พบเว็บไซต์ที่เกี่ยวข้อง</p>
-    </div>
+    </div> -->
     </v-card-subtitle>
 
     </v-card>
@@ -93,11 +94,11 @@ export default {
   inject: [
     'getLesson'
   ],
-  computed: {
-    lessonChilren () {
-      return this.getLesson
-    }
-  },
+  // computed: {
+  //   lessonChilren () {
+  //     return this.getLesson
+  //   }
+  // },
   methods: {
     async getLesson () {
       const url = 'http://localhost/vue-backend/lessonDetail.php?id=' + this.lesson_id
