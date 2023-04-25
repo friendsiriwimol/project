@@ -73,7 +73,7 @@ export default {
       items: [
         { title: 'Dashboard', icon: 'mdi-view-dashboard', route: '/admindashboard' },
         { title: 'หน้าแรก', icon: 'mdi-home', route: '/adminhome' },
-        { title: 'จัดการโพสต์', icon: 'mdi-post', route: '/adminpost' },
+        { title: 'จัดการกระทู้', icon: 'mdi-post', route: '/adminpost' },
         { title: 'จัดการบทเรียน', icon: 'mdi-book-open-variant', route: '/adminlesson' },
         { title: 'จัดการแบบทดสอบ', icon: 'mdi-notebook-edit', route: '/adminquiz' },
         // { title: 'คะเเนนนักศึกษา', icon: 'mdi-format-list-numbered', route: '/adminscore' },

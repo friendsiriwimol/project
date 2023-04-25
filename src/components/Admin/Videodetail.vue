@@ -423,7 +423,7 @@ export default {
             console.log('sorry')
           })
         this.getVideo()
-        location.reload()
+        // location.reload()
         this.dialog1 = false
         this.$refs.form1.reset()
       }
@@ -459,7 +459,7 @@ export default {
       })
       this.dialog2 = false
       this.video_file = ''
-      location.reload()
+      // location.reload()
       this.getVideo()
       // setTimeout(() => {
       //   this.getData()

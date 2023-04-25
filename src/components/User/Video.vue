@@ -44,7 +44,7 @@
 
         <template v-slot:item.edit="{ item }">
           <router-link class="text-decoration-none" v-bind:to="'/videoDetail/'+ item.lesson_id">
-          <v-icon small color="#56a062">mdi-pencil</v-icon>
+          <v-icon small color="#56a062">mdi-video</v-icon>
         </router-link>
         </template>
 
@@ -95,6 +95,7 @@ export default {
   },
   data: () => ({
     reveal: false,
+    search: '',
     alllesson: [],
     lesson_id: '',
     lesson_unit: '',

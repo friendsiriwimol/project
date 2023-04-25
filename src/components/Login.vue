@@ -6,7 +6,7 @@
       sm="3"
       md="6"
       cols="6"
-
+      class="col-lg-5 col-md-12 col-sm-12 col-xs-12"
     >
       <div class="content">
         <img src="../assets/loginlogo.png" alt="img" class="image" />
@@ -14,12 +14,9 @@
     </v-col>
     <v-col
     cols="12"
-      sm="9"
-      md="6"
-      lg="7"
-      class="mt-15"
+      class="mt-15 col-lg-7 col-md-12 col-sm-12 col-xs-12"
     >
-    <center> <v-title class="header" style="padding:20px">E-learning for Hens</v-title></center>
+    <center><v-title class="header" style="padding:20px">E-learning for Hens</v-title></center>
             <v-form ref="form" v-model="valid" lazy-validation action="register" class="sign-in-form">
               <h3 style="margin-bottom:25px"> <span class="linkLogin" style="color:#fcad74; font-size:25px;" onclick="window.location.href='/'">เข้าสู่ระบบ</span> <span class="border ml-3 mr-3"></span> <span class="linkRegister" style="color:#aaa;" onclick="window.location.href='Register'">ลงทะเบียน</span></h3>
               <v-text-field
@@ -66,6 +63,7 @@
 
 <script>
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 export default {
   data: () => {
@@ -128,7 +126,21 @@ export default {
                 test.$router.push('/admindashboard')
               }
             } else {
-              alert('ไม่มีผู้ใช้ กรุณาลงทะเบียน')
+              Swal.fire({
+                title: 'ไม่พบผู้ใช้งาน กรุณาลงทะเบียน',
+                width: 600,
+                padding: '3em',
+                // color: '#716add',
+                background: '#fff',
+                confirmButtonText: 'ตกลง',
+                backdrop: `
+                  rgba(0,0,123,0.4)
+                  url("https://media.tenor.com/-AyTtMgs2mMAAAAi/nyan-cat-nyan.gif")
+                  left top
+                  no-repeat
+                `
+              })
+              // alert('ไม่มีผู้ใช้ กรุณาลงทะเบียน')
             }
           })
         test.$router.push('/register')
@@ -136,7 +148,21 @@ export default {
             console.log(error)
           })
       } else {
-        alert('กรุณากรอก อีเมล & รหัสผ่าน')
+        Swal.fire({
+          title: 'กรุณากรอก อีเมล & รหัสผ่าน',
+          width: 600,
+          padding: '3em',
+          // color: '#716add',
+          background: '#fff',
+          confirmButtonText: 'ตกลง',
+          backdrop: `
+                  rgba(0,0,123,0.4)
+                  url("https://media.tenor.com/-AyTtMgs2mMAAAAi/nyan-cat-nyan.gif")
+                  left top
+                  no-repeat
+                `
+        })
+        // alert('กรุณากรอก อีเมล & รหัสผ่าน')
       }
     }
   }
@@ -422,5 +448,38 @@ form.sign-in-form {
 .border{
   border-left: 2px solid #aaa;
 
+}
+@media only screen and (max-width: 600px) {
+  .header{
+  // margin-bottom: 30px;
+  font-size: 1.6em;
+  font-weight: bold;
+  font-family: 'Righteous', serif;
+  background: linear-gradient(110deg, #fcad74 33%, rgba(253, 255, 144, 0) 33%), linear-gradient(110deg, #ffffff 34%, #4481eb 34%);
+    background-size: 400%;
+     -webkit-text-fill-color: transparent;
+  background-size: 40%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: gradient 5s infinite;
+}
+.sign-in-form{
+  padding: 0%;
+  padding-top: 50px;
+}
+.image{
+  display: none;
+}
+}
+@media only screen and (max-width: 1264px) {
+
+.sign-in-form{
+  padding: 10%;
+  padding-top: 50px;
+}
+.image{
+  display: none;
+}
 }
 </style>

@@ -78,7 +78,7 @@ export default {
       // { text: 'เนื้อหาบทเรียน', value: 'lesson_description' },
       // { text: 'เวลาที่สอบ', value: 'time', sortable: false },
       // { text: 'วันที่ทำข้อสอบ', value: 'date', sortable: false },
-      { text: 'ชื่อนักศึกษา', value: 'student', sortable: false },
+      { text: 'ชื่อผู้ใช้งาน', value: 'student', sortable: false },
       { text: 'คะแนน', value: 'second_score', sortable: false }
       // { text: 'posttest', value: 'posttest', sortable: false }
 

@@ -6,7 +6,7 @@
       sm="2"
       md="6"
       cols="6"
-
+      class="col-lg-5 col-md-12 col-sm-12 col-xs-12"
     >
       <div class="content">
         <img src="../assets/registerlogo.png" alt="img" class="image" />
@@ -14,19 +14,17 @@
     </v-col>
     <v-col
       cols="12"
-      sm="9"
-      md="6"
-      lg="7"
-      class="mt-5"
+      class="col-lg-7 col-md-12 col-sm-12 col-xs-12"
         >
       <center>
       <v-title class="header" style="padding:20px">E-learning for Hens</v-title>
-      <v-form ref="form" v-model="valid" lazy-validation action="register" class="sign-in-form ma-10" style="padding:0%">
+      <v-form ref="form" v-model="valid" lazy-validation action="register" class="sign-in-form" style="padding:0%;">
         <h3 style="margin-bottom:25px"> <span class="linkLogin"  style="color:#aaa;"  onclick="window.location.href='/'">เข้าสู่ระบบ</span> <span class="border ml-3 mr-3"></span> <span class="linkRegister" style="color:#fcad74; font-size:25px;" onclick="window.location.href='Register'">ลงทะเบียน</span></h3>
       <v-row>
       <v-col
           cols="12"
-          sm="4"
+          class="col-lg-4 col-md-4 col-sm-12"
+
         >
        <v-text-field
       v-model="user.user_firstname"
@@ -37,12 +35,12 @@
       filled
        rounded
        dense
-       class="input1"
     ></v-text-field>
         </v-col>
      <v-col
           cols="12"
-          sm="4"
+          sm="12"
+          class="col-lg-4 col-md-4 col-sm-12"
         >
     <v-text-field
       v-model="user.user_lastname"
@@ -53,12 +51,13 @@
       filled
        rounded
        dense
-       class="input1"
     ></v-text-field>
      </v-col>
       <v-col
           cols="12"
-          sm="4"
+          sm="12"
+          class="col-lg-4 col-md-4 col-sm-12"
+
         >
     <v-text-field
       v-model="user.user_email"
@@ -68,13 +67,14 @@
       filled
        rounded
        dense
-       class="input1"
       required
     ></v-text-field>
       </v-col>
        <v-col
           cols="12"
-          sm="4"
+          sm="12"
+          class="col-lg-4 col-md-4 col-sm-12"
+
         >
     <v-text-field
             v-model="user.user_password"
@@ -88,12 +88,13 @@
         filled
        rounded
        dense
-       class="input1 input-group--focused"
       ></v-text-field>
        </v-col>
        <v-col
           cols="12"
-          sm="4"
+          sm="12"
+          class="col-lg-4 col-md-4 col-sm-12"
+
         >
         <v-text-field
         v-model="user.user_confirmPassword"
@@ -120,13 +121,14 @@
         filled
        rounded
        dense
-       class="input1"
         required
       ></v-text-field>
         </v-col> -->
      <v-col
           cols="12"
-          sm="4"
+          sm="12"
+          class="col-lg-4 col-md-4 col-sm-12"
+
         >
       <!-- <v-text-field
         type="number"
@@ -139,7 +141,6 @@
         filled
        rounded
        dense
-       class="input1"
       ></v-text-field> -->
       <v-menu
         v-model="menu"
@@ -168,7 +169,9 @@
      </v-col>
      <v-col
           cols="12"
-          sm="4"
+          sm="12"
+          class="col-lg-4 col-md-4 col-sm-12"
+
         >
     <v-select
           v-model="user.user_type"
@@ -180,7 +183,6 @@
       filled
        rounded
        dense
-       class="input1"
       @change="$v.select.$touch()"
       @blur="$v.select.$touch()"
     >
@@ -199,7 +201,9 @@
      </v-col>
      <v-col
           cols="12"
-          sm="4"
+          sm="12"
+          class="col-lg-4 col-md-4 col-sm-12"
+
         >
        <v-text-field
       v-model="user.user_district"
@@ -210,12 +214,13 @@
       filled
        rounded
        dense
-       class="input1"
     ></v-text-field>
         </v-col>
      <v-col
           cols="12"
-          sm="4"
+          sm="12"
+          class="col-lg-4 col-md-4 col-sm-12"
+
         >
     <v-text-field
       v-model="user.user_province"
@@ -226,7 +231,6 @@
       filled
        rounded
        dense
-       class="input1"
     ></v-text-field>
      </v-col>
      <v-col
@@ -542,6 +546,9 @@ body,
 input {
 //   font-family: "Poppins", sans-serif;
 }
+.sign-in-form{
+  padding-top: 5% !important;
+}
 .reg{
     text-decoration: underline;
 }
@@ -797,5 +804,38 @@ form.sign-in-form {
 .border{
   border-left: 2px solid #aaa;
 
+}
+@media only screen and (max-width: 600px) {
+  .header{
+  // margin-bottom: 30px;
+  font-size: 1.6em !important;
+  font-weight: bold;
+  font-family: 'Righteous', serif;
+  background: linear-gradient(110deg, #fcad74 33%, rgba(253, 255, 144, 0) 33%), linear-gradient(110deg, #ffffff 34%, #4481eb 34%);
+    background-size: 400%;
+     -webkit-text-fill-color: transparent;
+  background-size: 40%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: gradient 5s infinite;
+}
+.sign-in-form{
+  padding: 0%;
+  padding-top: 50px !important;
+}
+.image{
+  display: none;
+}
+}
+@media only screen and (max-width: 1264px) {
+
+.sign-in-form{
+  padding: 10% ;
+  padding-top: 50px !important;
+}
+.image{
+  display: none;
+}
 }
 </style>

@@ -851,27 +851,24 @@ export default {
         user_age: this.user_age,
         create_at: this.create_at
       }
-      var { data: update } = await axios.put(
+      await axios.put(
         'http://localhost/vue-backend/updateUser.php',
         bodyValue
       )
-      console.log(update, 'data here!')
-      if (update === 'success') {
-        Swal.fire({
-          icon: 'success',
-          title: 'แก้ไขสำเร็จ',
-          showConfirmButton: false,
-          // text: 'คำอธิบาย',
-          customClass: {
-            title: 'csss'
-          },
-          timer: 1500
-        })
-        setTimeout(() => {
-          this.type = type
-          this.getReload(this.type)
-        }, 1500)
-      }
+      Swal.fire({
+        icon: 'success',
+        title: 'แก้ไขสำเร็จ',
+        showConfirmButton: false,
+        // text: 'คำอธิบาย',
+        customClass: {
+          title: 'csss'
+        },
+        timer: 1500
+      })
+      setTimeout(() => {
+        this.type = type
+        this.getReload(this.type)
+      }, 1500)
       this.dialog = false
       this.getReload(this.type)
     },
@@ -1042,7 +1039,7 @@ export default {
             console.log(response, 'ii')
             Swal.fire({
               icon: 'success',
-              title: 'ลงทะเบียนสำเร็จ',
+              title: 'เพิ่มแอดมินสำเร็จ',
               showConfirmButton: false,
               // text: 'คำอธิบาย',
               customClass: {

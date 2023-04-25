@@ -6,12 +6,12 @@
     </div>
     <v-card class="cardShowuser mt-0">
       <v-tabs background-color="transparent" color="#099fae" grow v-model="tab">
-        <v-tab @click="getPostWaiting('waiting')" >โพสต์รอการอนุมัติ</v-tab>
-        <v-tab @click="getPostApprove('approve')">โพสต์อนุมัติสำเร็จ</v-tab>
-        <v-tab @click="getPostAll('all')">โพสต์ทั้งหมด</v-tab>
+        <v-tab @click="getPostWaiting('waiting')" >กระทู้รอการอนุมัติ</v-tab>
+        <v-tab @click="getPostApprove('approve')">กระทู้อนุมัติสำเร็จ</v-tab>
+        <v-tab @click="getPostAll('all')">กระทู้ทั้งหมด</v-tab>
       </v-tabs>
       <v-card-title v-show="status === 'waiting'">
-        <v-icon class="mr-2" color="#fcad74">mdi-post</v-icon>โพสต์
+        <v-icon class="mr-2" color="#fcad74">mdi-post</v-icon>กระทู้
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
@@ -63,7 +63,7 @@
       </v-data-table>
 
       <v-card-title v-show="status === 'approve'">
-        <v-icon class="mr-2" color="#fcad74">mdi-post</v-icon>โพสต์
+        <v-icon class="mr-2" color="#fcad74">mdi-post</v-icon>กระทู้
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
@@ -115,7 +115,7 @@
       </v-data-table>
 
       <v-card-title v-show="status === 'all'">
-        <v-icon class="mr-2" color="#fcad74">mdi-post</v-icon>โพสต์
+        <v-icon class="mr-2" color="#fcad74">mdi-post</v-icon>กระทู้
         <v-spacer></v-spacer>
         <v-text-field
           v-model="search"
@@ -168,7 +168,7 @@
 
       <v-dialog v-model="dialog" max-width="600px" persistent>
         <v-card>
-          <v-card-title>จัดการโพสต์</v-card-title>
+          <v-card-title>จัดการกระทู้</v-card-title>
           <v-card-text>
             <v-container>
               <v-form v-model="valid" ref="form">
@@ -182,7 +182,7 @@
                   </v-col>-->
                   <v-col cols="12">
                     <v-text-field
-                      label="โพสต์"
+                      label="กระทู้"
                       required
                       disabled
                       v-model="post_detail"
@@ -204,7 +204,7 @@
                   >
                     <v-checkbox
                       v-model="post_status"
-                      label="อนุมัติโพสต์"
+                      label="อนุมัติกระทู้"
                       value="approve"
                     ></v-checkbox>
                   </v-col>
@@ -214,7 +214,7 @@
                     v-if="status === 'waiting' "
                   >
                           <v-chip color="#ffe8e8">
-                    <span style="color: #ea5859">รอการอนุมัติโพสต์</span>
+                    <span style="color: #ea5859">รอการอนุมัติกระทู้</span>
                   </v-chip>
                   </v-col> -->
                   <v-col
@@ -223,14 +223,20 @@
                     v-if="status === 'approve' "
                   >
                           <v-chip color="#eaffed">
-                    <span style="color: #56a062">อนุมัติโพสต์แล้ว</span>
+                    <span style="color: #56a062">อนุมัติกระทู้แล้ว</span>
                   </v-chip>
                   </v-col>
                 </v-row>
               </v-form>
             </v-container>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions v-show="status === 'approve' ">
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="dialog = false"
+              >ปิด</v-btn
+            >
+          </v-card-actions>
+          <v-card-actions v-show="status !== 'approve' ">
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="dialog = false"
               >ปิด</v-btn
@@ -279,9 +285,9 @@ export default {
         //   // sortable: false,
         //   value: 'user_firstname'
         // },
-        { text: 'โพสต์', value: 'post_detail' },
+        { text: 'กระทู้', value: 'post_detail' },
         // { text: 'รูป', value: 'img' },
-        { text: 'จัดการโพสต์', value: 'check', sortable: false },
+        { text: 'จัดการกระทู้', value: 'check', sortable: false },
         { text: 'ลบ', value: 'delete', sortable: false }
       ],
       data: [],
@@ -292,7 +298,7 @@ export default {
           href: 'admindashboard'
         },
         {
-          text: 'จัดการโพสต์',
+          text: 'จัดการกระทู้',
           disabled: true,
           href: 'adminpost'
         }
@@ -374,7 +380,7 @@ export default {
           this.dialog = false
           Swal.fire({
             icon: 'success',
-            title: 'อนุมัติโพสต์สำเร็จ',
+            title: 'อนุมัติกระทู้สำเร็จ',
             showConfirmButton: false,
             // text: 'คำอธิบาย',
             customClass: {

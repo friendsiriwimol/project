@@ -363,7 +363,7 @@
                       </div>
                       <v-list-item-subtitle
                         :class="active ? 'white--text' : 'black--text' "
-                        >โพสต์รอการอนุมัติ</v-list-item-subtitle
+                        >กระทู้รอการอนุมัติ</v-list-item-subtitle
                       >
                       <v-list-item-title
                         class="headline mb-1"
