@@ -22,6 +22,7 @@
                   rounded
                   clearable
                   dense
+                  v-model="post_detail"
                   @click="dialogPost()"
                 ></v-text-field>
               </v-form>
@@ -37,7 +38,7 @@
                 class="white--text"
                 rounded
                 color="#099fae"
-                @click="writePost()"
+                @click="addFormData()"
                 >โพสต์</v-btn
               >
             </center>
@@ -51,7 +52,7 @@
 
     <v-card
       class="cardShowuser"
-      v-for="(postuser) in allapprove"
+      v-for="(postuser,index) in allapprove"
       :key="postuser.post_id"
     >
       <!-- {{postuser}} -->
@@ -80,7 +81,7 @@
       <v-card-subtitle
         >โพสต์เมื่อ วันที่ {{ postuser.create_at }} น.</v-card-subtitle
       >
-      <!-- <v-card-actions>
+      <v-card-actions>
         <v-spacer></v-spacer>
 
         <v-btn
@@ -88,15 +89,15 @@
           icon
           @click="showtest(index, postuser.post_id)"
         >
-          <v-icon color="#red">mdi-comment</v-icon>
+          <v-icon color="#fcad74">mdi-comment</v-icon>
         </v-btn>
         <v-btn v-else icon @click="showtest2(index)">
-          <v-icon color="#000">mdi-comment-outline</v-icon>
+          <v-icon color="#fcad74">mdi-comment-outline</v-icon>
         </v-btn>
-      </v-card-actions> -->
+      </v-card-actions>
 
       <v-expand-transition>
-        <div>
+        <div v-show="show === index">
           <v-container fluid>
             <v-form v-model="valid2" ref="form2">
               <div
@@ -202,7 +203,7 @@
                         color="#099fae"
                         class="mt-3"
                         prepend-icon="mdi-image"
-                        v-model="post_img"
+                        v-model="image"
                         label="เพิ่มรูปภาพ"
                       ></v-file-input>
                       <!-- <v-btn
@@ -274,6 +275,8 @@ export default {
   },
   name: 'show',
   data: () => ({
+    image: null,
+    base64: null,
     defaultButtonText: null,
     selectedFile: null,
     isSelecting: false,
@@ -340,10 +343,26 @@ export default {
     this.getComment()
     this.getPost()
   },
+  watch: {
+    image: function (newVal, oldVal) {
+      if (newVal) {
+        this.createBase64Image(newVal)
+      } else {
+        this.base64 = null
+      }
+    }
+  },
   // mounted () {
   //   this.$emit('test', true)
   // },
   methods: {
+    createBase64Image: function (FileObject) {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        this.base64 = event.target.result
+      }
+      reader.readAsDataURL(FileObject)
+    },
     dialogPost () {
       this.dialog = true
     },
@@ -369,10 +388,10 @@ export default {
       this.panel = postid
       this.comment_detail = ''
     },
-    // showtest2 (index) {
-    //   this.show = !index
-    //   this.panel = ''
-    // },
+    showtest2 (index) {
+      this.show = !index
+      this.panel = ''
+    },
     async getPost () {
       console.log('rewload')
       axios.get('http://localhost/vue-backend/postApprove.php').then((res) => {
@@ -398,7 +417,7 @@ export default {
       if (this.$refs.form.validate()) {
         const formData = new FormData()
         formData.append('post_detail', this.post_detail)
-        formData.append('post_img', this.post_img)
+        formData.append('post_img', this.base64)
         formData.append('post_status', this.post_statusWait)
         formData.append('user_id', this.user.user_id)
         //   alert(this.file)
@@ -407,7 +426,7 @@ export default {
           'Access-Control-Allow-Origin': '*'
         }
 
-        var { data } = axios
+        axios
           .post(
             'http://localhost/vue-backend/insertPost.php',
             formData,
@@ -417,21 +436,19 @@ export default {
             // handle success
             console.log(response)
             console.log('success')
-            if (data === 'success') {
-              Swal.fire({
-                icon: 'success',
-                title: 'โพสต์สำเร็จ',
-                showConfirmButton: false,
-                // text: 'คำอธิบาย',
-                customClass: {
-                  title: 'csss'
-                },
-                timer: 1500
-              })
-            }
+            Swal.fire({
+              icon: 'success',
+              title: 'โพสต์สำเร็จ',
+              showConfirmButton: false,
+              // text: 'คำอธิบาย',
+              customClass: {
+                title: 'csss'
+              },
+              timer: 1500
+            })
           })
           .catch(function (response) {
-            // handle error
+          // handle error
             console.log(response)
             console.log('sorry')
           })

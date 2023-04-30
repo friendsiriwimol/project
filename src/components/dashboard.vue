@@ -144,6 +144,9 @@
         v-model="search2"
         append-icon="mdi-magnify"
         label="ค้นหา"
+        filled
+          rounded
+          dense
         single-line
         hide-details
         color="#fcad74"
@@ -227,6 +230,9 @@
         v-model="search3"
         append-icon="mdi-magnify"
         label="ค้นหา"
+        filled
+          rounded
+          dense
         single-line
         hide-details
         color="#fcad74"
@@ -310,6 +316,9 @@
         v-model="search4"
         append-icon="mdi-magnify"
         label="ค้นหา"
+        filled
+          rounded
+          dense
         single-line
         hide-details
         color="#fcad74"

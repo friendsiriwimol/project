@@ -77,9 +77,9 @@
         no-results-text="ไม่พบข้อมูลที่ค้นหา"
 
     >
-    <template v-slot:expanded-item="{ headers, item }">
+    <!-- <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">More info about {{ item.name }}</td>
-    </template>
+    </template> -->
       <template #body="props">
         <draggable
           :list="props.items"
