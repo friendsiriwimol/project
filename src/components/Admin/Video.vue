@@ -39,7 +39,7 @@
         </template>
         <template v-slot:item.edit="{ item }" >
             <router-link class="text-decoration-none" v-bind:to="'/adminVideoDetail/'+ item.lesson_id">
-          <v-icon small color="#56a062">mdi-pencil</v-icon>
+          <v-icon small color="#56a062" @click="test(item.lesson_name)">mdi-pencil</v-icon>
         </router-link>
         </template>
         <!-- <template v-slot:item.delete="{ item }">
@@ -252,10 +252,14 @@ export default {
     }
   },
   created () {
+    localStorage.removeItem('lesson_name')
     this.getLesson()
     this.getVideo()
   },
   methods: {
+    test (item) {
+      localStorage.setItem('lesson_name', item)
+    },
     // async getVideo () {
     //   console.log('rewload')
     //   axios.get('http://localhost/vue-backend/video.php').then((res) => {

@@ -20,7 +20,7 @@
           ></v-text-field>
 
         </v-card-title>-->
-        <v-card-title>บทที่ {{ lesson_id}} <span class="teal--text">&nbsp;{{ this.lesson_name }}</span>
+        <v-card-title>บทที่ {{ lesson_id}} <span class="teal--text">&nbsp;{{ lesson_name }}</span>
           <v-spacer></v-spacer>
                 <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
@@ -77,6 +77,7 @@
                 </v-col>
           </v-row>
               </div>
+              <div class="ma-10">{{ video.text }}</div>
               </center>
             </v-container>
     </v-card>
@@ -273,6 +274,7 @@ export default {
       reveal: false,
       alllesson: [],
       allvideo: [],
+      valid1: false,
       // lesson_id: localStorage.getItem('vdo_lesson_id'),
       video_id: '',
       video_subunit: '',
@@ -318,12 +320,15 @@ export default {
       },
       lesson_id: '',
       lesson_unit: '',
-      lesson_name: '',
+      // lesson_name: '',
       lesson_description: ''
     }
   },
   created () {
     this.lesson_id = this.$route.params.id
+    this.lesson_name = localStorage.getItem('lesson_name')
+    console.log('jjjj', this.lesson_name)
+    this.getLesson()
     this.getVideo()
   },
   // computed: {
@@ -348,6 +353,15 @@ export default {
       }
       reader.readAsDataURL(FileObject)
     },
+    async getLesson () {
+      axios.get('http://localhost/vue-backend/editLesson.php').then(res => {
+        console.log('data:', res.data)
+        if (res.data) {
+          this.alllesson = res.data
+        }
+      })
+    },
+
     async getVideo () {
       const url =
         'http://localhost/vue-backend/videoDetail.php?lesson_id=' + this.lesson_id
@@ -357,10 +371,20 @@ export default {
       axios
         .get(url)
         .then(response => {
-          console.log(response)
+          console.log(response, 'test')
           this.allvideo = response.data
-          this.video = response.data[0]
-          this.lesson_name = this.video.lesson_name
+          console.log(response.data, 'goo')
+          if (response.data.length) {
+            this.video = response.data[0]
+          } else {
+            this.video = {
+              lesson_id: this.lesson_id,
+              subunit: '',
+              name: '',
+              videofile: '',
+              text: 'ไม่มีวิดีโอในบทเรียน'
+            }
+          }
         //   this.info = response.data[0]
         //   // alert(this.info)
         //   this.lesson_id = this.info.lesson_id
@@ -423,7 +447,7 @@ export default {
             console.log('sorry')
           })
         this.getVideo()
-        // location.reload()
+        location.reload()
         this.dialog1 = false
         this.$refs.form1.reset()
       }
@@ -459,7 +483,7 @@ export default {
       })
       this.dialog2 = false
       this.video_file = ''
-      // location.reload()
+      location.reload()
       this.getVideo()
       // setTimeout(() => {
       //   this.getData()

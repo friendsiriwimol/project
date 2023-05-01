@@ -32,7 +32,7 @@
           <v-col cols="12" xs="12" sm="12"
                 md="6" v-for="video in allvideo" v-bind:key="video.video_id">
                 <v-card outlined style="border: 1px solid #fcad74;">
-            <video autoplay controls class="mt-5" width="90%">
+            <video controls class="mt-5" width="90%">
   <source :src="video.video_file" />
 </video>
 
@@ -73,7 +73,7 @@
           <v-btn
             icon
             dark
-            @click="dialog = false"
+            @click="closeDialog()"
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -218,6 +218,10 @@ export default {
       this.video_subunit = data.video_subunit
       this.video_name = data.video_name
       this.video_file = data.video_file
+    },
+    closeDialog () {
+      this.dialog = false
+      location.reload()
     },
     async getLesson () {
       axios.get('http://localhost/vue-backend/editLesson.php').then(res => {

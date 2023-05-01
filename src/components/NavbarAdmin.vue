@@ -91,6 +91,7 @@ export default {
         localStorage.removeItem('user_firstname')
         localStorage.removeItem('user_lastname')
         localStorage.removeItem('user_email')
+        localStorage.removeItem('user_password')
         localStorage.removeItem('user_age')
         localStorage.removeItem('user_birthday')
         localStorage.removeItem('user_district')

@@ -89,9 +89,9 @@ export default {
   },
   methods: {
     getColor (score) {
-      if (score > 1) return 'red'
-      else if (score > 5) return 'orange'
-      else return 'green'
+      if (score > 1) return 'orange'
+      else if (score > 5) return 'green'
+      else return 'red'
     },
     async getScore () {
       console.log('rewload')

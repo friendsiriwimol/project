@@ -112,7 +112,7 @@
                       </v-col>
                       <v-col cols="12">
                         <v-text-field
-                          label="จังหวัด"
+                        label="กลุ่มผู้ใช้งาน"
                           v-model="user.user_type"
                           disabled
                           required
